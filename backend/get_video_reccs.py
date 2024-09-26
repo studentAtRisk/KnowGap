@@ -30,7 +30,7 @@ def get_video_recommendation():
             cur_search = fetch_videos_for_topic(topic)
             cur_videos = json.dumps(cur_search.result())
         videos[topic] = cur_videos
-    return jsonify(videos)
+    return videos
 
 # ================================================================================================================================================
 #                                                   Passed this bridge, we go in helper functions land
