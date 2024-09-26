@@ -6,14 +6,13 @@ from pymongo import MongoClient
 from pandas import DataFrame
 import datetime
 from bs4 import BeautifulSoup
+import os
 
+DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 
-def get_database(connectionString):
+def get_database():
  
-   # connection to database string. Change this to switch databases
-   CONNECTION_STRING = connectionString
-
-   client = MongoClient(CONNECTION_STRING)
+   client = MongoClient(DB_CONNECTION_STRING)
  
    # create/select the database with inputted name
    return client['Courses']
@@ -224,11 +223,11 @@ def getassignments(courseid, access_token):
         return {'error': str(e)}, 500
     
 #it starts here
-def updatedb(courseid, access_token, connectionString):
+def updatedb(courseid, access_token):
 
     # Selects newly created databse
     #print("connecting...")
-    dbname = get_database(connectionString)
+    dbname = get_database(DB_CONNECTION_STRING)
     # Makes collection with inputted name
     collection_name = dbname[str(courseid)]
     #print("connection complete")
