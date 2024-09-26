@@ -7,6 +7,7 @@ import json
 # Handling Environment Variables
 load_dotenv()
 API_KEY = os.getenv('OPENAI_KEY')
+DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 
 client = OpenAI(api_key=API_KEY)
 
@@ -15,7 +16,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return jsonify('Hello Jason!')
+    return jsonify('Welcome to the KnowGap Backend API!')
 
 @app.route('/getvideorec', methods=['GET'])
 def get_video_recommendation():
