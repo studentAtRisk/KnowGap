@@ -24,4 +24,7 @@ tqdm==4.66.5
 typing_extensions==4.12.2
 Werkzeug==3.0.4
 youtube-search-python==1.6.6
-requests==2.26.0
+requests==2.26.0pymongo
+pandas==2.2.3
+bs4==4.12.3
+python-dotenv==1.0.1
