@@ -21,7 +21,7 @@ def hello_world():
 
 @app.route('/get_video_rec', methods=['GET'])
 def get_video_recc_route():
-    reccs = get_video_reccs.get_video_reccomendation()
+    reccs = get_video_reccs.get_video_recommendation()
     return jsonify(reccs)
 
 @app.route('/update_course', methods=['POST'])
@@ -41,4 +41,4 @@ def update_course_route():
 
 
 if __name__ == "__main__":
-    app.run(port=8000)
+    app.run()
