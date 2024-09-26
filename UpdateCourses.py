@@ -306,8 +306,5 @@ def updatedb(courseid, access_token, connectionString):
 
 
 
-courseid = 8625733
-access_token = '7~BA14Jhif9Im1vFkYT0sgqmm094w8QunmPFMGCaVVhzpWrY5yDuYgy1CqbqCeDbhd'
-connectionString = "mongodb+srv://jordan917222:PPJjEItclZaEECv7@studentsatrisk.ptqdmcu.mongodb.net/"
-updatedb(courseid, access_token, connectionString)
-print("WE DONE")
+
+
