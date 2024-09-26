@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from UpdateCourses import *
+from backend.UpdateCourses import *
 from pymongo import MongoClient
 
 app = Flask(__name__)
