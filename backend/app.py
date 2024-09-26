@@ -41,4 +41,4 @@ def update_course_route():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=8000)
