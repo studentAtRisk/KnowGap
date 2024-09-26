@@ -1,10 +1,9 @@
-from requests import request
 from youtubesearchpython import VideosSearch
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 API_KEY = os.getenv('OPENAI_KEY')
 client = OpenAI(api_key=API_KEY)
