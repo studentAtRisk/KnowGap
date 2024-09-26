@@ -227,7 +227,7 @@ def updatedb(courseid, access_token):
 
     # Selects newly created databse
     #print("connecting...")
-    dbname = get_database(DB_CONNECTION_STRING)
+    dbname = get_database()
     # Makes collection with inputted name
     collection_name = dbname[str(courseid)]
     #print("connection complete")
