@@ -12,8 +12,6 @@ load_dotenv()
 
 DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 
-
-
 from flask import Flask, request, jsonify
 app = Flask(__name__)
 
@@ -21,13 +19,13 @@ app = Flask(__name__)
 def hello_world():
     return jsonify('Welcome to the KnowGap Backend API!')
 
-@app.route('/getvideorec', methods=['GET'])
+@app.route('/get_video_rec', methods=['GET'])
 def get_video_recc_route():
     reccs = get_video_reccs.get_video_reccomendation()
     return jsonify(reccs)
 
-@app.route('/update_course_request', methods=['POST'])
-def update_course_request_endpoint():
+@app.route('/update_course', methods=['POST'])
+def update_course_route():
     data = request.get_json()
     
     courseid = data.get('courseid')
