@@ -3,12 +3,17 @@
 from flask import jsonify
 import requests
 from pymongo import MongoClient
-from pandas import DataFrame
 import datetime
 from bs4 import BeautifulSoup
 import os
 
 DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
+
+def get_token_collection():
+    client = MongoClient(DB_CONNECTION_STRING)
+    database = client['StudentsAtRisk']
+    
+    return database['Tokens']
 
 def get_database():
  

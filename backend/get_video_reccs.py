@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 import json
 from flask import Flask, jsonify, request
 
+load_dotenv() # Load the environment variables
+
 API_KEY = os.getenv('OPENAI_KEY')
 client = OpenAI(api_key=API_KEY)
 
