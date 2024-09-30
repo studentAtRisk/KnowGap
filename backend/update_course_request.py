@@ -7,18 +7,18 @@ app = Flask(__name__)
 
 
 @app.route('/update_course_request', methods=['POST'])
-def update_course_request_endpoint():
+async def update_course_request_endpoint():
     data = request.get_json()
     
     courseid = data.get('courseid')
     access_token = data.get('access_token')
     authkey = data.get('authkey')
-
+    link = data.get('link')
 
     # Make sure there is no missing parameters from request
-    if not all([courseid, access_token, authkey]):
+    if not all([courseid, access_token, authkey, link]):
         return jsonify({'error': 'Missing parameters'}), 400
-    updatedb(courseid, access_token, authkey)
+    await updatedb(courseid, access_token, authkey, link)
 
     return jsonify({'status': "Complete"})
 
