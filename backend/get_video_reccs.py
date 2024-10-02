@@ -14,26 +14,10 @@ client = OpenAI(api_key=API_KEY)
 DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mongo_client = MongoClient(DB_CONNECTION_STRING)
 db = mongo_client['NoGap']
-quizzes_collection = db['Quiz Questions']
-topic_links_collection = db['topic_links']  # Collection for storing topic video links
-
-def print_collection(collection):
-    # Fetch all documents in the collection
-    documents = collection.find()
-    
-    # Iterate over the documents and print each one
-    for document in documents:
-        print(document)
+quizzes_collection = db['Quiz Questions'] 
 
 # Function to get video recommendations for incorrect answers and store metadata
 def get_video_recommendation_and_store():
-    # Step 1: Query the database for the quiz data based on course_id and quiz_id
-    # Extract the quiz info (assuming quizzes is an array inside the course document)
-    quiz_info = next((quiz for quiz in quizzes_collection)
-    if not quiz_info or 'questions' not in quiz_info:
-        print(f"No questions found for quiz_id: {quiz_id}")
-        return {}
-
     # Initialize an empty dictionary to store video recommendations for each topic
     videos = {}
 
@@ -121,15 +105,10 @@ def fetch_videos_for_topic(topic):
                 'thumbnail': video['thumbnails'][0]['url']
             }
             video_data.append(video_info)
-
         return video_data
     except Exception as e:
         print(f"Error fetching videos for topic '{topic}': {e}")
         return []
-
-# Example usage
-course_id = '8625733'
-quiz_id = 17596721
 
 # Fetch video recommendations for all questions in a quiz and store them
 videos = get_video_recommendation_and_store(course_id, quiz_id)
