@@ -23,7 +23,7 @@ def get_video_recommendation_and_store():
 
     # Step 2: Process each question in the quiz
     for question in quizzes_collection.find():
-        question_text = question.get(ddd'question_text')
+        question_text = question.get('question_text')
         if not question_text:
             continue  # Skip questions without text
 
