@@ -13,8 +13,8 @@ client = OpenAI(api_key=API_KEY)
 # Connect to MongoDB
 DB_CONNECTION_STRING = os.getenv('MONGODB_CONNECTION_STRING')
 mongo_client = MongoClient(DB_CONNECTION_STRING)
-db = mongo_client['Courses2']
-quizzes_collection = db['course_quizzes']
+db = mongo_client['NoGap']
+quizzes_collection = db['QuizQuestions']
 topic_links_collection = db['topic_links']  # Collection for storing topic video links
 
 
