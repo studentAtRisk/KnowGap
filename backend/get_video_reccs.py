@@ -14,10 +14,23 @@ client = OpenAI(api_key=API_KEY)
 DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mongo_client = MongoClient(DB_CONNECTION_STRING)
 db = mongo_client['NoGap']
-quizzes_collection = db['Quiz Questions'] 
+quizzes_collection = db['Quiz Questions']
+topic_links_collection = db['topic_links']  # Collection for storing topic video links
+
+def print_collection(collection):
+    # Fetch all documents in the collection
+    documents = collection.find()
+    
+    # Iterate over the documents and print each one
+    for document in documents:
+        print(document)
 
 # Function to get video recommendations for incorrect answers and store metadata
 def get_video_recommendation_and_store():
+    # Step 1: Query the database for the quiz data based on course_id and quiz_id
+    # Extract the quiz info (assuming quizzes is an array inside the course document)
+
+
     # Initialize an empty dictionary to store video recommendations for each topic
     videos = {}
 
@@ -50,10 +63,11 @@ def get_video_recommendation_and_store():
                 print(f"Successfully inserted topic: {core_topic} into topic_links.")
             except Exception as e:
                 print(f"Error inserting into topic_links: {e}")
-
+        cur_course_id = question.get("courseid")
+        cur_quiz_id = question.get("quizid")
         # Step 8: Store the core topic and video data in MongoDB for the specific question
         quizzes_collection.update_one(
-            {'course_id': course_id, 'quizzes.quiz_id': quiz_id, 'quizzes.questions.question_text': question_text},
+            {'course_id': cur_course_id, 'quizzes.quiz_id': cur_quiz_id, 'quizzes.questions.question_text': question_text},
             {'$set': {
                 'quizzes.$[quiz].questions.$[question].core_topic': core_topic,
                 'quizzes.$[quiz].questions.$[question].video_data': video_data  # Store full video data
@@ -105,11 +119,12 @@ def fetch_videos_for_topic(topic):
                 'thumbnail': video['thumbnails'][0]['url']
             }
             video_data.append(video_info)
+
         return video_data
     except Exception as e:
         print(f"Error fetching videos for topic '{topic}': {e}")
         return []
 
 # Fetch video recommendations for all questions in a quiz and store them
-videos = get_video_recommendation_and_store(course_id, quiz_id)
+videos = get_video_recommendation_and_store()
 print(videos)
