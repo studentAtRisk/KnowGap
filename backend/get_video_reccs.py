@@ -11,24 +11,25 @@ API_KEY = os.getenv('OPENAI_KEY')
 client = OpenAI(api_key=API_KEY)
 
 # Connect to MongoDB
-DB_CONNECTION_STRING = os.getenv('MONGODB_CONNECTION_STRING')
+DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mongo_client = MongoClient(DB_CONNECTION_STRING)
 db = mongo_client['NoGap']
-quizzes_collection = db['QuizQuestions']
+quizzes_collection = db['Quiz Questions']
 topic_links_collection = db['topic_links']  # Collection for storing topic video links
 
+def print_collection(collection):
+    # Fetch all documents in the collection
+    documents = collection.find()
+    
+    # Iterate over the documents and print each one
+    for document in documents:
+        print(document)
 
 # Function to get video recommendations for incorrect answers and store metadata
-def get_video_recommendation_and_store(course_id, quiz_id):
+def get_video_recommendation_and_store():
     # Step 1: Query the database for the quiz data based on course_id and quiz_id
-    quiz_data = quizzes_collection.find_one({'course_id': course_id, 'quizzes.quiz_id': quiz_id})
-    
-    if not quiz_data:
-        print(f"No quiz found for course_id: {course_id} and quiz_id: {quiz_id}")
-        return {}
-
     # Extract the quiz info (assuming quizzes is an array inside the course document)
-    quiz_info = next((quiz for quiz in quiz_data['quizzes'] if quiz['quiz_id'] == quiz_id), None)
+    quiz_info = next((quiz for quiz in quizzes_collection)
     if not quiz_info or 'questions' not in quiz_info:
         print(f"No questions found for quiz_id: {quiz_id}")
         return {}
@@ -37,8 +38,8 @@ def get_video_recommendation_and_store(course_id, quiz_id):
     videos = {}
 
     # Step 2: Process each question in the quiz
-    for question in quiz_info['questions']:
-        question_text = question.get('question_text')
+    for question in quizzes_collection.find():
+        question_text = question.get(ddd'question_text')
         if not question_text:
             continue  # Skip questions without text
 
@@ -74,9 +75,8 @@ def get_video_recommendation_and_store(course_id, quiz_id):
                 'quizzes.$[quiz].questions.$[question].video_data': video_data  # Store full video data
             }},
             array_filters=[
-                {"quiz.quiz_id": quiz_id},
                 {"question.question_text": question_text}
-            ]
+            ], upsert=True
         )
 
         # Step 9: Store the topic and videos in the response dictionary
@@ -128,8 +128,8 @@ def fetch_videos_for_topic(topic):
         return []
 
 # Example usage
-course_id = '8660249'
-quiz_id = '19397139'
+course_id = '8625733'
+quiz_id = 17596721
 
 # Fetch video recommendations for all questions in a quiz and store them
 videos = get_video_recommendation_and_store(course_id, quiz_id)
