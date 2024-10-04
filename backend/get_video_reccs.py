@@ -45,6 +45,7 @@ def get_video_recommendation_and_store():
 
         # Step 4: Check if this topic already exists in `topic_links` collection
         existing_topic = topic_links_collection.find_one({'topic': core_topic})
+
         if existing_topic:
             # Step 5: Use existing video links if found
             video_data = existing_topic['video_data']
@@ -65,16 +66,14 @@ def get_video_recommendation_and_store():
                 print(f"Error inserting into topic_links: {e}")
         cur_course_id = question.get("courseid")
         cur_quiz_id = question.get("quizid")
+        cur_question_id = question.get("questionid")
         # Step 8: Store the core topic and video data in MongoDB for the specific question
         quizzes_collection.update_one(
-            {'course_id': cur_course_id, 'quizzes.quiz_id': cur_quiz_id, 'quizzes.questions.question_text': question_text},
+            {'questionid' : cur_question_id},
             {'$set': {
-                'quizzes.$[quiz].questions.$[question].core_topic': core_topic,
-                'quizzes.$[quiz].questions.$[question].video_data': video_data  # Store full video data
-            }},
-            array_filters=[
-                {"question.question_text": question_text}
-            ], upsert=True
+                'core_topic': core_topic,
+                'video_data': video_data  # Store full video data
+            }}, upsert=True
         )
 
         # Step 9: Store the topic and videos in the response dictionary
@@ -88,7 +87,7 @@ def get_video_recommendation_and_store():
 
 # Function to generate a core topic using OpenAI
 def generate_core_topic(question_text):
-    prompt = f"Generate a unique core topic to study for the following question (something general, concise, and broad that can be easy to look up, be concise as possible, make it like three words): {question_text}"
+    prompt = f"Generate a concise and general core topic to study for the following question, ensuring it's easy to search on YouTube and will return the most relevant video content: {question_text}"
     response = client.completions.create(
         prompt=prompt,
         model="gpt-3.5-turbo-instruct",
