@@ -114,25 +114,16 @@ def updateassignments(courseid, access_token, assignmentmaxscore, dbname, collec
                                         (submission for submission in assignment["submissions"] if submission['workflow_state'] == "graded"), 
                                         key=lambda x: datetime.datetime.strptime(x['graded_at'], '%Y-%m-%dT%H:%M:%SZ'), 
                                         reverse=True)
-                print("its here?")
                 rawgrade = []
                 rawrecent = []
                 unique_data = []
                 allgrades = []
                 recentgrades = []
-                print("oh lah lah")
                 for item in data_sorted:
-                    print(item)
                     if item['assignment_id'] not in seen_assignment_ids:
                         unique_data.append(item)
                         seen_assignment_ids.add(item['assignment_id'])
 
-
-                    
-                #print(assignmentmaxscore)
-                #print("checkpoiunt 0")
-                #print(data_sorted[0]["assignment_id"])
-                #print(assignmentmaxscore[data_sorted[0]["assignment_id"]])
                     print("check one!")
                 for x in range(len(unique_data)):
                     if unique_data[x]["assignment_id"] not in assignmentmaxscore:

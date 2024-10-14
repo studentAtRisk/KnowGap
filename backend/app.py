@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import json
 import get_curated_videos
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from update_courses import updatedb, get_token_collection
 from encryption import encrypt_token_real, decrypt_token
 from pymongo import MongoClient
@@ -17,6 +18,7 @@ HEX_ENCRYPTION_KEY = os.getenv('HEX_ENCRYPTION_KEY')
 
 from flask import Flask, request, jsonify
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def hello_world():
