@@ -3,7 +3,7 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 import json
-import get_video_reccs
+import get_curated_videos
 from flask import Flask, request, jsonify
 from update_courses import updatedb, get_token_collection
 from encryption import encrypt_token_real, decrypt_token
@@ -24,7 +24,10 @@ def hello_world():
 
 @app.route('/get_video_rec', methods=['GET'])
 def get_video_recc_route():
-    reccs = get_video_reccs.get_video_recommendation()
+    data = request.get_json()
+    student_id = data.get('userid')
+    course_id = data.get('courseid')
+    reccs = get_curated_videos.get_video_recommendation(student_id, course_id)
     return jsonify(reccs)
 
 @app.route('/update_course', methods=['POST'])
