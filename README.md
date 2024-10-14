@@ -1,4 +1,4 @@
-# 🎓 Student-At-Risk Predictor
+# 🎓 KnowGap
 
 ## 🌟 Overview
 The Student-At-Risk Predictor is an innovative tool integrated into Canvas, aimed at helping instructors identify and support students at risk of not passing their courses. It employs advanced AI techniques, including custom generative GPT models and predictive algorithms such as regression, to accurately predict at-risk students and recommend tailored instructional content.
