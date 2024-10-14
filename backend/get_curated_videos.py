@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os
 import re
 import get_video_reccs as get_video_reccs  # Ensure correct import of external functions
-from sentence_transformers import SentenceTransformer, util
 
 # Load environment variables
 load_dotenv()
