@@ -30,3 +30,4 @@ pandas==2.2.3
 beautifulsoup4==4.12.3
 python-dotenv==1.0.1
 pycryptodome==3.18.0
+Flask-CORS==3.0.10
