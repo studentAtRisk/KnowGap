@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "Student Risk Predictor",
+  "description": "A better way to predict risk.",
+  "version": "1.3.8",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "background": { "service_worker": "background.bundle.js" },
+  "host_permissions": ["*://*/*"],
+  
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["contentScript.bundle.js"],
+      "css": ["content.styles.css"],
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["sidebar.html","imgs/youtube.png"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
