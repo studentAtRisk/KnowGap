@@ -3,8 +3,9 @@ from pymongo import MongoClient
 from dotenv import load_dotenv
 import os
 import re
-import backend.get_video_reccs as get_video_reccs  # Ensure correct import of external functions
+import get_video_reccs as get_video_reccs  # Ensure correct import of external functions
 from sentence_transformers import SentenceTransformer, util
+
 # Load environment variables
 load_dotenv()
 
@@ -39,39 +40,6 @@ students_collection = db['Students']  # Collection that stores student records
 quizzes_collection = db['Quiz Questions']  # Collection that stores all possible quiz questions
 
 
-# Load a pre-trained BERT model for sentence embeddings
-model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
-
-def are_topics_similar(topic1, topic2, threshold=0.8):
-    """
-    Check if two topics are functionally similar using BERT embeddings.
-    A similarity score above the threshold indicates similar topics.
-    """
-    embedding1 = model.encode(topic1, convert_to_tensor=True)
-    embedding2 = model.encode(topic2, convert_to_tensor=True)
-
-    similarity = util.pytorch_cos_sim(embedding1, embedding2).item()
-    return similarity > threshold
-
-# Function to check if a similar topic already exists (uses both exact match and semantic similarity)
-def check_existing_topic(core_topic):
-    normalized_core_topic = normalize_text(core_topic)
-
-    # Step 1: Check for exact match in normalized text
-    existing_topic = quizzes_collection.find_one({"core_topic": normalized_core_topic})
-    if existing_topic:
-        return existing_topic
-
-    # Step 2: Check for semantic similarity if no exact match is found
-    for existing in quizzes_collection.find():
-        existing_topic = existing['core_topic']
-        if are_topics_similar(core_topic, existing_topic):
-            return existing  # Return the semantically similar topic
-    
-    # Return None if no similar topic is found
-    return None
-
-# Rest of your code logic to insert or reuse existing topics remains the same
 
 # Function to get incorrect questions and their video links
 def get_assessment_videos(student_id, course_id):
@@ -85,6 +53,7 @@ def get_assessment_videos(student_id, course_id):
 
     # Iterate over each quiz the student took in the specified course
     for quiz in quizzes:
+        print("entering quiz loop")
         quiz_name = quiz.get('quizname', 'Unknown Quiz')  # Added default value in case 'quizname' is missing
         quiz_id = quiz.get('quizid')
         incorrect_questions = quiz.get('questions', [])
@@ -101,15 +70,23 @@ def get_assessment_videos(student_id, course_id):
 
             # Find the matching question in the `Quiz Questions` collection
             matching_question = quizzes_collection.find_one({"quizid": quiz_id, "question_text": question_text})
-
+            print("Matching question: " + str(matching_question))
             if matching_question:
                 core_topic = matching_question.get("core_topic", "No topic found")
                 video_data = matching_question.get("video_data", [])
             else:
-                # If no matching question is found, use OpenAI and YouTube video fetching
+                # If no matching question is found, generate core topic and fetch videos
                 core_topic = get_video_reccs.generate_core_topic(question_text, "EEL3801C-23Spring 0M01")      
                 video_data = get_video_reccs.fetch_videos_for_topic(core_topic)
-        
+                new_entry = {
+                "quizid": quiz_id,
+                "question_text": question_text,
+                "core_topic": core_topic,
+                "video_data": video_data
+                }
+                quizzes_collection.insert_one(new_entry)
+                print(f"Inserted new topic: {core_topic}")
+
             # Store the video data by question
             videos_for_quiz[question_text] = {
                 "topic": core_topic,
@@ -120,11 +97,16 @@ def get_assessment_videos(student_id, course_id):
     
     return assessment_videos
 
+
+
+
+print("Starting BS")
 # Example usage
 student_id = "4365470"  # Replace with actual student ID
 course_id = "1425706"  # Replace with actual course ID
 
 videos_by_assessment = get_assessment_videos(student_id, course_id)
 
-# Output results in a readable format
+from pprint import pprint
+
 print(json.dumps(videos_by_assessment, indent=2))
