@@ -9,28 +9,6 @@ from sentence_transformers import SentenceTransformer, util
 # Load environment variables
 load_dotenv()
 
-def normalize_text(text):
-    """
-    Function to normalize a given string by removing extra spaces and 
-    converting it to lowercase to ensure uniformity.
-    """
-    # Remove extra spaces, newlines, and tabs, and convert to lowercase
-    normalized_text = re.sub(r'\s+', ' ', text).strip().lower()
-    return normalized_text
-
-# Function to remove escape sequences and non-ASCII characters
-def clean_text(text):
-    """
-    Function to remove escape sequences and non-ASCII characters from a given string.
-    """
-    # Remove escape sequences like \u00a0
-    text = re.sub(r'\\u[0-9a-fA-F]{4}', '', text)
-    
-    # Remove non-ASCII characters (replace them with space or '')
-    cleaned_text = re.sub(r'[^\x00-\x7F]+', ' ', text)
-    
-    return cleaned_text
-
 
 # MongoDB connection
 DB_CONNECTION_STRING =  os.getenv('DB_CONNECTION_STRING')  # This should ideally be loaded from .env
@@ -65,23 +43,23 @@ def get_assessment_videos(student_id, course_id):
         videos_for_quiz = {}
 
         # For each incorrect question, we match it with the corresponding question in the `Quiz Questions` collection
-        for question_text in incorrect_questions:
+        for question in incorrect_questions:
             # Clean the question text of unwanted characters
-            question_text = clean_text(question_text)
+            cur_qid = question.get("questioid")
 
             # Find the matching question in the `Quiz Questions` collection
-            matching_question = quizzes_collection.find_one({"quizid": quiz_id, "question_text": question_text})
+            matching_question = quizzes_collection.find_one({"quizid": quiz_id, "questionid": cur_qid})
             print("Matching question: " + str(matching_question))
             if matching_question:
                 core_topic = matching_question.get("core_topic", "No topic found")
                 video_data = matching_question.get("video_data", [])
             else:
                 # If no matching question is found, generate core topic and fetch videos
-                core_topic = get_video_reccs.generate_core_topic(question_text, "EEL3801C-23Spring 0M01")      
+                core_topic = get_video_reccs.generate_core_topic(cur_qid, "EEL3801C-23Spring 0M01")      
                 video_data = get_video_reccs.fetch_videos_for_topic(core_topic)
                 new_entry = {
                 "quizid": quiz_id,
-                "question_text": question_text,
+                "question_text": cur_qid,
                 "core_topic": core_topic,
                 "video_data": video_data
                 }
@@ -89,7 +67,7 @@ def get_assessment_videos(student_id, course_id):
                 print(f"Inserted new topic: {core_topic}")
 
             # Store the video data by question
-            videos_for_quiz[question_text] = {
+            videos_for_quiz[cur_qid] = {
                 "topic": core_topic,
                 "videos": video_data
             }
