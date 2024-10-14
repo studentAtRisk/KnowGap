@@ -30,7 +30,6 @@ def get_assessment_videos(student_id, course_id):
 
     # Iterate over each quiz the student took in the specified course
     for quiz in quizzes:
-        print("entering quiz loop")
         quiz_name = quiz.get('quizname', 'Unknown Quiz')  # Added default value in case 'quizname' is missing
         quiz_id = quiz.get('quizid')
         incorrect_questions = quiz.get('questions', [])
@@ -47,7 +46,7 @@ def get_assessment_videos(student_id, course_id):
 
             # Find the matching question in the `Quiz Questions` collection
             matching_question = quizzes_collection.find_one({"quizid": quiz_id, "questionid": cur_qid})
-            print("Matching question: " + str(matching_question))
+            
             if matching_question:
                 core_topic = matching_question.get("core_topic", "No topic found")
                 video_data = matching_question.get("video_data", [])
@@ -62,7 +61,6 @@ def get_assessment_videos(student_id, course_id):
                 "video_data": video_data
                 }
                 quizzes_collection.insert_one(new_entry)
-                print(f"Inserted new topic: {core_topic}")
 
             # Store the video data by question
             videos_for_quiz[cur_qid] = {
