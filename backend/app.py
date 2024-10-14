@@ -27,7 +27,7 @@ def get_video_recc_route():
     data = request.get_json()
     student_id = data.get('userid')
     course_id = data.get('courseid')
-    reccs = get_curated_videos.get_video_recommendation(student_id, course_id)
+    reccs = get_curated_videos.get_assessment_videos(student_id, course_id)
     return jsonify(reccs)
 
 @app.route('/update_course', methods=['POST'])
