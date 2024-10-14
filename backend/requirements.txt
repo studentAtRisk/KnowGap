@@ -29,3 +29,4 @@ pymongo==4.9.1
 pandas==2.2.3
 beautifulsoup4==4.12.3
 python-dotenv==1.0.1
+pycryptodome==3.18.0
