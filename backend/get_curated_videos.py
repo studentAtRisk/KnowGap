@@ -9,7 +9,6 @@ from sentence_transformers import SentenceTransformer, util
 # Load environment variables
 load_dotenv()
 
-
 # MongoDB connection
 DB_CONNECTION_STRING =  os.getenv('DB_CONNECTION_STRING')  # This should ideally be loaded from .env
 mongo_client = MongoClient(DB_CONNECTION_STRING)
@@ -78,14 +77,13 @@ def get_assessment_videos(student_id, course_id):
 
 
 
-
-print("Starting BS")
+if __name__ == "main":
 # Example usage
-student_id = "4365470"  # Replace with actual student ID
-course_id = "1425706"  # Replace with actual course ID
+    student_id = "4365470"  # Replace with actual student ID
+    course_id = "1425706"  # Replace with actual course ID
 
-videos_by_assessment = get_assessment_videos(student_id, course_id)
+    videos_by_assessment = get_assessment_videos(student_id, course_id)
 
-from pprint import pprint
+    from pprint import pprint
 
-print(json.dumps(videos_by_assessment, indent=2))
+    print(json.dumps(videos_by_assessment, indent=2))
