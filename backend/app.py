@@ -7,7 +7,7 @@ import get_curated_videos
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from update_courses import updatedb, get_token_collection
-from encryption import encrypt_token_real, decrypt_token
+from encryption import at_risk_encrypt_token, at_risk_decrypt_token
 from pymongo import MongoClient
 
 # Handling Environment Variables
@@ -15,6 +15,8 @@ load_dotenv()
 
 DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 HEX_ENCRYPTION_KEY = os.getenv('HEX_ENCRYPTION_KEY')
+
+encryption_key = bytes.fromhex(HEX_ENCRYPTION_KEY)
 
 from flask import Flask, request, jsonify
 app = Flask(__name__)
@@ -47,35 +49,75 @@ def update_course_route():
 
     return jsonify({'status': "Complete"})
 
-@app.route('/encrypttoken', methods=['POST'])
-def encrypt_token():
-    payload = request.get_json()
+# POST endpoint to update or create a user
+@app.route('/update-user-auth', methods=['POST'])
+def update_course_request_endpoint():
+    data = request.get_json()
+    userid = data.get('userid')
+    access_token = data.get('access_token')
+    role = data.get('role')
+
+
+    # validate required parameters
+    if not all([userid]):
+        return jsonify({'error': 'Missing userid'}), 400
+    # More validations:
+    if not access_token:
+        return jsonify({'error': 'Missing access_token'}), 400
+    if not role:
+        return jsonify({'error': 'Missing role'}), 400
+    # if not courseids:
+    #     return jsonify({'error': 'Missing Course Id(s)'}), 400
+
+    token_collection = get_token_collection()
+    encrypted_token = at_risk_encrypt_token(encryption_key, access_token)
+
+    if role == "student":
+        try:
+            token_collection.update_one({'_id': userid},{"$set": {"auth": encrypted_token, "role": role}},upsert=True)
+        except Exception as e:
+            return jsonify({
+                'error': f'problem in db: {e}'
+            })
+    else:
+        token_collection.update_one({'_id': userid},{"$set": {"auth": encrypted_token, "role": role, "courseids": courseids}},upsert=True)
+
+    # return updated user details
+    updated_user = token_collection.find_one({'_id': userid}, {'_id': 0})  # Exclude _id in the result
+    if updated_user:
+        return jsonify({'status': 'Complete', 'user_details': updated_user['role']}), 200
+    else:
+        return jsonify({'status': 'Error', 'message': 'User not found'}), 404
     
-    if not payload:
-        return jsonify({'error': 'Missing parameters'}), 400
+# GET endpoint to retrieve user data
+@app.route('/get-user', methods=['GET'])
+def get_user():
+    # get the userid from query parameters (e.g., /get_user?userid=123)
+
+    data = request.get_json()
+    userid = data.get('userid')
+
+    if not userid:
+        return jsonify({'error': 'Missing userid parameter'}), 400
     
-    token_to_be_encrypted = payload.get('token')
-    user_id = payload.get('userId')
-    
-    if not all([user_id, token_to_be_encrypted]):
-        return jsonify({'error': 'Missing parameters'})
-    
-    # Getting the token collection for saving:
-    db_token_collection = get_token_collection()
-    
-    # Switching key from hex to bytes
-    encryption_key = bytes.fromhex(HEX_ENCRYPTION_KEY)
-    
-    encrypted_token = encrypt_token_real(encryption_key, token_to_be_encrypted)
-    
-    try:
-        # db_token_collection.update_one({'_id': user_id, 'token': encrypted_token})
-        db_token_collection.update_one({'_id': user_id}, {'$set': {'token': encrypted_token}})
-    except Exception as e:
-        return jsonify({'message': f'error with db saving: {e}'})
-    
-    
-    return jsonify({'message': 'success'}), 200
+    token_collection = get_token_collection()
+
+    # fetch the user from MongoDB
+    user = token_collection.find_one({'_id': userid})  # Exclude _id in the result
+
+    if user:
+        # return jsonify({'status': 'Success', 'user_details': user})
+        decrypted_token = at_risk_decrypt_token(encryption_key, user['auth'])
+        return jsonify({
+            'status' : 'Success',
+            "user_details": {
+                "_id": user["_id"],
+                "auth": decrypted_token,
+                "role": user["role"]
+            }
+        }), 200
+    else:
+        return jsonify({'status': 'Error', 'message': 'User not found'}), 404
 
 if __name__ == "__main__":
     app.run()
