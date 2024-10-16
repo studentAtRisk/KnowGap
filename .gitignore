@@ -1,1 +1,4 @@
 backend/.env
+*.swp
+*.swo
+linear_regression/env/

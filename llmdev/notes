@@ -10,3 +10,15 @@ it is to the problem, whether or not it might help find a helpful video
 - maybe use gpt for the time being, giving a percentage rating of helpfulness
 - human / manual checking over each iteration
 
+disadvantages:
+- ollama not as well trained and able to pick up on details as gpt
+for example, for the same question on modifying string literals in C:
+gpt gives "Memory manipulation in C" vs ollama "C string literals"
+- ollama does not like to print strictly in a json format, unlike gpt 
+when prompted
+
+advantages:
+- ollama is a nerd:
+    for some reason, instead of providing a search query for the questions,
+ollama decided to start solving the questions and explaining the answers
+
