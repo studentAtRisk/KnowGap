@@ -23,7 +23,7 @@ async def update_quiz_rec(courseid, access_token, dbname, collection_name, curre
 
 
 
-    api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{currentquiz}/statistics'
+    api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{currentquiz}/questions'
     headers ={
         'Authorization': f'Bearer {access_token}'
     }
@@ -40,10 +40,10 @@ async def update_quiz_rec(courseid, access_token, dbname, collection_name, curre
                     
 
                     
-                    for x in range(len(data["quiz_statistics"][0]["question_statistics"])):
-                        questiontext.append(BeautifulSoup(data["quiz_statistics"][0]["question_statistics"][x]["question_text"], features="html.parser").get_text())
+                    for x in range(len(data)):
+                        questiontext.append(BeautifulSoup(data[x]["question_text"], features="html.parser").get_text())
                         questiontext[x] = clean_text(questiontext[x])   
-                        questionid.append(data["quiz_statistics"][0]["question_statistics"][x]["id"])
+                        questionid.append(data[x]["id"])
                         
 
                     return questiontext, questionid
@@ -123,7 +123,7 @@ async def update_db(courseid, access_token, connectionString, link):
 
                         # Finally, save to the database.
                         for y in range(len(questiontext)):
-                            
+                            print("Here!")
                             try:
                                 collection_name.update_one({'quizid': quizlist[x],  'courseid': str(courseid), "course_name": course_name, "questionid": str(questionid[y])}, {"$set": {"question_text": questiontext[y]}},upsert=True)
                             except Exception as e:
@@ -167,5 +167,6 @@ max_date = datetime.now(timezone.utc)  # Ensure max_date is in UTC
 def clean_text(text):
     # Normalize and filter to keep only ASCII characters
     return ''.join(char for char in text if ord(char) < 128)
+
 
 
