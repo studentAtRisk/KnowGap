@@ -31,4 +31,4 @@ beautifulsoup4==4.12.3
 python-dotenv==1.0.1
 pycryptodome==3.18.0
 Flask-CORS==3.0.10
-aiohttp==3.8.1
+aiohttp
