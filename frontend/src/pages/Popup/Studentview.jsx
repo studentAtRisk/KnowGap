@@ -273,6 +273,8 @@ const StudentView = () => {
       return data;
     } catch (error) {
       console.error('Error fetching video recommendations:', error);
+      console.log('userid:', userId);
+      console.log('courseid:', courseId);
       return null;
     }
   };

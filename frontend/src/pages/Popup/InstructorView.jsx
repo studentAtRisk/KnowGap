@@ -6,6 +6,9 @@ const InstructorView = () => {
   const [activeTab, setActiveTab] = useState('assignments');
   const [students, setStudents] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [videoRecommendations, setVideoRecommendations] = useState({});
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [newVideo, setNewVideo] = useState({ title: '', url: '', reason: '' });
 
   const imgs = { youtube };
 
@@ -183,6 +186,84 @@ const InstructorView = () => {
 
   const sendNotification = (message) => {
     setNotifications([...notifications, message]);
+  };
+
+  const fetchVideoRecommendations = async (userId, courseId) => {
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+    try {
+      const response = await fetch(
+        `${baseUrl}/get_video_rec?userid=${userId}&courseid=${courseId}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setVideoRecommendations((prevState) => ({
+        ...prevState,
+        [userId]: data,
+      }));
+    } catch (error) {
+      console.error('Error fetching video recommendations:', error);
+    }
+  };
+
+  const handleAddVideo = async () => {
+    if (!selectedStudent) return;
+
+    const updatedRecommendations = {
+      ...videoRecommendations[selectedStudent.id],
+      [newVideo.reason]: {
+        topic: newVideo.reason,
+        videos: [
+          ...(videoRecommendations[selectedStudent.id]?.[newVideo.reason]
+            ?.videos || []),
+          { title: newVideo.title, link: newVideo.url },
+        ],
+      },
+    };
+
+    await updateVideoRecommendations(
+      selectedStudent.id,
+      updatedRecommendations
+    );
+
+    setVideoRecommendations((prevState) => ({
+      ...prevState,
+      [selectedStudent.id]: updatedRecommendations,
+    }));
+
+    setNewVideo({ title: '', url: '', reason: '' });
+  };
+
+  const updateVideoRecommendations = async (userId, recommendations) => {
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+    try {
+      const response = await fetch(`${baseUrl}/update_video_rec`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userid: userId,
+          courseid: fetchCurrentCourseId(),
+          recommendations: recommendations,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error updating video recommendations:', error);
+    }
   };
 
   const styles = {
@@ -412,42 +493,75 @@ const InstructorView = () => {
 
       <div style={styles.container}>
         <div>
-          <h2 style={styles.title}>Early Intervention Alerts</h2>
-          <ul style={styles.studentList}>
-            {students
-              .filter(
-                (student) =>
-                  calculateRiskFactor(calculateAverageScore(student.scores)) ===
-                  1
-              )
-              .map((student) => (
-                <li
-                  key={student.id}
-                  style={{
-                    ...styles.studentItem,
-                    borderLeft: '4px solid #e53e3e',
-                  }}
-                >
-                  <div>
-                    <h3 style={styles.studentName}>{student.name}</h3>
-                    <p style={styles.studentDetail}>
-                      Average Score:{' '}
-                      {calculateAverageScore(student.scores).toFixed(2)}%
-                    </p>
-                  </div>
-                  <button
-                    style={{ ...styles.button, ':hover': styles.buttonHover }}
-                    onClick={() =>
-                      sendNotification(
-                        `Sent intervention alert for ${student.name}`
-                      )
-                    }
-                  >
-                    Send Intervention Alert
-                  </button>
-                </li>
+          <h2 style={styles.title}>Manage Video Recommendations</h2>
+          <select
+            onChange={(e) => {
+              const student = students.find((s) => s.id === e.target.value);
+              setSelectedStudent(student);
+              fetchVideoRecommendations(student.id, fetchCurrentCourseId());
+            }}
+          >
+            <option value="">Select a student</option>
+            {students.map((student) => (
+              <option key={student.id} value={student.id}>
+                {student.name}
+              </option>
+            ))}
+          </select>
+
+          {selectedStudent && (
+            <div>
+              <h3>{selectedStudent.name}'s Video Recommendations</h3>
+              {Object.entries(
+                videoRecommendations[selectedStudent.id] || {}
+              ).map(([topic, data]) => (
+                <div key={topic}>
+                  <h4>{topic}</h4>
+                  <ul>
+                    {data.videos.map((video, index) => (
+                      <li key={index}>
+                        {video.title} -{' '}
+                        <a
+                          href={video.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Watch
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-          </ul>
+
+              <h4>Add New Video</h4>
+              <input
+                type="text"
+                placeholder="Video Title"
+                value={newVideo.title}
+                onChange={(e) =>
+                  setNewVideo({ ...newVideo, title: e.target.value })
+                }
+              />
+              <input
+                type="text"
+                placeholder="Video URL"
+                value={newVideo.url}
+                onChange={(e) =>
+                  setNewVideo({ ...newVideo, url: e.target.value })
+                }
+              />
+              <input
+                type="text"
+                placeholder="Reason/Topic"
+                value={newVideo.reason}
+                onChange={(e) =>
+                  setNewVideo({ ...newVideo, reason: e.target.value })
+                }
+              />
+              <button onClick={handleAddVideo}>Add Video</button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -479,9 +593,6 @@ const InstructorView = () => {
           </div>
         </div>
       </div>
-
-      {/* Existing Assignments and Videos */}
-      {/* ... */}
     </body>
   );
 };
