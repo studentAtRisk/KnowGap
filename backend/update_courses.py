@@ -5,6 +5,7 @@ from pymongo import MongoClient
 from bs4 import BeautifulSoup
 import asyncio
 import aiohttp
+import os
 from datetime import datetime, timezone
 
 global_amtofquizzes = 5
@@ -186,14 +187,9 @@ def clean_text(text):
     # Normalize and filter to keep only ASCII characters
     return ''.join(char for char in text if ord(char) < 128)
 
+def get_token_collection():
+    DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
+    client = MongoClient(DB_CONNECTION_STRING)
+    database = client['StudentsAtRisk']
 
-async def main():
-    courseid = 1425706
-    access_token = '1158~ZENrewhnRzFkMLhxQDP47U9NcrX6exWeT8eGXKW4z2X7yy36RFDcMB3C6tJk4fha'
-    connectionString = "mongodb+srv://jordan917222:PPJjEItclZaEECv7@studentsatrisk.ptqdmcu.mongodb.net/"
-    link = 'webcourses.ucf.edu'
-    await update_db(courseid, access_token, connectionString, link)
-    print("Updated quiz questions for this course")
-
-if __name__ == "__main__":
-    asyncio.run(main())
+    return database['Tokens']

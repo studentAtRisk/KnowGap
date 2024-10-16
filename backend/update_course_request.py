@@ -18,7 +18,7 @@ async def update_course_request_endpoint():
     # Make sure there is no missing parameters from request
     if not all([courseid, access_token, authkey, link]):
         return jsonify({'error': 'Missing parameters'}), 400
-    await updatedb(courseid, access_token, authkey, link)
+    await update_db(courseid, access_token, authkey, link)
 
     return jsonify({'status': "Complete"})
 
