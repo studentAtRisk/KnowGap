@@ -1,0 +1,12 @@
+- record all answers in JSON format for convenience
+for each question,
+- ask ollama for topics / subject / general idea of the problem
+- record the answer as a hint for next questions
+- ask ollama to describe a youtube search query that could find a useful video given the subject matter
+to test:
+* we want to be able to quantify the performance of ollama
+- use a separate model to look at the query, and describe how accurate
+it is to the problem, whether or not it might help find a helpful video
+- maybe use gpt for the time being, giving a percentage rating of helpfulness
+- human / manual checking over each iteration
+
