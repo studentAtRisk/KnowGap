@@ -1,0 +1,356 @@
+{
+    "title": "Biology 101 - Final Exam",
+    "questions": [
+        {
+            "id": 1,
+            "type": "multiple_choice",
+            "question": "Which of the following is a characteristic of prokaryotic cells?",
+            "chosen_answer": "",
+            "correct_answer": "They lack a nucleus."
+        },
+        {
+            "id": 2,
+            "type": "multiple_choice",
+            "question": "What is the primary function of ribosomes in a cell?",
+            "chosen_answer": "",
+            "correct_answer": "Protein synthesis"
+        },
+        {
+            "id": 3,
+            "type": "multiple_choice",
+            "question": "Which of the following structures is found in plant cells but not in animal cells?",
+            "chosen_answer": "",
+            "correct_answer": "Chloroplasts"
+        },
+        {
+            "id": 4,
+            "type": "multiple_choice",
+            "question": "In which part of the cell does glycolysis occur?",
+            "chosen_answer": "",
+            "correct_answer": "Cytoplasm"
+        },
+        {
+            "id": 5,
+            "type": "multiple_choice",
+            "question": "What is the role of the mitochondria in eukaryotic cells?",
+            "chosen_answer": "",
+            "correct_answer": "They produce ATP through cellular respiration."
+        },
+        {
+            "id": 6,
+            "type": "multiple_choice",
+            "question": "Which phase of mitosis is characterized by the separation of sister chromatids?",
+            "chosen_answer": "",
+            "correct_answer": "Anaphase"
+        },
+        {
+            "id": 7,
+            "type": "multiple_choice",
+            "question": "What is the purpose of the process of meiosis?",
+            "chosen_answer": "",
+            "correct_answer": "To produce gametes for sexual reproduction."
+        },
+        {
+            "id": 8,
+            "type": "multiple_choice",
+            "question": "Which macromolecule is primarily responsible for the storage of genetic information?",
+            "chosen_answer": "",
+            "correct_answer": "DNA"
+        },
+        {
+            "id": 9,
+            "type": "multiple_choice",
+            "question": "Which of the following is a function of the Golgi apparatus?",
+            "chosen_answer": "",
+            "correct_answer": "Modifying and packaging proteins"
+        },
+        {
+            "id": 10,
+            "type": "multiple_choice",
+            "question": "What is the main function of enzymes in biological systems?",
+            "chosen_answer": "",
+            "correct_answer": "To speed up chemical reactions."
+        },
+        {
+            "id": 11,
+            "type": "multiple_choice",
+            "question": "What is the basic unit of life?",
+            "chosen_answer": "",
+            "correct_answer": "The cell"
+        },
+        {
+            "id": 12,
+            "type": "multiple_choice",
+            "question": "What term is used to describe the movement of water across a selectively permeable membrane?",
+            "chosen_answer": "",
+            "correct_answer": "Osmosis"
+        },
+        {
+            "id": 13,
+            "type": "multiple_choice",
+            "question": "Which type of bond forms between two water molecules?",
+            "chosen_answer": "",
+            "correct_answer": "Hydrogen bond"
+        },
+        {
+            "id": 14,
+            "type": "multiple_choice",
+            "question": "Which of the following is a component of the plasma membrane?",
+            "chosen_answer": "",
+            "correct_answer": "Phospholipids"
+        },
+        {
+            "id": 15,
+            "type": "multiple_choice",
+            "question": "Which stage of cellular respiration produces the most ATP?",
+            "chosen_answer": "",
+            "correct_answer": "Electron transport chain"
+        },
+        {
+            "id": 16,
+            "type": "multiple_choice",
+            "question": "What molecule is the final electron acceptor in the electron transport chain?",
+            "chosen_answer": "",
+            "correct_answer": "Oxygen"
+        },
+        {
+            "id": 17,
+            "type": "multiple_choice",
+            "question": "Which of the following is the term for programmed cell death?",
+            "chosen_answer": "",
+            "correct_answer": "Apoptosis"
+        },
+        {
+            "id": 18,
+            "type": "multiple_choice",
+            "question": "What is the primary function of chlorophyll in photosynthesis?",
+            "chosen_answer": "",
+            "correct_answer": "To absorb light energy"
+        },
+        {
+            "id": 19,
+            "type": "multiple_choice",
+            "question": "In which organelle does photosynthesis occur?",
+            "chosen_answer": "",
+            "correct_answer": "Chloroplast"
+        },
+        {
+            "id": 20,
+            "type": "multiple_choice",
+            "question": "What is the primary product of photosynthesis?",
+            "chosen_answer": "",
+            "correct_answer": "Glucose"
+        },
+        {
+            "id": 21,
+            "type": "multiple_choice",
+            "question": "What is the genetic material of viruses?",
+            "chosen_answer": "",
+            "correct_answer": "DNA or RNA"
+        },
+        {
+            "id": 22,
+            "type": "multiple_choice",
+            "question": "Which of the following best describes the theory of evolution by natural selection?",
+            "chosen_answer": "",
+            "correct_answer": "Organisms with favorable traits are more likely to survive and reproduce."
+        },
+        {
+            "id": 23,
+            "type": "multiple_choice",
+            "question": "What is the primary function of hemoglobin?",
+            "chosen_answer": "",
+            "correct_answer": "To carry oxygen in the blood."
+        },
+        {
+            "id": 24,
+            "type": "multiple_choice",
+            "question": "Which of the following is NOT a stage of cellular respiration?",
+            "chosen_answer": "",
+            "correct_answer": "Fermentation"
+        },
+        {
+            "id": 25,
+            "type": "multiple_choice",
+            "question": "What is the function of tRNA during translation?",
+            "chosen_answer": "",
+            "correct_answer": "To bring amino acids to the ribosome."
+        },
+        {
+            "id": 26,
+            "type": "multiple_choice",
+            "question": "What type of organism is an autotroph?",
+            "chosen_answer": "",
+            "correct_answer": "An organism that produces its own food."
+        },
+        {
+            "id": 27,
+            "type": "multiple_choice",
+            "question": "What is the role of a catalyst in a chemical reaction?",
+            "chosen_answer": "",
+            "correct_answer": "It lowers the activation energy of the reaction."
+        },
+        {
+            "id": 28,
+            "type": "multiple_choice",
+            "question": "What is a zygote?",
+            "chosen_answer": "",
+            "correct_answer": "A fertilized egg."
+        },
+        {
+            "id": 29,
+            "type": "multiple_choice",
+            "question": "What is the primary role of the small intestine in digestion?",
+            "chosen_answer": "",
+            "correct_answer": "Absorption of nutrients."
+        },
+        {
+            "id": 30,
+            "type": "multiple_choice",
+            "question": "Which of the following is a type of asexual reproduction?",
+            "chosen_answer": "",
+            "correct_answer": "Binary fission"
+        },
+        {
+            "id": 31,
+            "type": "multiple_choice",
+            "question": "Which hormone regulates blood sugar levels?",
+            "chosen_answer": "",
+            "correct_answer": "Insulin"
+        },
+        {
+            "id": 32,
+            "type": "multiple_choice",
+            "question": "What type of macromolecule are enzymes?",
+            "chosen_answer": "",
+            "correct_answer": "Proteins"
+        },
+        {
+            "id": 33,
+            "type": "multiple_choice",
+            "question": "Which blood vessels carry blood away from the heart?",
+            "chosen_answer": "",
+            "correct_answer": "Arteries"
+        },
+        {
+            "id": 34,
+            "type": "multiple_choice",
+            "question": "Which of the following is the main function of the large intestine?",
+            "chosen_answer": "",
+            "correct_answer": "Water absorption"
+        },
+        {
+            "id": 35,
+            "type": "multiple_choice",
+            "question": "Which organ is primarily responsible for filtering waste from the blood?",
+            "chosen_answer": "",
+            "correct_answer": "Kidney"
+        },
+        {
+            "id": 36,
+            "type": "multiple_choice",
+            "question": "What is the structural unit of the nervous system?",
+            "chosen_answer": "",
+            "correct_answer": "Neuron"
+        },
+        {
+            "id": 37,
+            "type": "multiple_choice",
+            "question": "Which of the following best describes the function of white blood cells?",
+            "chosen_answer": "",
+            "correct_answer": "They defend the body against pathogens."
+        },
+        {
+            "id": 38,
+            "type": "multiple_choice",
+            "question": "Which gas is primarily responsible for the greenhouse effect?",
+            "chosen_answer": "",
+            "correct_answer": "Carbon dioxide"
+        },
+        {
+            "id": 39,
+            "type": "multiple_choice",
+            "question": "What is the function of stomata in plants?",
+            "chosen_answer": "",
+            "correct_answer": "To allow gas exchange."
+        },
+        {
+            "id": 40,
+            "type": "multiple_choice",
+            "question": "Which of the following organisms are producers in an ecosystem?",
+            "chosen_answer": "",
+            "correct_answer": "Plants"
+        },
+        {
+            "id": 41,
+            "type": "multiple_choice",
+            "question": "What type of bond holds together the two strands of a DNA molecule?",
+            "chosen_answer": "",
+            "correct_answer": "Hydrogen bonds"
+        },
+        {
+            "id": 42,
+            "type": "multiple_choice",
+            "question": "Which of the following is the powerhouse of the cell?",
+            "chosen_answer": "",
+            "correct_answer": "Mitochondria"
+        },
+        {
+            "id": 43,
+            "type": "multiple_choice",
+            "question": "Which structure in the human body is responsible for producing bile?",
+            "chosen_answer": "",
+            "correct_answer": "Liver"
+        },
+        {
+            "id": 44,
+            "type": "multiple_choice",
+            "question": "Which organ system is responsible for transporting nutrients, oxygen, and hormones throughout the body?",
+            "chosen_answer": "",
+            "correct_answer": "Circulatory system"
+        },
+        {
+            "id": 45,
+            "type": "multiple_choice",
+            "question": "What is the process by which a cell divides into two daughter cells?",
+            "chosen_answer": "",
+            "correct_answer": "Mitosis"
+        },
+        {
+            "id": 46,
+            "type": "multiple_choice",
+            "question": "What is the function of antibodies in the immune system?",
+            "chosen_answer": "",
+            "correct_answer": "To recognize and neutralize pathogens."
+        },
+        {
+            "id": 47,
+            "type": "multiple_choice",
+            "question": "Which of the following is the process by which plants convert sunlight into chemical energy?",
+            "chosen_answer": "",
+            "correct_answer": "Photosynthesis"
+        },
+        {
+            "id": 48,
+            "type": "multiple_choice",
+            "question": "What is the function of red blood cells?",
+            "chosen_answer": "",
+            "correct_answer": "To transport oxygen throughout the body."
+        },
+        {
+            "id": 49,
+            "type": "multiple_choice",
+            "question": "Which structure in the nucleus of a cell contains the genetic material?",
+            "chosen_answer": "",
+            "correct_answer": "Chromosomes"
+        },
+        {
+            "id": 50,
+            "type": "multiple_choice",
+            "question": "What is the role of the pancreas in digestion?",
+            "chosen_answer": "",
+            "correct_answer": "It produces enzymes that break down carbohydrates, proteins, and fats."
+        }
+    ]
+}
+

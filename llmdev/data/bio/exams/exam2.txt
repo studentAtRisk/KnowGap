@@ -1,0 +1,300 @@
+1. Which of the following is the most abundant element in the human body?
+
+A) Oxygen
+B) Hydrogen
+C) Carbon
+D) Nitrogen
+2. The macromolecule that primarily functions as energy storage in animals is:
+
+A) Protein
+B) Carbohydrate
+C) Lipid
+D) Nucleic acid
+3. What structure regulates the passage of materials into and out of the cell?
+
+A) Cell wall
+B) Ribosome
+C) Plasma membrane
+D) Golgi apparatus
+4. In a controlled experiment, the variable that is manipulated by the researcher is known as the:
+
+A) Dependent variable
+B) Independent variable
+C) Controlled variable
+D) Extraneous variable
+5. Which stage of cellular respiration produces the most ATP?
+
+A) Glycolysis
+B) Fermentation
+C) Citric acid cycle
+D) Electron transport chain
+6. DNA is copied into RNA through a process called:
+
+A) Translation
+B) Transcription
+C) Replication
+D) Transformation
+7. The specialized structure in plants that facilitates gas exchange is the:
+
+A) Stomata
+B) Chloroplast
+C) Phloem
+D) Guard cell
+8. The water molecules in the process of osmosis move:
+
+A) From a region of higher solute concentration to a region of lower solute concentration
+B) From a region of lower solute concentration to a region of higher solute concentration
+C) Equally in both directions
+D) Only when ATP is present
+9. In eukaryotic cells, the breakdown of fatty acids occurs in the:
+
+A) Nucleus
+B) Ribosome
+C) Peroxisome
+D) Lysosome
+10. Which of the following molecules can freely diffuse across the cell membrane?
+
+A) Glucose
+B) Sodium ions
+C) Oxygen
+D) Proteins
+11. What is the main product of the Calvin cycle in photosynthesis?
+
+A) Glucose
+B) Oxygen
+C) ATP
+D) NADPH
+12. A person with type O blood can donate blood to individuals with which blood types?
+
+A) Only type O
+B) Only type A
+C) Any blood type
+D) Only type AB
+13. Which of the following correctly describes a population?
+
+A) A group of organisms of the same species living in the same area
+B) A community of different species living in the same habitat
+C) The interactions between organisms and their environment
+D) The variety of ecosystems in a region
+14. Which organelle is responsible for sorting and modifying proteins for transport to their final destinations?
+
+A) Rough ER
+B) Golgi apparatus
+C) Lysosome
+D) Ribosome
+15. In genetic terms, a heterozygous individual has:
+
+A) Two dominant alleles
+B) Two recessive alleles
+C) Two different alleles for a particular gene
+D) The same allele from both parents
+16. The process by which a cell engulfs a large particle or another cell is called:
+
+A) Exocytosis
+B) Phagocytosis
+C) Active transport
+D) Pinocytosis
+17. In the human body, the majority of nutrient absorption occurs in the:
+
+A) Stomach
+B) Small intestine
+C) Large intestine
+D) Liver
+18. What is the function of tRNA during protein synthesis?
+
+A) To carry the genetic information from DNA to the ribosome
+B) To transfer amino acids to the growing polypeptide chain
+C) To form the structure of the ribosome
+D) To replicate DNA
+19. Which of the following is the main driving force behind diffusion?
+
+A) ATP
+B) Concentration gradient
+C) Osmotic pressure
+D) Enzyme activity
+20. Which phase of meiosis results in the separation of homologous chromosomes?
+
+A) Prophase I
+B) Anaphase I
+C) Prophase II
+D) Anaphase II
+21. Which of the following statements is true of viruses?
+
+A) Viruses are composed of cells
+B) Viruses can replicate on their own
+C) Viruses require a host cell to reproduce
+D) Viruses perform metabolic processes like living organisms
+22. The Hardy-Weinberg principle describes:
+
+A) The conditions for a population to be in genetic equilibrium
+B) The process of natural selection
+C) The inheritance of acquired traits
+D) The effect of genetic drift on small populations
+23. Which of the following structures allows bacteria to attach to surfaces?
+
+A) Flagella
+B) Pili
+C) Cilia
+D) Plasmids
+24. The main purpose of cellular respiration is to:
+
+A) Convert light energy into chemical energy
+B) Produce glucose
+C) Generate ATP
+D) Remove carbon dioxide from cells
+25. The nitrogenous base adenine always pairs with which base in DNA?
+
+A) Guanine
+B) Cytosine
+C) Thymine
+D) Uracil
+26. The bond that forms between two amino acids in a protein is called a:
+
+A) Hydrogen bond
+B) Peptide bond
+C) Covalent bond
+D) Ionic bond
+27. Which type of selection favors individuals at both extremes of a phenotypic range?
+
+A) Stabilizing selection
+B) Directional selection
+C) Disruptive selection
+D) Artificial selection
+28. The molecule that stores genetic information in all living organisms is:
+
+A) RNA
+B) DNA
+C) Protein
+D) Lipid
+29. In plants, the vascular tissue responsible for transporting water is:
+
+A) Phloem
+B) Xylem
+C) Cambium
+D) Epidermis
+30. Which of the following is a component of the innate immune system?
+
+A) Antibodies
+B) B cells
+C) Skin
+D) T cells
+31. Which process occurs during the synthesis (S) phase of the cell cycle?
+
+A) Protein synthesis
+B) DNA replication
+C) Chromosome separation
+D) Cytokinesis
+32. Which of the following is true of isotopes?
+
+A) They have different numbers of protons
+B) They have the same atomic mass
+C) They have the same number of neutrons
+D) They have the same number of protons but different numbers of neutrons
+33. In which organelle does the Krebs cycle occur?
+
+A) Cytoplasm
+B) Chloroplast
+C) Mitochondrion
+D) Nucleus
+34. What is the final electron acceptor in the electron transport chain of cellular respiration?
+
+A) Oxygen
+B) Carbon dioxide
+C) NADH
+D) ATP
+35. In a food chain, primary consumers are typically:
+
+A) Herbivores
+B) Carnivores
+C) Decomposers
+D) Producers
+36. Which of the following statements is consistent with Darwin's theory of natural selection?
+
+A) Acquired characteristics are passed on to offspring
+B) Organisms with traits suited to their environment are more likely to survive and reproduce
+C) All organisms are equally likely to survive and reproduce
+D) Mutations are the primary source of evolutionary change
+37. The sodium-potassium pump is an example of:
+
+A) Passive diffusion
+B) Facilitated diffusion
+C) Active transport
+D) Osmosis
+38. Which of the following is not involved in the translation process?
+
+A) Ribosome
+B) tRNA
+C) mRNA
+D) DNA
+39. Which of the following can serve as a final electron acceptor in anaerobic respiration?
+
+A) Oxygen
+B) Nitrate
+C) Glucose
+D) Carbon dioxide
+40. The functional group -OH is characteristic of:
+
+A) Carboxyl groups
+B) Hydroxyl groups
+C) Amino groups
+D) Phosphate groups
+41. The light-dependent reactions of photosynthesis occur in the:
+
+A) Thylakoid membrane
+B) Stroma
+C) Mitochondria
+D) Cytoplasm
+42. In human females, meiosis results in the production of:
+
+A) Four functional eggs
+B) Four polar bodies
+C) One functional egg and three polar bodies
+D) Two functional eggs and two polar bodies
+43. What term refers to the physical appearance of an organism as a result of its genotype?
+
+A) Genotype
+B) Phenotype
+C) Allele
+D) Locus
+44. The portion of the cell cycle in which the cell is not dividing is called:
+
+A) Prophase
+B) Interphase
+C) Cytokinesis
+D) Metaphase
+45. Which of the following is NOT a product of the light-dependent reactions of photosynthesis?
+
+A) Oxygen
+B) ATP
+C) NADPH
+D) Glucose
+46. The point at which an enzyme binds to its substrate is known as the:
+
+A) Active site
+B) Binding site
+C) Allosteric site
+D) Catalytic site
+47. What type of bond holds the two strands of DNA together?
+
+A) Covalent bonds
+B) Hydrogen bonds
+C) Ionic bonds
+D) Peptide bonds
+48. Which organ system is responsible for regulating the body's response to internal and external stimuli?
+
+A) Circulatory system
+B) Respiratory system
+C) Nervous system
+D) Digestive system
+49. Which of the following best describes genetic drift?
+
+A) The non-random increase in the frequency of certain traits
+B) Random changes in allele frequencies in a population
+C) The selective survival of individuals with beneficial traits
+D) The flow of alleles between different populations
+50. Which of the following processes occurs in the nucleus?
+
+A) Transcription
+B) Translation
+C) Glycolysis
+D) Krebs cycle

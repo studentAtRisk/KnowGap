@@ -1,0 +1,96 @@
+Question: 1. What will be the output of the following code?  c Copy code #include <stdio.h> int main() { int a = 5, b = 10; printf("%d", a+++b); return 0; } a) 16 b) 15 c) 14 d) Compiler error
+Search Query: C programming syntax
+
+Question: 2. What will happen if you try to modify a string literal in C?  c Copy code char *str = "Hello"; str[0] = 'h'; a) Compiler error b) Undefined behavior c) Segmentation fault d) Program runs normally
+Search Query: Modifying string literals in C
+
+Question: 3. In which of the following cases is the behavior of a C program undefined? a) Dereferencing a NULL pointer b) Accessing an array out of bounds c) Using an uninitialized pointer d) All of the above
+Search Query: undefined behavior in C programming
+
+Question: 4. Consider the following function prototype:  c Copy code void fun(int *ptr); Which of the following calls are valid? a) fun(NULL); b) fun(0); c) fun(&x); d) All of the above
+Search Query: function pointers in C
+
+Question: 5. Which of the following describes the volatile keyword in C? a) It tells the compiler not to optimize the variable b) It guarantees atomic access to the variable c) It prevents concurrent access to the variable d) It ensures thread-safe operations
+Search Query: volatile keyword in C programming
+
+Question: 6. Which of the following standard library functions returns a pointer that must be freed by the user? a) fopen() b) malloc() c) fgets() d) printf()
+Search Query: memory allocation in c
+
+Question: 7. Which is true about structure padding in C? a) It is controlled by the #pragma pad directive b) It ensures memory alignment c) It reduces the size of structures d) It removes unused memory in the structure
+Search Query: structure padding c
+
+Question: 8. What is the result of the following program?  c Copy code int main() { int a = 10; a ^= a; printf("%d", a); return 0; } a) 10 b) 0 c) -10 d) Undefined behavior
+Search Query: C programming bitwise XOR operator
+
+Question: 9. How many times is the loop executed in the following code?  c Copy code for (int i = 0; i < 10; i++) { for (int j = 0; j < 10; j++) { break; } } a) 10 b) 100 c) 1 d) 0  10. Which of the following operations is illegal in C? a) Adding two pointers b) Subtracting one pointer from another c) Incrementing a pointer d) Dereferencing a void pointer  11. Which of the following statements about dynamic memory allocation is true? a) Memory allocated with malloc() is initialized to zero b) Memory allocated with calloc() is not initialized to zero c) The free() function can deallocate only dynamically allocated memory d) Memory allocated with realloc() must be manually deallocated  12. Which of the following is NOT a valid way to declare an integer pointer in C? a) int* ptr; b) int ptr*; c) int *ptr; d) int * ptr;  13. What is the size of the following structure on a 32-bit system?  c Copy code struct A { char a; int b; }; a) 5 bytes b) 6 bytes c) 8 bytes d) 12 bytes  14. Given the following code, what will the output be?  c Copy code int main() { int a = 5; printf("%d", a--); printf("%d", a); return 0; } a) 55 b) 54 c) 44 d) 45  15. Which of the following describes a const pointer? a) The pointer cannot change the value it points to b) The pointer cannot be reassigned c) The value pointed to cannot change d) The pointer and the value it points to cannot change  16. What is the return value of the following program?  c Copy code int main() { return printf("Hello"); } a) 5 b) 6 c) 4 d) Undefined behavior  17. In C, what does the keyword inline suggest to the compiler? a) Always inline the function b) The function should be inlined if possible c) The function is recursive d) The function has variable arguments  18. What is the output of the following program?  c Copy code int main() { int i = 0; i = i++ + ++i; printf("%d", i); return 0; } a) 1 b) 2 c) 3 d) Undefined behavior  19. What is the correct syntax for allocating memory for an array of 10 integers in C? a) int *arr = malloc(10 * sizeof(int)); b) int *arr = malloc(10); c) int *arr = malloc(10 * sizeof(arr)); d) int *arr = malloc(sizeof(int[10]));  20. What is the result of attempting to dereference a void pointer? a) Compiler error b) Segmentation fault c) Undefined behavior d) Valid pointer operation  21. Which of the following describes the register keyword in C? a) Stores the variable in CPU registers if possible b) Guarantees fast access to the variable c) Marks the variable for use in interrupts d) Ensures the variable cannot be accessed directly by address  22. What will be the output of the following code?  c Copy code int main() { char str[] = "Hello"; str[5] = '!'; printf("%s", str); return 0; } a) Hello! b) Compiler error c) Segmentation fault d) Undefined behavior  23. Which of the following expressions evaluates to the size of an integer array arr in bytes? a) sizeof(arr) / sizeof(arr[0]) b) sizeof(arr) c) sizeof(int) d) sizeof(arr) * sizeof(arr[0])  24. Which of the following is a correct declaration of a function pointer in C? a) int (*ptr)(); b) int *ptr(); c) int *(*ptr)(); d) int ptr();  25. What is the result of the following expression assuming a = 10 and b = 20?  c Copy code (a & b) | (a ^ b) a) 10 b) 20 c) 30 d) Undefined behavior  26. What is the output of the following program?  c Copy code int main() { char str[] = "hello"; printf("%d", sizeof(str)); return 0; } a) 5 b) 6 c) 10 d) Undefined behavior  27. What is the purpose of the extern keyword in C? a) Defines a global variable b) Declares a global variable c) Declares an external variable or function d) Marks a variable as static  28. Which of the following statements about calloc() is true? a) It allocates memory but doesn't initialize it b) It allocates and initializes memory to zero c) It allocates memory only for arrays d) It cannot be used for dynamic memory allocation  29. What will happen if free() is called on memory that has already been freed? a) Memory is freed again b) Undefined behavior c) Memory corruption d) Segmentation fault  30. What is the output of the following program?  c Copy code int main() { int a[5] = {0}; printf("%d", a[5]); return 0; } a) 0 b) Undefined behavior c) Compiler error d) Segmentation fault  31. What is the result of the following expression in C?  c Copy code int a = 5, b = 3; a &= b; a) 7 b) 0 c) 5 d) 1  32. Which of the following loops will iterate forever?  c Copy code for (int i = 0; i < 10; i--) { printf("%d", i); } a) The loop will run forever b) The loop will run 10 times c) The loop will run 9 times d) The loop will run only once  33. Which of the following correctly demonstrates pointer arithmetic? a) ptr + 2; b) ptr - 1; c) *(ptr + 3); d) All of the above  34. What is the difference between ++i and i++? a) ++i increments before the value is used; i++ increments after the value is used b) Both are equivalent c) i++ increments before the value is used; ++i increments after the value is used d) ++i decrements; i++ increments  35. Which of the following types has the largest range in C? a) int b) long c) float d) double  36. Which of the following will cause a segmentation fault? a) Accessing memory through a NULL pointer b) Accessing memory beyond the allocated size c) Modifying a string literal d) All of the above  37. What is the output of the following program?  c Copy code int main() { int arr[] = {1, 2, 3, 4}; printf("%d", *(arr + 2)); return 0; } a) 1 b) 2 c) 3 d) 4  38. Which of the following does the exit() function in C do? a) Terminates a program normally b) Terminates a program abnormally c) Clears memory before terminating d) Skips remaining code in the main function  39. What does fflush(stdout) do? a) Clears the standard output buffer b) Clears the standard input buffer c) Writes all output from the buffer to the screen d) Nothing; stdout cannot be flushed  40. Which of the following functions can cause undefined behavior if not used correctly? a) memcpy() b) strcpy() c) strncpy() d) All of the above  41. How does the static keyword affect the scope of a variable inside a function? a) It limits the variable's scope to the file b) It extends the lifetime of the variable to the entire program execution c) It limits the scope to the function, but preserves the variable's value between calls d) It makes the variable global  42. Which function is used to release memory dynamically allocated in C? a) delete b) free() c) realloc() d) dealloc()  43. Which of the following is not a valid escape sequence in C? a) \t b) \v c) \z d) \n  44. What is the result of the following bitwise operation?  c Copy code int a = 5, b = 3; a ^= b; a) 1 b) 2 c) 6 d) 7  45. Which of the following is true about pointer dereferencing? a) It accesses the address of the pointer b) It accesses the value stored at the pointer c) It changes the pointer itself d) It makes the pointer NULL  46. What happens when you try to divide an integer by zero in C? a) Undefined behavior b) Compiler error c) Infinite loop d) Program terminates normally  47. What will be the output of the following program?  c Copy code int main() { int a = 10, b = 20; printf("%d", a > b ? a : b); return 0; } a) 10 b) 20 c) 30 d) Undefined behavior  48. What is the size of a pointer on a 64-bit machine? a) 4 bytes b) 8 bytes c) 16 bytes d) Depends on the data type  49. Which of the following is true about a NULL pointer in C? a) It is equivalent to 0 b) It is uninitialized c) It points to a valid memory address d) It can store any data type  50. Which of the following functions returns an integer value? a) fopen() b) malloc() c) printf() d) exit()
+Search Query: Let's break down these C programming questions:
+
+**1. `int main() { int a[5] = {0}; printf("%d", a[5]); return 0; }`**
+
+* **Answer:**  b) Undefined behavior
+* **Explanation:** Arrays in C are zero-indexed. This means the valid indices for `a` are 0 through 4. Accessing `a[5]` goes beyond the allocated memory, leading to undefined behavior (the program might crash or produce unpredictable results).
+
+**2. `int a = 5, b = 3; a &= b;`**
+
+* **Answer:**  c) 5
+* **Explanation:** `&=` is the bitwise AND assignment operator. It performs a bitwise AND operation between `a` and `b`, and stores the result back in `a`.  
+
+   * In binary:
+     *  5 (0101)
+     *  3 (0011)
+     *  AND (0101 & 0011 = 0001 = 1)
+
+**3. Which loop will iterate forever?**
+
+* **Answer:** a) The loop will run forever
+* **Explanation:** The loop condition `i < 10` is never satisfied because `i` starts at 0 and decrements in each iteration (`i--`). It will keep decreasing towards negative infinity.
+
+**4. Correct demonstration of pointer arithmetic?**
+
+* **Answer:** d) All of the above
+* **Explanation:** Pointer arithmetic lets you manipulate pointers like integers, moving them forward or backward in memory:
+
+   * `ptr + 2`: Moves the pointer two steps forward.
+   * `ptr - 1`: Moves the pointer one step backward.
+   * `*(ptr + 3)`: Accesses the value stored at the location three steps ahead of the pointer.
+
+
+**5. Difference between ++i and i++?**
+
+* **Answer:** a) ++i increments before the value is used; i++ increments after the value is used
+* **Explanation:** This is about operator precedence. `++i` (prefix increment) increments `i` first, then uses the new value. `i++` (postfix increment) uses the current value of `i`, then increments it.
+
+
+**6. Type with the largest range?**
+
+* **Answer:** d) double
+* **Explanation:** Data types in C have different ranges to represent values: `int` has a limited range, `long` is typically larger than `int`, and `double` provides the widest range for floating-point numbers.
+
+**7. What causes a segmentation fault?**
+
+* **Answer:** d) All of the above
+* **Explanation:**
+
+    *  Accessing memory through a NULL pointer: Trying to use a null pointer (pointing to nothing) can cause a segmentation fault.
+    * Accessing memory beyond the allocated size: Writing or reading data outside the bounds of an array or other allocated memory causes a segmentation fault.
+    * Modifying a string literal: String literals are usually read-only, so modifying them directly can result in a segmentation fault.
+
+**8. Output of the program:**
+
+* **Answer:** c) 3
+* **Explanation:**  `*(arr + 2)` accesses the element at index 2 of the array `arr`. In C arrays, indexing starts from 0, so `arr[2]` holds the value 3.
+
+
+**9. What does exit() do?**
+
+* **Answer:** a) Terminates a program normally
+* **Explanation:** The `exit()` function terminates the currently running program and returns an exit status to the operating system. It's used when you want to explicitly end your program under specific conditions.
+
+**10. What does fflush(stdout) do?**
+
+* **Answer:** c) Writes all output from the buffer to the screen
+* **Explanation:**  `fflush(stdout)` flushes (empties) the output buffer associated with `stdout` (standard output, usually your console). This ensures that any buffered output is immediately written to the terminal.
+
+
+Let me know if you'd like a more in-depth explanation for any of these concepts!
+

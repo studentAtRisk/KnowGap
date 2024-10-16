@@ -1,0 +1,163 @@
+Question: 1. Which of the following statements about arrays in C is true? a) Arrays are dynamically allocated b) The name of the array points to the first element c) The size of an array can be changed after its declaration d) Arrays can be passed to functions by value  2. What is the output of the following code?  c Copy code #include <stdio.h> int main() { int a = 5; if (a = 0) printf("True"); else printf("False"); return 0; } a) True b) False c) Compiler error d) Undefined behavior  3. Which of the following is true about pointers in C? a) A pointer can point to another pointer b) A pointer must be initialized before being used c) A pointer stores the address of a variable d) All of the above  4. What is the output of the following code?  c Copy code #include <stdio.h> int main() { int arr[] = {1, 2, 3}; printf("%d\n", 2[arr]); return 0; } a) 1 b) 2 c) 3 d) Undefined behavior  5. What is the size of an empty structure in C? a) 0 bytes b) 1 byte c) Undefined d) Compiler error  6. What will happen if the following code is executed?  c Copy code #include <stdio.h> int main() { int arr[5] = {0}; printf("%d\n", arr[10]); return 0; } a) 0 b) Undefined behavior c) Compiler error d) Segmentation fault  7. Which of the following operators in C is used to get the address of a variable? a) & b) * c) [] d) ->  8. Which of the following correctly declares a pointer to a function that returns an integer and takes two integers as arguments? a) int *func(int, int); b) int (*func)(int, int); c) int func*(int, int); d) int func(int*, int*);  9. What is the value of the following expression?  c Copy code int a = 3, b = 2, c; c = a > b ? a - b : b - a; a) 1 b) 2 c) 3 d) 0  10. What will be the output of the following code?  c Copy code #include <stdio.h> int main() { char str[] = "abc"; printf("%c\n", str[3]); return 0; } a) a b) c c) \0 d) Undefined behavior  11. What will be the output of the following code?  c Copy code #include <stdio.h> int main() { printf("%d\n", sizeof(5.0)); return 0; } a) 2 b) 4 c) 8 d) Undefined  12. Which of the following functions is used to allocate memory dynamically in C? a) malloc() b) calloc() c) realloc() d) All of the above  13. What is the output of the following code?  c Copy code #include <stdio.h> #define MULTIPLY(a, b) a * b int main() { int x = 5; printf("%d\n", MULTIPLY(x + 1, x + 2)); return 0; } a) 11 b) 18 c) 15 d) Undefined behavior  14. What is the purpose of the #include preprocessor directive? a) To include other files in the program b) To define constants c) To allocate memory dynamically d) To handle exceptions  15. What is the correct way to check for successful memory allocation in C? a) if (ptr == NULL) b) if (!ptr) c) if (ptr) d) Both a and b  16. What is the output of the following code?  c Copy code #include <stdio.h> int main() { int x = 5; int *p = &x; *p = 10; printf("%d\n", x); return 0; } a) 5 b) 10 c) Compiler error d) Undefined behavior  17. Which of the following statements about the fread() function is true? a) It reads data from a file b) It writes data to a file c) It closes a file d) It sets the file position indicator  18. Which of the following statements about the void data type in C is true? a) It cannot be used as a return type b) It can be used to declare a function that takes no arguments c) It can be dereferenced d) It can store data of any type  19. What is the result of the following expression?  c Copy code int a = 5, b = 10; a ^= b ^= a ^= b; a) a = 10, b = 5 b) a = 5, b = 10 c) a = 0, b = 0 d) Undefined behavior  20. What is the output of the following code?  c Copy code #include <stdio.h> int main() { int a = 5, b = 10; printf("%d\n", a > b ? a++ : --b); return 0; } a) 5 b) 9 c) 10 d) 11  21. What is the purpose of the #ifndef directive in C? a) To define constants b) To include a file c) To check if a macro is not defined d) To allocate memory dynamically  22. Which of the following describes a const variable in C? a) It cannot be modified after initialization b) It must be initialized during declaration c) Its address can be changed d) Both a and b  23. Which of the following correctly defines a macro to calculate the cube of a number in C? a) #define CUBE(x) x*x*x b) #define CUBE(x) (x*x*x) c) #define CUBE(x) (x)*(x)*(x) d) #define CUBE(x) ((x)*(x)*(x))  24. What is the result of the following code?  c Copy code #include <stdio.h> int main() { int arr[] = {1, 2, 3, 4}; printf("%d\n", arr[4]); return 0; } a) 1 b) 4 c) Undefined behavior d) Compiler error  25. What is the output of the following code?  c Copy code #include <stdio.h> int main() { int i = 5; i = i++; printf("%d\n", i); return 0; } a) 5 b) 6 c) 0 d) Undefined behavior  26. Which of the following is NOT a valid format specifier in C? a) %d b) %lf c) %Lf d) %lfd  27. What will be the output of the following code?  c Copy code #include <stdio.h> int main() { int arr[] = {10, 20, 30}; int *ptr = arr; printf("%d\n", *(ptr + 1)); return 0; } a) 10 b) 20 c) 30 d) Compiler error  28. What will be the output of the following code?  c Copy code #include <stdio.h> int main() { printf("%d\n", 10/0); return 0; } a) 0 b) Undefined behavior c) Infinity d) Compiler error  29. Which of the following functions is used to compare two strings in C? a) strcat() b) strcmp() c) strcpy() d) strlen()  30. What is the correct way to allocate memory for an array of 10 integers in C? a) int *arr = malloc(10); b) int *arr = malloc(10 * sizeof(int)); c) int *arr = malloc(sizeof(10)); d) int *arr = malloc(10 * int);  31. What is the purpose of the return statement in C? a) To terminate a program b) To return a value from a function c) To jump to the start of the program d) To end a loop  32. Which of the following describes the register storage class specifier? a) The variable is stored in CPU registers b) The variable has global scope c) The variable is stored in heap memory d) The variable is initialized to zero  33. What is the value of the variable x after the following code executes?  c Copy code int x = 5; x += 3 * 2; a) 11 b) 16 c) 10 d) 8  34. Which of the following functions writes formatted output to a string in C? a) sprintf() b) printf() c) fprintf() d) fputs()  35. What is the result of the following code?  c Copy code #include <stdio.h> int main() { int a = 5; printf("%d\n", ++a + a++); return 0; } a) 11 b) 12 c) 13 d) Undefined behavior  36. What is the size of a pointer to an int on a 64-bit system? a) 4 bytes b) 8 bytes c) 16 bytes d) Depends on the system  37. What is the correct syntax for a function that takes a pointer to an integer as an argument and returns nothing? a) void func(int *ptr); b) int func(void *ptr); c) void func(*int ptr); d) int func(void);  38. What is the correct way to declare a multidimensional array in C? a) int arr[2, 3]; b) int arr[2][3]; c) int arr(2)(3); d) int arr{2}{3};  39. What will be the output of the following code?  c Copy code #include <stdio.h> int main() { int a = 5; int b = (a == 5) ? 10 : 20; printf("%d\n", b); return 0; } a) 5 b) 10 c) 20 d) Undefined behavior  40. Which of the following functions terminates the program execution in C? a) exit() b) break() c) continue() d) goto()  41. What is the output of the following code?  c Copy code #include <stdio.h> int main() { char c = 'A'; printf("%d\n", c); return 0; } a) A b) 65 c) 97 d) Undefined behavior  42. What is the result of the following expression?  c Copy code int a = 2, b = 3; int c = a & b; a) 1 b) 0 c) 2 d) 3  43. Which of the following functions sets all memory in a block to a specified value? a) memcpy() b) memset() c) strncpy() d) memmove()  44. What is the correct way to free memory allocated dynamically with malloc()? a) delete(ptr); b) free(ptr); c) dealloc(ptr); d) release(ptr);  45. What will be the output of the following code?  c Copy code #include <stdio.h> int main() { int i = 5; printf("%d\n", i == 5); return 0; } a) 0 b) 1 c) 5 d) Compiler error  46. Which of the following functions is used to open a file in C? a) fread() b) fwrite() c) fopen() d) fclose()  47. What is the result of the following expression?  c Copy code int a = 5; int b = ++a * 2; a) b = 10 b) b = 11 c) b = 12 d) b = 14  48. Which of the following is true about the switch statement in C? a) It can only evaluate integer expressions b) It can evaluate both integer and floating-point expressions c) It allows multiple cases to be executed sequentially without break statements d) It terminates the program if no case is matched  49. What will be the output of the following code?  c Copy code #include <stdio.h> int main() { int a = 5; int b = a << 1; printf("%d\n", b); return 0; } a) 2 b) 5 c) 10 d) 1  50. What does the sizeof() operator return in C? a) The size of a variable in bits b) The size of a variable in bytes c) The size of a variable in kilobytes d) The length of a string
+Search Query: Let's break down these C programming questions:
+
+**1. Class Specifier**
+
+* **The answer is (b) The variable has global scope.** 
+
+   A class specifier in C isn't directly related to CPU registers, heap memory initialization, or the value of a variable. It primarily determines the visibility and lifetime of a variable (e.g., global vs. local).
+
+**2. Value of x**
+
+* **The answer is (a) 11.**
+
+   Here's how it works:
+    * `x += 3 * 2;` means `x = x + (3 * 2)`.
+    * Initially, `x = 5`.
+    * Calculation: `x = 5 + 6 = 11`.
+
+**3. Formatted Output to a String**
+
+* **The answer is (a) sprintf()**
+
+   `sprintf()` writes formatted output to a character array (string).
+
+
+**4. Pre-Increment and Post-Increment**
+
+* **The answer is (b) 12.** 
+
+   Let's analyze the line `++a + a++;`:
+    * `++a`:  Pre-increment: 'a' is incremented to 6, then its value (6) is used.
+    * `a++`: Post-increment: The current value of 'a' (now 6) is used, and then 'a' is incremented to 7.
+
+   So, the expression becomes:  `6 + 6 = 12`.
+
+
+
+**5. Size of a Pointer**
+
+* **The answer is (b) 8 bytes**.
+
+   On a typical 64-bit system, pointers are usually 8 bytes long to store memory addresses efficiently.
+
+
+**6. Function Signature**
+
+* **The answer is (a) void func(int *ptr);**
+
+   This correctly defines a function named `func` that takes a pointer to an integer (`int *ptr`) as its argument and returns nothing (`void`).
+
+**7. Multidimensional Array Declaration**
+
+* **The answer is (b) int arr[2][3];**
+
+
+   This syntax declares a 2-dimensional array called `arr`, with 2 rows and 3 columns, capable of storing integers.
+
+
+
+**8. Ternary Operator Output**
+
+* **The answer is (b) 10.**
+
+   The ternary operator (`condition ? value_if_true : value_if_false`) works as follows:
+    * `(a == 5)` evaluates to `true` since 5 equals 5.
+    * Therefore, the expression returns `10`.
+
+
+
+**9. Program Termination**
+
+* **The answer is (a) exit()**
+
+
+   The `exit()` function is used to terminate a program in C. 
+
+**10. Character Output as Integer**
+
+* **The answer is (b) 65**.
+   In C, characters are represented by their ASCII (or Unicode) values. The uppercase letter 'A' has the ASCII value 65.
+
+
+
+**11. Bitwise AND Operation**
+
+* **The answer is (a) 2**.  
+
+    Bitwise AND (`&`) compares the corresponding bits of two numbers. If both bits are 1, the result is 1; otherwise, it's 0.
+
+   ```
+   2 (binary: 0010) & 3 (binary: 0011) = 2 (binary: 0010)
+   ```
+
+
+
+**12. Dynamic Memory Allocation**
+
+* **The answer is (b) free(ptr);**
+
+
+    `free(ptr)` deallocates memory that was previously allocated using `malloc()`.
+
+
+
+
+**13. Comparison Operator Output**
+
+* **The answer is (b) 1**.  
+
+   `i == 5` evaluates to `true`, which in C has a boolean value of 1.
+
+
+
+**14. File Opening Function**
+
+* **The answer is (c) fopen()**
+
+
+   `fopen()` is used to open a file for reading, writing, or both.
+
+
+
+
+**15. Pre-Increment and Post-Increment Result**
+
+* **The answer is (b) b = 12**. 
+
+  Here's how it works:
+
+   ```c
+    int a = 5;
+    int b = ++a * 2; 
+   ```
+
+
+   * `++a`: Pre-increment 'a' to 6 before the multiplication.
+
+   * `b = 6 * 2`: Multiply the incremented value of 'a' by 2, resulting in `12`.
+
+
+
+**16. Switch Statement**
+
+* **The answer is (a) The switch statement can be used with integer or character expressions.**
+
+   While C does have some type-checking rules, a switch statement's core functionality revolves around comparing an expression to a series of cases. It doesn't inherently restrict the data types it works with.
+
+
+
+**17. Left Shift Operator Output**
+
+* **The answer is (c) 24**.
+
+
+   Left shift (`<<`) in C shifts the bits of a number to the left, effectively multiplying it by powers of 2.
+   ```c
+    3 << 2 = 3 * 2^2 = 3 * 4 = 12
+   ```
+
+
+
+Let me know if you have more questions or would like further explanation on any of these concepts!
+

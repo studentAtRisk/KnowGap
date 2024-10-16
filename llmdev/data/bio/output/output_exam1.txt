@@ -1,0 +1,68 @@
+Question: 1. Which of the following is a characteristic of all living organisms?  A) Photosynthesis B) Multicellularity C) Cellular organization D) Sexual reproduction
+Search Query: characteristics of living organisms
+
+Question: 2. The term "homeostasis" refers to:  A) An organism's ability to regulate its internal environment B) The process of cellular respiration C) The genetic makeup of an organism D) The evolutionary changes in a population
+Search Query: homeostasis definition
+
+Question: 3. The basic unit of life is:  A) The atom B) The organ C) The cell D) DNA
+Search Query: biology basics of cells
+
+Question: 4. Which type of bond is responsible for holding together the two strands of a DNA molecule?  A) Ionic bonds B) Covalent bonds C) Hydrogen bonds D) Peptide bonds
+Search Query: DNA bonding
+
+Question: 5. In cellular respiration, the majority of ATP is produced during:  A) Glycolysis B) The Krebs cycle C) The electron transport chain D) Fermentation
+Search Query: cellular respiration atp production
+
+Question: 6. Which organelle is responsible for protein synthesis?  A) Mitochondria B) Golgi apparatus C) Ribosome D) Lysosome
+Search Query: protein synthesis
+
+Question: 7. What is the role of chlorophyll in photosynthesis?  A) It breaks down glucose B) It absorbs light energy C) It transports water D) It produces oxygen
+Search Query: photosynthesis process
+
+Question: 8. Which of the following is a prokaryote?  A) Human cell B) Plant cell C) Bacterial cell D) Fungal cell
+Search Query: prokaryotes
+
+Question: 9. Mendel's law of independent assortment states that:  A) Genes located close together are inherited together B) Alleles for different traits are distributed to gametes independently C) Dominant alleles mask recessive alleles D) Traits are inherited in pairs 10. The endosymbiotic theory explains the origin of which organelles?  A) Nucleus and lysosomes B) Chloroplasts and mitochondria C) Golgi apparatus and ER D) Ribosomes and nucleolus 11. Enzymes function by:  A) Increasing the temperature of a reaction B) Providing energy for a reaction C) Lowering the activation energy of a reaction D) Binding with the substrate and undergoing permanent changes 12. In which phase of the cell cycle does DNA replication occur?  A) G1 phase B) S phase C) G2 phase D) M phase 13. A population’s gene pool is:  A) The total number of individuals in the population B) The number of genes each individual has C) The combined genetic information of all the members of a particular population D) The variety of ecosystems in which the population lives 14. The primary role of mRNA in the cell is:  A) To form the structure of ribosomes B) To carry genetic information from DNA to the ribosomes C) To act as a template for DNA replication D) To provide energy for cellular activities 15. Which of the following is NOT true of natural selection?  A) It can only occur in populations that are genetically identical B) It leads to adaptations that enhance survival and reproduction C) It acts on the phenotype of an organism D) It can result in speciation over time 16. What is the monomer unit of proteins?  A) Fatty acids B) Nucleotides C) Amino acids D) Glucose 17. Which of the following structures is present in plant cells but not in animal cells?  A) Mitochondria B) Endoplasmic reticulum C) Cell wall D) Ribosomes 18. The function of the Golgi apparatus is:  A) To synthesize proteins B) To modify and package proteins and lipids for transport C) To generate ATP D) To digest cellular waste 19. What type of molecule is ATP?  A) Protein B) Carbohydrate C) Nucleic acid D) Lipid 20. A mutation is:  A) Always harmful to the organism B) A change in the DNA sequence C) A form of energy transfer D) A cell division process 21. Which of the following is the correct order of events in mitosis?  A) Prophase, metaphase, anaphase, telophase B) Metaphase, prophase, anaphase, telophase C) Telophase, anaphase, metaphase, prophase D) Anaphase, telophase, prophase, metaphase 22. Which of the following is an example of passive transport across a cell membrane?  A) Sodium-potassium pump B) Exocytosis C) Osmosis D) Endocytosis 23. In an ecosystem, autotrophs are:  A) Primary consumers B) Secondary consumers C) Decomposers D) Primary producers 24. Which type of macromolecule serves as the primary energy source for cellular activities?  A) Proteins B) Lipids C) Carbohydrates D) Nucleic acids 25. In terms of evolution, homologous structures are:  A) Structures that serve the same function in different species B) Structures that develop at different stages of life C) Structures that are inherited from a common ancestor D) Structures that appear the same but evolved independently 26. A person with blood type AB can receive blood from:  A) Only type O B) Only type AB C) Only types A and B D) Any blood type 27. In the lac operon of E. coli, the presence of lactose:  A) Inhibits the repressor and induces the operon B) Binds to the operator and activates transcription C) Binds to the promoter and blocks RNA polymerase D) Causes the repressor to bind to the operator 28. Meiosis results in:  A) Four diploid daughter cells B) Two diploid daughter cells C) Four haploid daughter cells D) Two haploid daughter cells 29. In a DNA molecule, the complementary strand of 5'-ATCGGTA-3' is:  A) 5'-TAGCCAT-3' B) 3'-TAGCCAT-5' C) 5'-UAGCCAU-3' D) 3'-UAGCCAU-5' 30. Which of the following is true regarding genetic drift?  A) It increases genetic diversity within a population B) It always leads to beneficial adaptations C) It is more significant in small populations D) It results from selective pressure on advantageous traits 31. Which molecule is responsible for carrying amino acids to the ribosome during translation?  A) mRNA B) tRNA C) rRNA D) DNA 32. The greenhouse effect is primarily caused by:  A) Carbon dioxide and other greenhouse gases trapping heat in the atmosphere B) The depletion of the ozone layer C) The reflection of solar radiation by the Earth’s surface D) Excess oxygen in the atmosphere 33. In the hierarchy of biological classification, the next level after Order is:  A) Family B) Genus C) Class D) Species 34. Which of the following pairs are correctly matched in terms of enzyme activity and substrate?  A) Amylase and lipids B) Pepsin and proteins C) Lipase and nucleotides D) Lactase and starch 35. In a water molecule, the bond between hydrogen and oxygen is:  A) A nonpolar covalent bond B) A polar covalent bond C) An ionic bond D) A hydrogen bond 36. What is the primary source of energy for nearly all ecosystems on Earth?  A) Heat from Earth's core B) Sunlight C) Chemical energy from deep-sea vents D) Nutrients from decaying matter 37. Which part of the plant is primarily responsible for photosynthesis?  A) Roots B) Stem C) Leaves D) Flowers 38. In humans, the sex chromosomes in males are:  A) XY B) XX C) YY D) XO 39. What is the process by which plants lose water vapor through small openings in their leaves?  A) Transpiration B) Respiration C) Photosynthesis D) Glycolysis 40. Which of the following is an example of a density-dependent factor affecting a population?  A) Flood B) Earthquake C) Disease D) Climate change 41. In a Punnett square, a heterozygous individual would be represented as:  A) AA B) Aa C) aa D) XX 42. Which of the following processes occurs during the light-dependent reactions of photosynthesis?  A) Carbon fixation B) Oxygen production C) Glucose synthesis D) Calvin cycle 43. Which of the following is not part of the cell theory?  A) All living organisms are composed of one or more cells B) Cells are the basic unit of structure and function in organisms C) All cells arise from pre-existing cells D) Cells are capable of spontaneous generation 44. The "fluid mosaic model" describes:  A) The structure of a cell membrane B) The process of DNA replication C) The organization of chromosomes during mitosis D) The arrangement of cells in tissues 45. Which of the following statements about viruses is true?  A) Viruses are considered living organisms B) Viruses can replicate independently of a host cell C) Viruses consist of genetic material enclosed in a protein coat D) Viruses perform cellular respiration 46. During protein synthesis, the codon on mRNA corresponds to:  A) A base on tRNA B) An anticodon on tRNA C) An amino acid sequence in DNA D) The start codon AUG 47. The most common form of speciation in animals is:  A) Sympatric speciation B) Allopatric speciation C) Parapatric speciation D) Peripatric speciation 48. Which is the correct sequence of events in cellular respiration?  A) Glycolysis, Krebs cycle, electron transport chain B) Krebs cycle, glycolysis, electron transport chain C) Electron transport chain, Krebs cycle, glycolysis D) Glycolysis, electron transport chain, Krebs cycle 49. What kind of mutation does not result in a change in the amino acid sequence?  A) Missense mutation B) Nonsense mutation C) Silent mutation D) Frameshift mutation 50. Which macromolecule contains the genetic blueprint for organisms?  A) Carbohydrates B) Proteins C) Lipids D) Nucleic acids
+Search Query: Mendel's law of independent assortment
+Endosymbiotic theory
+Enzyme function
+Cell cycle phases
+Population genetics
+mRNA function
+Natural selection principles
+Protein structure
+Plant cell structures
+Golgi apparatus function
+ATP molecule type
+DNA mutations
+Mitosis phases
+Passive transport
+Ecosystem trophic levels
+Energy sources in cells
+Evolutionary relationships
+Blood types
+Lac operon regulation
+Meiosis process
+DNA base pairing
+Genetic drift
+Translation process
+Greenhouse effect
+Biological classification
+Enzyme-substrate specificity
+Water molecule bonding
+Primary energy source
+Plant photosynthesis
+Human sex chromosomes
+Transpiration process
+Population factors
+Punnett squares
+Photosynthesis stages
+Cell theory
+Fluid mosaic model
+Virus characteristics
+Protein synthesis
+Speciation types
+Cellular respiration steps
+Mutation types
+Genetic material
+

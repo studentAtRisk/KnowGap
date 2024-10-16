@@ -1,0 +1,144 @@
+Question: 1. What is the output of the following code?  c Copy code #include <stdio.h> int main() { int x = 10; printf("%d\n", ++x + x++); return 0; } a) 21 b) 22 c) 20 d) Undefined behavior
+Search Query: C programming language syntax
+
+Question: 2. What is the correct way to initialize a constant integer pointer? a) const int *ptr = &x; b) int *const ptr = &x; c) const int *const ptr = &x; d) All of the above
+Search Query: C++ pointers and constants
+
+Question: 3. Which of the following is true about static variables in C? a) They are initialized every time the function is called b) Their scope is local, but their lifetime is throughout the program execution c) Their scope is global d) They are only accessible within the file
+Search Query: static variables in C
+
+Question: 4. What will be the output of the following program?  c Copy code #include <stdio.h> int main() { int x = 5, y = 3; printf("%d\n", (x & y) ^ (x | y)); return 0; } a) 5 b) 0 c) 3 d) 6
+Search Query: C programming bitwise operators
+
+Question: 5. Which of the following describes a union in C? a) It allocates memory equal to the size of its largest member b) It allocates memory equal to the total size of all members c) All members share the same memory location d) Both a and c
+Search Query: C programming unions
+
+Question: 6. What is the output of the following program?  c Copy code #include <stdio.h> int main() { printf("%lu\n", sizeof(printf("Hello"))); return 0; } a) 5 b) 6 c) Size of a pointer d) Size of an int
+Search Query: C programming sizeof operator
+
+Question: 7. Which of the following will not cause undefined behavior? a) Dereferencing an uninitialized pointer b) Accessing an array out of bounds c) Dereferencing a pointer after free() has been called d) Casting a pointer to an integer type
+Search Query: undefined behavior in programming
+
+Question: 8. What is the result of the following code?  c Copy code #include <stdio.h> int main() { int x = 10; int *p = &x; *p = 20; printf("%d\n", x); return 0; } a) 10 b) 20 c) Undefined behavior d) Compiler error
+Search Query: C programming pointers
+
+Question: 9. What is the correct way to declare a pointer to a function that returns an integer and takes no arguments? a) int (*fptr)(); b) int *(*fptr)(); c) int (*fptr)(void); d) int **fptr();  10. Which of the following data types cannot be stored in a union in C? a) int b) double c) struct d) void  11. Which of the following operators has the highest precedence in C? a) * (pointer dereference) b) && (logical AND) c) + (addition) d) == (equality)  12. Which of the following is a correct statement about bit fields in C? a) Bit fields can only be defined within struct and union types b) Bit fields can be used with any data type c) Bit fields are stored separately in memory from other structure members d) Bit fields automatically expand to fit the nearest byte boundary  13. What is the output of the following code?  c Copy code #include <stdio.h> int main() { int arr[3] = {1, 2, 3}; int *ptr = arr; printf("%d\n", *(ptr + 2)); return 0; } a) 1 b) 2 c) 3 d) 4  14. What is the purpose of the #define preprocessor directive in C? a) It defines symbolic constants b) It allocates memory dynamically c) It creates macros d) Both a and c  15. What will the following program output?  c Copy code #include <stdio.h> #define SQUARE(x) x*x int main() { int a = 3; printf("%d\n", SQUARE(a+1)); return 0; } a) 16 b) 10 c) 9 d) Undefined behavior  16. What is the result of the following expression?  c Copy code int x = 5, y = 6; x = (y++, x++); a) x = 5 b) x = 6 c) x = 7 d) Undefined behavior  17. What happens if the condition in a while loop is initially false? a) The loop executes once b) The loop executes indefinitely c) The loop is skipped entirely d) Compiler error  18. What will be the output of the following program?  c Copy code #include <stdio.h> int main() { int x = 0; for (int i = 0; i < 5; i++) { x = x++; } printf("%d\n", x); return 0; } a) 5 b) 4 c) 0 d) Undefined behavior  19. Which of the following is NOT a storage class specifier in C? a) register b) static c) extern d) virtual  20. What does the following code output?  c Copy code #include <stdio.h> int main() { int x = 10, y = 20; printf("%d\n", (x > y) ? x : y); return 0; } a) 10 b) 20 c) 30 d) Undefined behavior  21. What is the purpose of the fseek() function in C? a) To move the file pointer to a specified location b) To close a file c) To read data from a file d) To flush the file buffer  22. Which of the following is true about the sizeof() operator? a) It is evaluated at runtime b) It returns the number of elements in an array c) It cannot be used with data types d) It is evaluated at compile time  23. Which of the following will cause a segmentation fault? a) Accessing memory after free() b) Writing to a read-only memory segment c) Dereferencing a null pointer d) All of the above  24. Which of the following is true about the break statement in C? a) It can be used inside a function body to exit the function b) It terminates the current loop or switch statement c) It skips the rest of the current iteration d) It immediately returns from the current function  25. What is the output of the following code?  c Copy code #include <stdio.h> int main() { int a = 5, b = 10; printf("%d\n", a < b ? ++a : --b); return 0; } a) 4 b) 6 c) 5 d) 10  26. Which of the following correctly opens a file in append mode in C? a) fopen("file.txt", "w"); b) fopen("file.txt", "r"); c) fopen("file.txt", "a"); d) fopen("file.txt", "rw");  27. What is the value of x after the following code executes?  c Copy code int x = 5; x += x--; a) 5 b) 9 c) 10 d) Undefined behavior  28. Which of the following describes the assert() macro in C? a) It checks a condition and terminates the program if false b) It is used to handle runtime errors c) It is used for debugging purposes d) Both a and c  29. What is the output of the following program?  c Copy code #include <stdio.h> int main() { char str[] = "Hello"; printf("%d\n", sizeof(str)); return 0; } a) 5 b) 6 c) 7 d) Undefined behavior  30. What does the following program do?  c Copy code #include <stdio.h> int main() { int x = 5; int *p = &x; printf("%d\n", ++(*p)); return 0; } a) Increments x and prints the incremented value b) Increments p and prints the incremented value c) Compiler error d) Undefined behavior  31. What does getchar() function do in C? a) Reads a string from standard input b) Reads a single character from standard input c) Reads a line from standard input d) Writes a single character to standard output  32. What is the result of the following code?  c Copy code #include <stdio.h> int main() { int x = 0; x = x++ + 1; printf("%d\n", x); return 0; } a) 0 b) 1 c) 2 d) Undefined behavior  33. What is the purpose of the #pragma directive in C? a) It controls compiler-specific features b) It is used for conditional compilation c) It includes a header file d) It defines macros  34. What will happen if malloc() fails to allocate memory? a) It returns a pointer to NULL b) It throws an exception c) It returns a pointer to the previous allocation d) It exits the program  35. What is the result of the following expression?  c Copy code int x = 5; x &= 3; a) 7 b) 2 c) 3 d) Undefined behavior  36. Which of the following are valid C preprocessor directives? a) #define b) #include c) #undef d) All of the above  37. What is the purpose of the fclose() function in C? a) It opens a file b) It closes an open file c) It flushes a file stream d) It clears the file buffer  38. Which of the following cannot be used with printf()? a) %d b) %lf c) %p d) %l  39. What is the output of the following program?  c Copy code #include <stdio.h> int main() { int x = 10; printf("%d\n", x = x == 10); return 0; } a) 0 b) 1 c) 10 d) Compiler error  40. Which of the following functions reads a line of input from standard input? a) fgets() b) scanf() c) fgetc() d) putchar()  41. What does the following program print?  c Copy code #include <stdio.h> int main() { int arr[] = {1, 2, 3, 4}; int *p = arr; printf("%d\n", *++p); return 0; } a) 1 b) 2 c) 3 d) 4  42. What is the value of the following expression?  c Copy code int a = 5, b = 10; a = b == 10 ? b + 5 : b - 5; a) 5 b) 10 c) 15 d) 20  43. Which of the following statements about memset() is correct? a) It copies memory from one location to another b) It sets memory to a specific value c) It initializes memory to zero d) It frees memory  44. What is the correct way to declare an array of 5 integer pointers? a) int arr[5]; b) int *arr[5]; c) int **arr[5]; d) int *arr[];  45. Which of the following is NOT a valid pointer type in C? a) char * b) void * c) int ** d) string *  46. What does the continue statement do in a loop? a) Exits the loop entirely b) Skips the current iteration and continues to the next iteration c) Terminates the program d) Skips to the next function call  47. What is the value of a after the following code is executed?  c Copy code int a = 5, b = 3; a %= b; a) 0 b) 1 c) 2 d) 3  48. Which of the following statements is true about function pointers? a) They can be assigned to point to any function b) They must match the signature of the function they point to c) They can be dereferenced like regular pointers d) All of the above  49. What is the value of y in the following code?  c Copy code int y = (5 > 3) ? 1 : 0; a) 0 b) 1 c) 5 d) 3  50. What does the following code do?  c Copy code #include <stdio.h> int main() { int arr[] = {1, 2, 3, 4}; printf("%d\n", *(arr + 3)); return 0; } a) Prints 1 b) Prints 2 c) Prints 3 d) Prints 4
+Search Query: Here are the answers and explanations for your C programming questions:
+
+**1.**  b) Reads a single character from standard input
+
+   * `getchar()` reads one character at a time.
+
+**2.**  c) Reads a line from standard input
+
+   * `fgets()` reads a line (up to a newline character) from standard input.
+
+**3.**  d) Writes a single character to standard output
+
+   * `putchar()` sends a single character to the console.
+
+**4.**  b) 1
+
+   * The expression `x++ + 1` performs these steps:
+      * `x` is incremented (`x = 1`) after its initial value (0).
+      * Then, `x` (which is now 1) is added to 1, resulting in 2.
+
+**5.**  a) It controls compiler-specific features
+
+   * `#pragma` directives are used to give instructions to the compiler about how to handle specific code sections. They often deal with optimizations or non-standard extensions.
+
+**6.**  a) It returns a pointer to NULL
+
+   * If `malloc()` cannot allocate the requested memory, it returns `NULL`. This indicates that memory allocation failed.
+
+**7.**  c) 3
+
+   * The bitwise AND operator (`&=`) compares the corresponding bits of each operand. `5` in binary is `0101`, and `3` is `0011`. Performing a bitwise AND results in `0001`, which is equivalent to `1` in decimal.
+
+**8.**  d) All of the above 
+
+   * These are all valid C preprocessor directives:
+      * `#define` - Defines a macro.
+      * `#include` - Includes a header file.
+      * `#undef` - Undefines a macro.
+
+
+**9.**  b) It closes an open file
+
+   * `fclose()` is used to close an already opened file stream, releasing the associated resources. 
+
+**10.** d) %l
+
+    *  The correct format specifiers for `printf()` are:
+        * %d - Integer (decimal)
+        * %lf - Double-precision floating point
+        * %p - Pointer address
+
+
+**11.** b) 1
+
+   * The expression evaluates to 10 == 10, which is true. Since the conditional statement is true, the value assigned to `x` will be 1, and then printed.
+
+
+
+**12.** a) fgets()
+
+    *  `fgets()` reads a line of input from standard input (including whitespace).
+
+ **13.** b) 2
+
+   * The pointer `p` points to the beginning of the array (`arr`). Incrementing it with `++p` moves the pointer to the next element in the array.  Therefore, `*p` dereferences the second element, which is 2.
+
+**14.** c) 15
+
+   * The expression `b == 10 ? b + 5 : b - 5` evaluates to:
+       * `b + 5` because `b` is indeed 10.  
+
+**15.** b) It sets memory to a specific value
+
+    * `memset()` fills a block of memory with a given value (e.g., all zeros).
+
+ **16.** b) int *arr[5];
+
+    * This declares an array named `arr` that holds 5 integer pointers (`int *`).
+
+
+**17.** d) string *
+
+   *  C does not have a built-in `string` type. You would typically use `char *` (a pointer to a character) to represent strings in C.
+
+
+
+ **18.** b) Skips the current iteration and continues to the next iteration
+
+    * `continue` immediately jumps to the next iteration of the loop, skipping any remaining code within the current iteration.
+
+
+**19.** a) 0
+
+   *  The modulo operator (`%`) gives the remainder of a division.  5 divided by 3 has a remainder of 2.
+
+
+
+ **20.** d) All of the above
+
+    * Function pointers are very versatile:
+        * They can point to functions of any return type and any number of arguments (as long as the signature matches).
+        * You can assign them to other function pointers.
+        * They can be passed as arguments to functions, allowing for dynamic function calls at runtime.
+
+
+
+ **21.** b) 1
+
+    * The expression `(5 > 3)` evaluates to `true`, so the value of `y` is set to 1.
+
+
+**22.** d) Prints 4
+
+   *  The expression `*(arr + 3)` accesses the element at index 3 in the array (`arr`). In C, arrays are zero-indexed, so index 3 corresponds to the fourth element (which has a value of 4).
+
+
+
+Let me know if you have any more questions.
+
