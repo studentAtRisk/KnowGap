@@ -6,7 +6,7 @@ import json
 import get_curated_videos
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from update_courses import updatedb, get_token_collection
+from update_courses import update_db, get_token_collection
 from encryption import at_risk_encrypt_token, at_risk_decrypt_token
 from pymongo import MongoClient
 
