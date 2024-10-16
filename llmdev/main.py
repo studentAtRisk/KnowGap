@@ -1,60 +1,66 @@
-import ollama
-import sys
+# main.py
+# 
+# Host an endpoint to generate helpful study materials (youtube review videos) given
+# an assignment/quiz/test 
+#
 
-def query_ollama(model, prompt):
-    stream = ollama.chat(
-        model=model,
-        messages=[{'role': 'user', 'content': prompt}],
-        stream=True,
-    )
-    answer = ""
-    for chunk in stream:
-        answer += str(chunk['message']['content'])
-    return answer
+import openai
+import os
+from flask import Flask, request, jsonify
+from dotenv import load_dotenv
 
-def analyze_problem(model, question):
-    prompt_text = f"""
-    Analyze the following question and determine the general subject or topic:
+load_dotenv()
+app = Flask(__name__)
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
+def generate_query(question):
+
+    prompt = f"""
+    Take the following question from a quiz, homework, or exam, and generate an effective YouTube video search query that will help someone find educational videos to study the topic. The search query should:
+    Be concise and include the most relevant keywords and phrases from the question.
+    Optimize for YouTube's search algorithm by considering common video titles and descriptions.
+    Avoid unnecessary words or details that don't aid in finding helpful videos.
+    Avoid formatting, quotes, or otherwise modifying the query. Only return the words in the query.
+    Consider the context that this question might appear in, such as which part of a course or series
+    and use that to help generate the query, if it is helpful.
     {question}
     """
-    return query_ollama(model, prompt_text)
-
-def generate_hint(model, question, previous_hints):
-    previous_hints_text = "\n".join([f"- {hint}" for hint in previous_hints])
     
-    prompt_text = f"""
-    The following are hints generated from previous questions:
-    {previous_hints_text}
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": prompt}],
+        )
 
-    Now analyze the current question, and provide the topic or subject, while considering prior hints but prioritizing the current question:
+        search_query = response.choices[0].message.content
 
-    {question}
-    """
-    return query_ollama(model, prompt_text)
+        return search_query
+    except Exception as e:
+        print(f"Error calling OpenAI API: {e}")
+        return "Error generating query"
 
-def main(model='gemma2:latest'):
-    previous_hints = []
+# endpoint
+@app.route('/process_quiz', methods=['POST'])
+def process_quiz():
+    data = request.json
 
-    while True:
-        print(">")
-        sys.stdout.flush()
-        
-        question_text = sys.stdin.readline().strip()
-        
-        hint = analyze_problem(model, question_text)
-        print(f"Hint for current question: {hint.strip()}")
+    if not data or 'questions' not in data:
+        return jsonify({'error': 'Invalid request, see documentation'}), 400
 
-        new_hint = generate_hint(model, question_text, previous_hints)
-        print(f"Refined hint: {new_hint.strip()}")
-        
-        previous_hints.append(new_hint.strip())
-    
-    print("All hints: {")
-    for idx, hint in enumerate(previous_hints):
-        print(f"({hint}), ", end=" ")
-    print("}")
+    questions = data['questions']
+    if not isinstance(quiz, list):
+        return jsonify({'error': 'Invalid questions format, expected a list of questions'}), 400
 
-if __name__ == "__main__":
-    main()
+    results = []
 
+    for question in quiz:
+        search_query = get_youtube_search_query(question['question'])
+        results.append({
+            'question': question['question'],
+            'youtube_query': search_query
+        })
+
+    return jsonify({'recommendations': results})
+
+
+print(generate_query("What happens when you dereference a null pointer?"))

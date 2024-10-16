@@ -3,6 +3,7 @@ for each question,
 - ask ollama for topics / subject / general idea of the problem
 - record the answer as a hint for next questions
 - ask ollama to describe a youtube search query that could find a useful video given the subject matter
+
 to test:
 * we want to be able to quantify the performance of ollama
 - use a separate model to look at the query, and describe how accurate
@@ -16,9 +17,16 @@ for example, for the same question on modifying string literals in C:
 gpt gives "Memory manipulation in C" vs ollama "C string literals"
 - ollama does not like to print strictly in a json format, unlike gpt 
 when prompted
+- some types of questions might not be easily read by ollama (pictures, latex, any special non-text formatting)
+- might be able to work-around with multi-modal ollava model?
 
 advantages:
 - ollama is a nerd:
     for some reason, instead of providing a search query for the questions,
 ollama decided to start solving the questions and explaining the answers
 
+stretch goals:
+- student user feedback 
+- batch processing of questions
+i.e. try to detect if multiple questions are handled by the same topic,
+if we can minimize the number of queries to the youtube api 
