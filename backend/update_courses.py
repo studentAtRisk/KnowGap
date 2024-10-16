@@ -186,6 +186,12 @@ def clean_text(text):
     # Normalize and filter to keep only ASCII characters
     return ''.join(char for char in text if ord(char) < 128)
 
+def get_token_collection():
+    client = MongoClient(DB_CONNECTION_STRING)
+    database = client['StudentsAtRisk']
+
+    return database['Tokens']
+
 
 async def main():
     courseid = 1425706
