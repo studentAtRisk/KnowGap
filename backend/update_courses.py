@@ -5,6 +5,7 @@ from pymongo import MongoClient
 from bs4 import BeautifulSoup
 import asyncio
 import aiohttp
+import os
 from datetime import datetime, timezone
 
 global_amtofquizzes = 5
@@ -187,6 +188,7 @@ def clean_text(text):
     return ''.join(char for char in text if ord(char) < 128)
 
 def get_token_collection():
+    DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
     client = MongoClient(DB_CONNECTION_STRING)
     database = client['StudentsAtRisk']
 
