@@ -60,128 +60,8 @@ const calculateRiskIndex = (rps, cgs, gts, currentScore) => {
 const StudentView = () => {
   const [activeTab, setActiveTab] = useState('assignments');
   const [assignments, setAssignments] = useState([]);
-  const [recommendedVideos, setRecommendedVideos] = useState([
-    {
-      id: '0oc49DyA3hU',
-      title: 'Hypothesis Testing and The Null Hypothesis, Clearly Explained!!!',
-      url: 'https://www.youtube.com/watch?v=0oc49DyA3hU',
-      reason: 'Learn about null hypothesis',
-      thumbnail:
-        'https://i.ytimg.com/vi/0oc49DyA3hU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBdxKGEtqG8V2ls964UoVdIvEH1mA',
-      duration: '14:41',
-      viewCount: '555,966 views',
-      channel: 'StatQuest with Josh Starmer',
-    },
-    {
-      id: 'bHqFaJfpviI',
-      link: 'https://www.youtube.com/watch?v=bHqFaJfpviI',
-      title: 'How To Restore USB Drive Back To Original Full Capacity/Size',
-      channel: 'Jamie Wagner',
-      reason: 'Learn about null hypothesis',
-
-      thumbnail:
-        'https://i.ytimg.com/vi/bHqFaJfpviI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD1kAbXdZJuAKHb6w3FLGEE5g1RZw',
-      duration: '2:57',
-      viewCount: '87,833 views',
-    },
-    {
-      id: 'Ypuqyj7w21c',
-      link: 'https://www.youtube.com/watch?v=Ypuqyj7w21c',
-      title:
-        'How to Determine How Many Gigabytes Are on a Flash Drive? : Data Organization & Computer Skills',
-      channel: 'eHowTech',
-      reason: 'Learn about null hypothesis',
-
-      thumbnail:
-        'https://i.ytimg.com/vi/Ypuqyj7w21c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAcA0zDJVE7pDLc6CoflQIO1uEKrQ',
-      duration: '2:57',
-      viewCount: '87,833 views',
-    },
-    {
-      id: 'PplggM0KtJ8',
-      title:
-        'Interpreting slope of regression line | AP Statistics | Khan Academy',
-      url: 'https://www.youtube.com/watch?v=PplggM0KtJ8',
-      reason: 'Understanding regression line slopes',
-      thumbnail:
-        'https://i.ytimg.com/vi/PplggM0KtJ8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-fk21dODVVwcR-o70MQWlRQ00GA',
-      duration: '2:57',
-      viewCount: '87,833 views',
-      channel: 'Khan Academy',
-    },
-    {
-      id: 'PplggM0KtJ8',
-      title:
-        'Interpreting slope of regression line | AP Statistics | Khan Academy',
-      url: 'https://www.youtube.com/watch?v=PplggM0KtJ8',
-      reason: 'Understanding regression line slopes',
-      thumbnail:
-        'https://i.ytimg.com/vi/PplggM0KtJ8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-fk21dODVVwcR-o70MQWlRQ00GA',
-      duration: '2:57',
-      viewCount: '87,833 views',
-      channel: 'Khan Academy',
-    },
-    {
-      id: 'PplggM0KtJ8',
-      title:
-        'Interpreting slope of regression line | AP Statistics | Khan Academy',
-      url: 'https://www.youtube.com/watch?v=PplggM0KtJ8',
-      reason: 'Understanding regression line slopes',
-      thumbnail:
-        'https://i.ytimg.com/vi/PplggM0KtJ8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-fk21dODVVwcR-o70MQWlRQ00GA',
-      duration: '2:57',
-      viewCount: '87,833 views',
-      channel: 'Khan Academy',
-    },
-    {
-      id: 'PplggM0KtJ8',
-      title:
-        'Interpreting slope of regression line | AP Statistics | Khan Academy',
-      url: 'https://www.youtube.com/watch?v=PplggM0KtJ8',
-      reason: 'Understanding regression line slopes',
-      thumbnail:
-        'https://i.ytimg.com/vi/PplggM0KtJ8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-fk21dODVVwcR-o70MQWlRQ00GA',
-      duration: '2:57',
-      viewCount: '87,833 views',
-      channel: 'Khan Academy',
-    },
-    {
-      id: 'PplggM0KtJ8',
-      title:
-        'Interpreting slope of regression line | AP Statistics | Khan Academy',
-      url: 'https://www.youtube.com/watch?v=PplggM0KtJ8',
-      reason: 'Understanding regression line slopes',
-      thumbnail:
-        'https://i.ytimg.com/vi/PplggM0KtJ8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-fk21dODVVwcR-o70MQWlRQ00GA',
-      duration: '2:57',
-      viewCount: '87,833 views',
-      channel: 'Khan Academy',
-    },
-    {
-      id: 'IKLVSxhkZeg',
-      title: 'Past And Present Technology Then And Now',
-      url: 'https://www.youtube.com/watch?v=IKLVSxhkZeg',
-      reason: 'Understanding regression line slopes',
-      thumbnail:
-        'https://i.ytimg.com/vi/IKLVSxhkZeg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC4PhAdWxTtSBskww_cKRhRaABkeQ',
-      duration: '2:57',
-      viewCount: '87,833 views',
-      channel: 'Be Amazed',
-    },
-    {
-      id: 'PplggM0KtJ8',
-      title:
-        'Interpreting slope of regression line | AP Statistics | Khan Academy',
-      url: 'https://www.youtube.com/watch?v=PplggM0KtJ8',
-      reason: 'Understanding regression line slopes',
-      thumbnail:
-        'https://i.ytimg.com/vi/PplggM0KtJ8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-fk21dODVVwcR-o70MQWlRQ00GA',
-      duration: '2:57',
-      viewCount: '87,833 views',
-      channel: 'Khan Academy',
-    },
-  ]);
-  const [announcements, setAnnouncements] = useState([]); // New state for announcements
+  const [recommendedVideos, setRecommendedVideos] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const [courseId, setCourseId] = useState('');
   const [apiToken, setApiToken] = useState('');
   const [classGrade, setClassGrade] = useState('N/A');
@@ -234,7 +114,6 @@ const StudentView = () => {
     }
   };
 
-  // Function to strip HTML tags
   const stripHTML = (html) => {
     let doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || '';
@@ -367,9 +246,55 @@ const StudentView = () => {
       );
       const profileData = await response.json();
       setStudentName(profileData.name);
+      return profileData.id;
     } catch (error) {
       console.error('Error fetching user profile:', error);
     }
+  };
+
+  const fetchVideoRecommendations = async (userId, courseId) => {
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+    try {
+      const response = await fetch(
+        `${baseUrl}/get_video_rec?userid=${userId}&courseid=${courseId}`,
+        {
+          smethod: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching video recommendations:', error);
+      return null;
+    }
+  };
+
+  const formatVideoRecommendations = (data) => {
+    const formattedVideos = [];
+    for (const quizName in data) {
+      const quizData = data[quizName];
+      for (const topicData of Object.values(quizData)) {
+        formattedVideos.push(
+          ...topicData.videos.map((video) => ({
+            ...video,
+            reason: `Learn about ${topicData.topic}`,
+            id: video.link.split('v=')[1],
+            url: video.link,
+            viewCount: 'N/A',
+            duration: 'N/A',
+          }))
+        );
+      }
+    }
+    return formattedVideos;
   };
 
   useEffect(() => {
@@ -378,10 +303,20 @@ const StudentView = () => {
       if (currentCourseId && currentCourseId !== courseId) {
         setCourseId(currentCourseId);
         fetchAssignments(currentCourseId);
-        fetchAnnouncements(currentCourseId); // Fetching announcements
+        fetchAnnouncements(currentCourseId);
         const overallGrade = await fetchEnrollment(currentCourseId);
         setClassGrade(overallGrade);
-        fetchUserProfile();
+        const userId = await fetchUserProfile();
+
+        const videoRecommendations = await fetchVideoRecommendations(
+          userId,
+          currentCourseId
+        );
+        if (videoRecommendations) {
+          const formattedVideos =
+            formatVideoRecommendations(videoRecommendations);
+          setRecommendedVideos(formattedVideos);
+        }
       }
     };
 
@@ -425,7 +360,7 @@ const StudentView = () => {
     setApiToken('');
     setAssignments([]);
     setClassGrade('N/A');
-    setAnnouncements([]); // Clear announcements on token removal
+    setAnnouncements([]);
   };
 
   const { riskLevel } = calculateRisk();
