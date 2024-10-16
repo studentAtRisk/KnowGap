@@ -1,305 +1,199 @@
 
-#This call questions statistics into flask. It will make a webpage that runs off your ports (1. to practice flask. 2. To show all the info)
 from flask import jsonify
 import requests
 from pymongo import MongoClient
-import datetime
 from bs4 import BeautifulSoup
-import os
+import asyncio
+import aiohttp
+from datetime import datetime, timezone
 
-DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
+global_amtofquizzes = 5
 
-def get_token_collection():
-    client = MongoClient(DB_CONNECTION_STRING)
-    database = client['StudentsAtRisk']
+async def get_database(connectionString):
+    CONNECTION_STRING = connectionString
+    client = MongoClient(CONNECTION_STRING)
+    # Create/select the database with inputted name
+    return client['NoGap']
+
+async def update_quiz_rec(courseid, access_token, dbname, collection_name, current_quiz, link):
+    api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{current_quiz}/statistics'
+    headers = {'Authorization': f'Bearer {access_token}'}
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(api_url, headers=headers) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    question_text = []
+                    question_id = []
+                    selectors = [[]]
+                    noanswerset = ["multiple_choice_question", "true_false_question", "short_answer_question"]
+                    answerset = ["fill_in_multiple_blanks_question", "multiple_dropdowns_question", "matching_question"]
+
+                    for x in range(len(data["quiz_statistics"][0]["question_statistics"])):
+                        question_text.append(BeautifulSoup(data["quiz_statistics"][0]["question_statistics"][x]["question_text"], features="html.parser").get_text())
+                        question_text[x] = clean_text(question_text[x])
+                        question_id.append(data["quiz_statistics"][0]["question_statistics"][x]["id"])
+                        selectors.append([])
+
+                        if data["quiz_statistics"][0]["question_statistics"][x]["question_type"] in noanswerset:
+                            for y in range(len(data["quiz_statistics"][0]["question_statistics"][x]["answers"])):
+                                if not data["quiz_statistics"][0]["question_statistics"][x]["answers"][y]["correct"]:
+                                    selectors[x] += data["quiz_statistics"][0]["question_statistics"][x]["answers"][y]["user_ids"] or [-1]
+
+                        if data["quiz_statistics"][0]["question_statistics"][x]["question_type"] in answerset:
+                            for z in range(len(data["quiz_statistics"][0]["question_statistics"][x]["answer_sets"])):
+                                for y in range(len(data["quiz_statistics"][0]["question_statistics"][x]["answer_sets"][z]["answers"])):
+                                    if not data["quiz_statistics"][0]["question_statistics"][x]["answer_sets"][z]["answers"][y]["correct"]:
+                                        selectors[x] += data["quiz_statistics"][0]["question_statistics"][x]["answer_sets"][z]["answers"][y]["user_ids"] or [-1]
+
+                    return question_text, selectors, question_id
+                else:
+                    return {'error': f'Failed to fetch data from API: {response.text}'}, response.status
+    except Exception as e:
+        return {'error': f'Failed to grab quiz statistics due to: {str(e)}'}, 500
+
+async def get_quizzes(courseid, access_token, link):
+    api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes?per_page=100'
+    headers = {'Authorization': f'Bearer {access_token}'}
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(api_url, headers=headers) as response:
+                if response.status == 200:
+                    unfiltered_data = await response.json()
+                    max_date = datetime.now(timezone.utc)
+                    data = sorted(
+                        [item for item in unfiltered_data if item["published"] and (item["unlock_at"] is None or parse_date(item["unlock_at"]) <= max_date)],
+                        key=lambda x: parse_date(x["unlock_at"]) if x["unlock_at"] else datetime.min.replace(tzinfo=timezone.utc),
+                        reverse=True
+                    )
+
+                    quizlist = []
+                    quizname = []
+                    for x in range(min(len(data), global_amtofquizzes)):
+                        quizlist.append(data[x]["id"])
+                        quizname.append(data[x]["title"])
+                    return quizlist, quizname
+                else:
+                    return {'error': f'Failed to fetch data from API: {response.text}'}, response.status
+    except Exception as e:
+        return {'error': str(e)}, 500
+
+async def update_db(courseid, access_token, connectionString, link):
+    dbname = await get_database(connectionString)
+    quiz_collection = dbname["Quiz Questions"] 
+    student_collection = dbname["Students"]  
+
+    quizlist, quizname = await get_quizzes(courseid, access_token, link)
     
-    return database['Tokens']
-
-def get_database():
- 
-   client = MongoClient(DB_CONNECTION_STRING)
- 
-   # create/select the database with inputted name
-   return client['Courses']
-
-def updatequizrec(courseid, access_token, dbname, collection_name, currentquiz):
-
-
-
-    api_url = f'https://canvas.instructure.com/api/v1/courses/{courseid}/quizzes/{currentquiz}/statistics'
-    headers ={
-        'Authorization': f'Bearer {access_token}'
-    }
-
-    #print("yippoiee")
-    try:
-        response = requests.get(api_url, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
-            questiontext = []
-            selectors = [[]]
-            noanswerset = ["multiple_choice_question", "true_false_question", "short_answer_question"]
-            answerset = ["fill_in_multiple_blanks_question", "multiple_dropdowns_question", "matching_question"]
-            
-            #print(selectors[0])
-            #print("check this shi out^")
-            
-            for x in range(len(data["quiz_statistics"][0]["question_statistics"])):
-                #take out html text
-                questiontext.append(BeautifulSoup(data["quiz_statistics"][0]["question_statistics"][x]["question_text"]).get_text())
-                selectors.append([])
-                if data["quiz_statistics"][0]["question_statistics"][x]["question_type"] in noanswerset:
-                    for y in range(len(data["quiz_statistics"][0]["question_statistics"][x]["answers"])):
-                        #print("what do we have here...")
-                        #print(data["quiz_statistics"][0]["question_statistics"][x]["answers"][y])
-                        if(data["quiz_statistics"][0]["question_statistics"][x]["answers"][y]["correct"] == False):
-                            if(len(data["quiz_statistics"][0]["question_statistics"][x]["answers"][y]["user_ids"]) > 0):
-                                #print("my number is "+str(x))
-                                selectors[x] += data["quiz_statistics"][0]["question_statistics"][x]["answers"][y]["user_ids"]
-                            else:
-                                selectors[x] += [-1]
-                if data["quiz_statistics"][0]["question_statistics"][x]["question_type"] in answerset:
-                    for z in range(len(data["quiz_statistics"][0]["question_statistics"][x]["answer_sets"])):
-                        for y in range(len(data["quiz_statistics"][0]["question_statistics"][x]["answer_sets"][z]["answers"])):
-                            #print("what do we have here...")
-                            #print(data["quiz_statistics"][0]["question_statistics"][x]["answer_sets"][z]["answers"][y])
-                            if(data["quiz_statistics"][0]["question_statistics"][x]["answer_sets"][z]["answers"][y]["correct"] == False):
-                                if(len(data["quiz_statistics"][0]["question_statistics"][x]["answer_sets"][z]["answers"][y]["user_ids"]) > 0):
-                                    #print("my number is "+str(x))
-                                    selectors[x] += data["quiz_statistics"][0]["question_statistics"][x]["answer_sets"][z]["answers"][y]["user_ids"]
-                                else:
-                                    selectors[x] += [-1]                
-            print("successfully saved students's quesitons for quiz")
-                
-            #print(selectors)
-            return [questiontext, selectors]
-
-        else:
-            print("error")
-            return {'error'f'Failed to fetch data from API: {response.text}'}, response.status_code
-    except Exception as e:
-        print("everyday!"+ str(e))
-        return {'error': str(e)}, 500
-
-def updateassignments(courseid, access_token, assignmentmaxscore, dbname, collection_name):
-
-
-    api_url = f'https://canvas.instructure.com/api/v1/courses/{courseid}/students/submissions?grouped=true&include[]=total_scores&student_ids[]=all&include[]=assignment&rubric_assessment=true'
-    headers ={
-        'Authorization': f'Bearer {access_token}'
-    }
+    api_url = f'https://{link}/api/v1/courses/{courseid}/enrollments'
+    headers = {'Authorization': f'Bearer {access_token}'}
 
     try:
-        response = requests.get(api_url, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
+        async with aiohttp.ClientSession() as session:
+            async with session.get(api_url, headers=headers) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    studentmap = {}
+                    course_name = await get_course_details(courseid, access_token, link)
 
+                    for x in range(len(quizlist)):
+                        question_text, selectors, question_id = await update_quiz_rec(courseid, access_token, dbname, quiz_collection, quizlist[x], link)
 
+                        # Update students and quiz questions
+                        for y in range(len(selectors)):
+                            for student_id in selectors[y]:
+                                # Only process valid student IDs
+                                if student_id != -1:  
+                                    question_info = {
+                                        "question": question_text[y],
+                                        "questionid": question_id[y]
+                                    }
 
-            seen_assignment_ids = set()
+                                    # Update student map
+                                    if student_id in studentmap:
+                                        quiz_found = False
+                                        for quiz in studentmap[student_id]:
+                                            if quiz['quizname'] == quizname[x]:
+                                                existing_questions = {q['questionid'] for q in quiz['questions']}
+                                                if question_info['questionid'] not in existing_questions:
+                                                    quiz['questions'].append(question_info)
+                                                quiz_found = True
+                                                break
 
-            # Filter out duplicates based on `assignment_id`
+                                        if not quiz_found:
+                                            studentmap[student_id].append({
+                                                "quizname": quizname[x],
+                                                "quizid": quizlist[x],
+                                                "questions": [question_info],
+                                                "used": False
+                                            })
+                                    else:
+                                        studentmap[student_id] = [{
+                                            "quizname": quizname[x],
+                                            "quizid": quizlist[x],
+                                            "questions": [question_info],
+                                            "used": False
+                                        }]
 
+                        # Save quiz questions to the "Quiz Questions" collection
+                        for y in range(len(question_text)):
+                            try:
+                                quiz_collection.update_one(
+                                    {'quizid': quizlist[x], 'courseid': str(courseid), "course_name": course_name, "questionid": str(question_id[y])},
+                                    {"$set": {"question_text": question_text[y]}},
+                                    upsert=True
+                                )
+                            except Exception as e:
+                                print("Error updating quiz questions:", e)
 
-            print("length of data")
-            print(len(data))
-            for assignment in data:
-                print("how many repeats?")
+                    # Use studentmap to update Students
+                    for key in studentmap.keys():
+                        try:
+                            student_collection.update_one({'_id': str(key)}, {"$set": {str(courseid): studentmap[key]}}, upsert=True)
+                        except Exception as e:
+                            print("Error updating student data:", e)
 
-
-
-
-                print(assignment["submissions"][1])
-                data_sorted = sorted(
-                                        (submission for submission in assignment["submissions"] if submission['workflow_state'] == "graded"), 
-                                        key=lambda x: datetime.datetime.strptime(x['graded_at'], '%Y-%m-%dT%H:%M:%SZ'), 
-                                        reverse=True)
-                rawgrade = []
-                rawrecent = []
-                unique_data = []
-                allgrades = []
-                recentgrades = []
-                for item in data_sorted:
-                    if item['assignment_id'] not in seen_assignment_ids:
-                        unique_data.append(item)
-                        seen_assignment_ids.add(item['assignment_id'])
-
-                    print("check one!")
-                for x in range(len(unique_data)):
-                    if unique_data[x]["assignment_id"] not in assignmentmaxscore:
-                        continue
-                    assignmentgrade =  unique_data[x]["entered_score"] / float(assignmentmaxscore[unique_data[x]["assignment_id"]])
-                    assignmentgrade = round(assignmentgrade, 2) 
-                    print("look here!")
-                    print(unique_data[x])
-                    assignmentname = unique_data[x]["assignment"]["name"]
-
-                    allgrades.append({"name":assignmentname, "grade":assignmentgrade})
-                    rawgrade.append(assignmentgrade)
-
-                    if len(allgrades) > 5:
-                        recentgrades = allgrades[:5]
-                    else:
-                        recentgrades = allgrades
-
-                    if len(rawgrade) > 5:
-                       rawrecent = rawgrade[:5]
-                    else:
-                       rawrecent = rawgrade
-
-
-                    print("THE VERY END?")
-                    print(allgrades)
-
-
-                print("hey whats this")
-                print(assignment["user_id"])
-                print(allgrades)
-                print(recentgrades)
-                
-                try:
-                    collection_name.update_one({'_id': str(assignment["user_id"])}, {"$set": {"assignment_scores": allgrades, "recent_scores": recentgrades, "raw_grades": rawgrade, "raw_recent":rawrecent}}, upsert=True)
-
-                except Exception as e:
-                    print("Error:", e)
-
-            print("successfully saved students's assignment grades")
-                
-
-            return len(data) #["quiz_statistics"][0]["question_statistics"]
-        else:
-            return {'error': f'Failed to fetch data from API: {response.text}'}, response.status_code
-
-    except Exception as e:
-        print(e)
-        return {'error': str(e)}, 500
-
-
-
-def getquizzes(courseid, access_token):
-
-
-    api_url = f'https://canvas.instructure.com/api/v1/courses/{courseid}/quizzes'
-    headers ={
-        'Authorization': f'Bearer {access_token}'
-    }
-    try:
-        response = requests.get(api_url, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
-            quizlist = []
-            quizname = []
-            for x in range(len(data)):
-                quizlist.append(data[x]["id"])
-                quizname.append(data[x]["title"])
-            return quizlist, quizname 
-        else:
-            return {'error': f'Failed to fetch data from API: {response.text}'}, response.status_code
-    except Exception as e:
-        return {'error': str(e)}, 500
-
-def getassignments(courseid, access_token):
-
-
-    api_url = f'https://canvas.instructure.com/api/v1/courses/{courseid}/assignments'
-    headers ={
-        'Authorization': f'Bearer {access_token}'
-    }
-    try:
-        response = requests.get(api_url, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
-            thisdict = {}
-            for x in range(len(data)):
-                thisdict.update({data[x]["id"]: data[x]["points_possible"]})
-            return thisdict 
-        else:
-            return {'error': f'Failed to fetch data from API: {response.text}'}, response.status_code
-    except Exception as e:
-        return {'error': str(e)}, 500
-    
-#it starts here
-def updatedb(courseid, access_token):
-
-    # Selects newly created databse
-    #print("connecting...")
-    dbname = get_database()
-    # Makes collection with inputted name
-    collection_name = dbname[str(courseid)]
-    #print("connection complete")
-
-    quizlist, quizname = getquizzes(courseid,access_token)
-    assignmentmaxscore = getassignments(courseid, access_token)
-    api_url = f'https://canvas.instructure.com/api/v1/courses/{courseid}/enrollments'
-    headers ={
-        'Authorization': f'Bearer {access_token}'
-    }
-    try:
-        response = requests.get(api_url, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
-            studentmap = {}
-
-
-            #updateassignments(courseid, access_token, assignmentmaxscore, dbname, collection_name)
-            for x in range(len(data)):
-                
-                if(data[x]["type"] == "StudentEnrollment"):
-
-
-                    try:
-                        collection_name.update_one({'_id': str(data[x]["user_id"])}, {"$set": {"current_grade": data[x]["grades"]["current_score"]}}, upsert=True)
-                        
-                    except Exception as e:
-                        print("Error:", e)
-                    print("successfully saved "+data[x]["user"]["name"]+"'s final grade")
-
-            #update quiz topics
-            for x in range(len(quizlist)):
-                results = updatequizrec(courseid, access_token, dbname, collection_name, quizlist[x])
-
-                for y in range(len(results[1])):
-                    for z in range(len(results[1][y])):
-                        if results[1][y][z] != -1:
-                            student_id = results[1][y][z]
-                            question = results[0][y]
-
-                            # if student already has an entry in studentmap
-                            if student_id in studentmap:
-                                # check if current quizname[x] already exists in the student's failed_questions list
-                                quiz_found = False
-                                for quiz in studentmap[student_id]:
-                                    if quiz['quizname'] == quizname[x]:
-                                        quiz['questions'].append(question)
-                                        quiz_found = True
-                                        break
-
-                                # if the quiz doesn't exist, add a new entry for this quiz
-                                if not quiz_found:
-                                    studentmap[student_id].append({
-                                        "quizname": quizname[x],
-                                        "questions": [question],
-                                        "used": False
-                                    })
-                            else:
-                                # if student_id doesn't exist in studentmap, create it with current quiz and question
-                                studentmap[student_id] = [{
-                                    "quizname": quizname[x],
-                                    "questions": [question],
-                                    "used": False
-                                }]
-
-            # save to the database
-            for key in studentmap.keys():
-                try:
-                    collection_name.update_one({'_id': str(key)}, {"$set": {"failed_questions": studentmap[key]}}, upsert=True)
-                except Exception as e:
-                    print("Error:", e)
     except Exception as e:
         print("Error:", e)
     return 1
 
+async def get_course_details(courseid, access_token, link):
+    api_url = f'https://{link}/api/v1/courses/{courseid}'
+    headers = {'Authorization': f'Bearer {access_token}'}
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(api_url, headers=headers) as response:
+                if response.status == 200:
+                    course_details = await response.json()
+                    course_name = course_details.get("name", "Course name not found")
+                    return course_name
+                else:
+                    print(f"Failed to retrieve course. Status code: {response.status}")
+    except Exception as e:
+        return {'error': str(e)}, 500
+
+def parse_date(date_str):
+    if date_str:
+        dt = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S%z")
+        # Normalize to UTC
+        return dt.astimezone(timezone.utc)
+    return None
+
+def clean_text(text):
+    # Normalize and filter to keep only ASCII characters
+    return ''.join(char for char in text if ord(char) < 128)
 
 
+async def main():
+    courseid = 1425706
+    access_token = '1158~ZENrewhnRzFkMLhxQDP47U9NcrX6exWeT8eGXKW4z2X7yy36RFDcMB3C6tJk4fha'
+    connectionString = "mongodb+srv://jordan917222:PPJjEItclZaEECv7@studentsatrisk.ptqdmcu.mongodb.net/"
+    link = 'webcourses.ucf.edu'
+    await update_db(courseid, access_token, connectionString, link)
+    print("Updated quiz questions for this course")
 
-
+if __name__ == "__main__":
+    asyncio.run(main())
