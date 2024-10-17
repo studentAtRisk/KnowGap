@@ -26,7 +26,7 @@ CORS(app)
 def hello_world():
     return jsonify('Welcome to the KnowGap Backend API!')
 
-@app.route('/get_video_rec', methods=['GET'])
+@app.route('/get_video_rec', methods=['POST'])
 def get_video_recc_route():
     data = request.get_json()
     student_id = data.get('userid')
@@ -45,7 +45,7 @@ def update_course_route():
     # Make sure there is no missing parameters from request
     if not all([courseid, access_token]):
         return jsonify({'error': 'Missing parameters'}), 400
-    updatedb(courseid, access_token)
+    update_db(courseid, access_token)
 
     return jsonify({'status': "Complete"})
 
@@ -56,7 +56,7 @@ def update_course_request_endpoint():
     userid = data.get('userid')
     access_token = data.get('access_token')
     role = data.get('role')
-
+    courseids = data.get('courseids')
 
     # validate required parameters
     if not all([userid]):
