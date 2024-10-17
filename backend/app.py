@@ -26,26 +26,35 @@ CORS(app)
 def hello_world():
     return jsonify('Welcome to the KnowGap Backend API!')
 
-@app.route('/get_video_rec', methods=['POST'])
+@app.route('/get-video-rec', methods=['POST'])
 def get_video_recc_route():
     data = request.get_json()
     student_id = data.get('userid')
     course_id = data.get('courseid')
+    
+    # Input Validations
+    if not student_id:
+        return jsonify({'error': 'Missing Student ID'})
+    if not course_id:
+        return jsonify({'error': 'Missing Course ID'})
+    
     reccs = get_curated_videos.get_assessment_videos(student_id, course_id)
     return jsonify(reccs)
 
-@app.route('/update_course', methods=['POST'])
+@app.route('/update-course', methods=['POST'])
 def update_course_route():
     data = request.get_json()
     
-    courseid = data.get('courseid')
+    course_id = data.get('courseid')
     access_token = data.get('access_token')
-
-
-    # Make sure there is no missing parameters from request
-    if not all([courseid, access_token]):
-        return jsonify({'error': 'Missing parameters'}), 400
-    update_db(courseid, access_token)
+    
+    # Input Validations
+    if not course_id:
+        return jsonify({'error': 'Missing Course ID'}), 400
+    if not access_token:
+        return jsonify({'error': 'Missing Access Token'}), 400
+    
+    update_db(course_id, access_token)
 
     return jsonify({'status': "Complete"})
 
@@ -53,28 +62,26 @@ def update_course_route():
 @app.route('/update-user-auth', methods=['POST'])
 def update_course_request_endpoint():
     data = request.get_json()
-    userid = data.get('userid')
+    user_id = data.get('userid')
     access_token = data.get('access_token')
-    courseids = data.get('courseids')
+    course_ids = data.get('courseids')
 
-    # validate required parameters
-    if not all([userid]):
-        return jsonify({'error': 'Missing userid'}), 400
-    # More validations:
+    # Input Validations
+    if not user_id:
+        return jsonify({'error': 'Missing User ID'}), 400
     if not access_token:
-        return jsonify({'error': 'Missing access_token'}), 400
-
-    # if not courseids:
-    #     return jsonify({'error': 'Missing Course Id(s)'}), 400
+        return jsonify({'error': 'Missing Access Token'}), 400
+    if not all([course_ids]):
+        return jsonify({'error': 'Missing Course ID(s)'}), 400
 
     token_collection = get_token_collection()
     encrypted_token = at_risk_encrypt_token(encryption_key, access_token)
 
 
-    token_collection.update_one({'_id': userid},{"$set": {"auth": encrypted_token, "courseids": courseids}},upsert=True)
+    token_collection.update_one({'_id': user_id},{"$set": {"auth": encrypted_token, "courseids": course_ids}},upsert=True)
 
     # return updated user details
-    updated_user = token_collection.find_one({'_id': userid}, {'_id': 0})  # Exclude _id in the result
+    updated_user = token_collection.find_one({'_id': user_id}, {'_id': 0})
     if updated_user:
         return jsonify({'status': 'Complete'}), 200
     else:
@@ -83,21 +90,18 @@ def update_course_request_endpoint():
 # GET endpoint to retrieve user data
 @app.route('/get-user', methods=['GET'])
 def get_user():
-    # get the userid from query parameters (e.g., /get_user?userid=123)
-
     data = request.get_json()
     userid = data.get('userid')
 
     if not userid:
-        return jsonify({'error': 'Missing userid parameter'}), 400
+        return jsonify({'error': 'Missing user ID(s) parameter'}), 400
     
     token_collection = get_token_collection()
 
     # fetch the user from MongoDB
-    user = token_collection.find_one({'_id': userid})  # Exclude _id in the result
+    user = token_collection.find_one({'_id': userid})
 
     if user:
-        # return jsonify({'status': 'Success', 'user_details': user})
         decrypted_token = at_risk_decrypt_token(encryption_key, user['auth'])
         return jsonify({
             'status' : 'Success',
