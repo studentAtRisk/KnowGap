@@ -190,6 +190,6 @@ def clean_text(text):
 def get_token_collection():
     DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
     client = MongoClient(DB_CONNECTION_STRING)
-    database = client['StudentsAtRisk']
+    database = client['NoGap']
 
     return database['Tokens']
