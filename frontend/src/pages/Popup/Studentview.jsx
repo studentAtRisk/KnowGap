@@ -273,12 +273,13 @@ const StudentView = () => {
       }
       const data = await response.json();
       console.log('Video Recommendations:', data);
-      return data;
-    } catch (error) {
-      console.error('Error fetching video recommendations:', error);
       console.log('userid:', userId);
       console.log('user id type is ' + typeof userId);
       console.log('courseid:', courseId);
+      return data;
+    } catch (error) {
+      console.error('Error fetching video recommendations:', error);
+
       console.log('course id type is ' + typeof courseId);
 
       return null;
