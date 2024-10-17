@@ -264,8 +264,8 @@ const StudentView = () => {
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          user_id: userId,
-          course_id: courseId,
+          user_id: userId.toString(),
+          course_id: courseId.toString(),
         }),
       });
       if (!response.ok) {
