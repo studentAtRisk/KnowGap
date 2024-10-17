@@ -257,16 +257,17 @@ const StudentView = () => {
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
 
     try {
-      const response = await fetch(
-        `${baseUrl}/get_video_rec?userid=${userId}&courseid=${courseId}`,
-        {
-          smethod: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        }
-      );
+      const response = await fetch(`${baseUrl}/get_video_rec`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          course_id: courseId,
+        }),
+      });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -285,19 +286,23 @@ const StudentView = () => {
 
   const formatVideoRecommendations = (data) => {
     const formattedVideos = [];
-    for (const quizName in data) {
-      const quizData = data[quizName];
-      for (const topicData of Object.values(quizData)) {
-        formattedVideos.push(
-          ...topicData.videos.map((video) => ({
-            ...video,
-            reason: `Learn about ${topicData.topic}`,
-            id: video.link.split('v=')[1],
-            url: video.link,
-            viewCount: 'N/A',
-            duration: 'N/A',
-          }))
-        );
+    if (data && typeof data === 'object') {
+      for (const quizName in data) {
+        const quizData = data[quizName] || {};
+        Object.values(quizData).forEach((topicData) => {
+          if (topicData && Array.isArray(topicData.videos)) {
+            formattedVideos.push(
+              ...topicData.videos.map((video) => ({
+                ...video,
+                reason: `Learn about ${topicData.topic || 'this topic'}`,
+                id: video?.link?.split('v=')[1] || '',
+                url: video?.link || '',
+                viewCount: 'N/A',
+                duration: 'N/A',
+              }))
+            );
+          }
+        });
       }
     }
     return formattedVideos;
