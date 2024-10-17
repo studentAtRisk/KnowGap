@@ -61,8 +61,10 @@ def get_video_recommendation_and_store():
 
 # Function to generate a core topic using OpenAI
 def generate_core_topic(question_text, course_id):
-    prompt = f"Generate a concise and general core topic (4-5 words max) for the following question from course {course_id}, ensuring it's easy to search on YouTube and will return the most relevant video content without being too specific: {question_text}"
-    
+    prompt = (f"Based on the following question from course {course_id}, "
+              f"generate a concise, specific core topic that is relevant to the subject matter. "
+              f"The topic should be no longer than 4-5 words and should directly relate to the main concepts: {question_text}")
+
     response = client.completions.create(
         prompt=prompt,
         model="gpt-3.5-turbo-instruct",
