@@ -97,7 +97,7 @@ async def update_db(courseid, access_token, connectionString, link):
                 if response.status == 200:
                     data = await response.json()
                     studentmap = {}
-                    course_name = await get_course_details(courseid, access_token, link)
+                    course_name = await get_course_name(courseid, access_token, link)
 
                     for x in range(len(quizlist)):
                         question_text, selectors, question_id = await update_quiz_rec(courseid, access_token, dbname, quiz_collection, quizlist[x], link)
@@ -160,7 +160,7 @@ async def update_db(courseid, access_token, connectionString, link):
         print("Error:", e)
     return 1
 
-async def get_course_details(courseid, access_token, link):
+async def get_course_name(courseid, access_token, link):
     api_url = f'https://{link}/api/v1/courses/{courseid}'
     headers = {'Authorization': f'Bearer {access_token}'}
 

@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os
 import re
 import get_video_reccs as get_video_reccs  # Ensure correct import of external functions
-
 # Load environment variables
 load_dotenv()
 
@@ -56,8 +55,6 @@ def get_assessment_videos(student_id, course_id):
                 core_topic = get_video_reccs.generate_core_topic(cur_qid, course_id)      
             
             if not video_data:
-                print("vvv Video Data vvv ")
-                print(video_data)
                 video_data = get_video_reccs.fetch_videos_for_topic(core_topic)
                 new_entry = {
                 "quizid": quiz_id,
