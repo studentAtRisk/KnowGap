@@ -255,6 +255,7 @@ const StudentView = () => {
   const fetchVideoRecommendations = async (userId, courseId) => {
     const baseUrl =
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+
     try {
       const response = await fetch(
         `${baseUrl}/get_video_rec?userid=${userId}&courseid=${courseId}`,
@@ -274,7 +275,10 @@ const StudentView = () => {
     } catch (error) {
       console.error('Error fetching video recommendations:', error);
       console.log('userid:', userId);
+      console.log('user id type is ' + typeof userId);
       console.log('courseid:', courseId);
+      console.log('course id type is ' + typeof courseId);
+
       return null;
     }
   };
@@ -310,9 +314,12 @@ const StudentView = () => {
         setClassGrade(overallGrade);
         const userId = await fetchUserProfile();
 
+        const stringUserId = userId.toString();
+        const stringCurrentCourseId = currentCourseId.toString();
+
         const videoRecommendations = await fetchVideoRecommendations(
-          userId,
-          currentCourseId
+          stringUserId,
+          stringCurrentCourseId
         );
         if (videoRecommendations) {
           const formattedVideos =
