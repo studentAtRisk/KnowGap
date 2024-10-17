@@ -25,10 +25,13 @@ def get_video_recommendation_and_store():
     # Step 2: Process each question in the quiz
     for question in quizzes_collection.find():
         question_text = question.get('question_text')
-        if not question_text:
+        cur_video_data = question.get('video_data')
+        if not question_text or question.get('video_data'):
             continue  
-
-        core_topic = generate_core_topic(question_text)
+        course_name = ""
+        if question.get('courseid') == '10496761': 
+            course_name = "Pubic Speaking"
+        core_topic = generate_core_topic(question_text, course_name)
 
         existing_topic = quizzes_collection.find_one({'topic': core_topic})
 
@@ -102,6 +105,6 @@ def fetch_videos_for_topic(topic):
         return []
 
 # Fetch video recommendations for all questions in a quiz and store them
-if __name__ == "main":
+if __name__ == "__main__":
     videos = get_video_recommendation_and_store()
     print(videos)
