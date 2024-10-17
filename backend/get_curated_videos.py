@@ -8,7 +8,7 @@ import get_video_reccs as get_video_reccs  # Ensure correct import of external f
 load_dotenv()
 
 # MongoDB connection
-DB_CONNECTION_STRING =  os.getenv('DB_CONNECTION_STRING')  # This should ideally be loaded from .env
+DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mongo_client = MongoClient(DB_CONNECTION_STRING)
 
 db = mongo_client['NoGap']
@@ -57,10 +57,10 @@ def get_assessment_videos(student_id, course_id):
             if not video_data:
                 video_data = get_video_reccs.fetch_videos_for_topic(core_topic)
                 new_entry = {
-                "quizid": quiz_id,
-                "question_text": cur_qid,
-                "core_topic": core_topic,
-                "video_data": video_data
+                    "quizid": quiz_id,
+                    "question_text": cur_qid,
+                    "core_topic": core_topic,
+                    "video_data": video_data
                 }
                 quizzes_collection.insert_one(new_entry)
 
@@ -75,8 +75,6 @@ def get_assessment_videos(student_id, course_id):
         assessment_videos[quiz_name] = videos_for_quiz
     
     return assessment_videos
-
-
 
 def get_cid_from_sid(studentid):
     student_record = students_collection.find_one({"_id": student_id})
@@ -97,8 +95,7 @@ def get_cid_from_sid(studentid):
             print("No top-level key found.")
     else:
         print("Student not found.")
-
-
+        
 if __name__ == "__main__":
 # Example usage
     student_id = "113513458"  # Replace with actual student ID
