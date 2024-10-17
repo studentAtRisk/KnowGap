@@ -55,7 +55,6 @@ def update_course_request_endpoint():
     data = request.get_json()
     userid = data.get('userid')
     access_token = data.get('access_token')
-    role = data.get('role')
     courseids = data.get('courseids')
 
     # validate required parameters
@@ -64,28 +63,20 @@ def update_course_request_endpoint():
     # More validations:
     if not access_token:
         return jsonify({'error': 'Missing access_token'}), 400
-    if not role:
-        return jsonify({'error': 'Missing role'}), 400
+
     # if not courseids:
     #     return jsonify({'error': 'Missing Course Id(s)'}), 400
 
     token_collection = get_token_collection()
     encrypted_token = at_risk_encrypt_token(encryption_key, access_token)
 
-    if role == "student":
-        try:
-            token_collection.update_one({'_id': userid},{"$set": {"auth": encrypted_token, "role": role}},upsert=True)
-        except Exception as e:
-            return jsonify({
-                'error': f'problem in db: {e}'
-            })
-    else:
-        token_collection.update_one({'_id': userid},{"$set": {"auth": encrypted_token, "role": role, "courseids": courseids}},upsert=True)
+
+    token_collection.update_one({'_id': userid},{"$set": {"auth": encrypted_token, "courseids": courseids}},upsert=True)
 
     # return updated user details
     updated_user = token_collection.find_one({'_id': userid}, {'_id': 0})  # Exclude _id in the result
     if updated_user:
-        return jsonify({'status': 'Complete', 'user_details': updated_user['role']}), 200
+        return jsonify({'status': 'Complete'}), 200
     else:
         return jsonify({'status': 'Error', 'message': 'User not found'}), 404
     
