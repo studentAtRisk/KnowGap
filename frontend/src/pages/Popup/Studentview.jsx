@@ -272,6 +272,7 @@ const StudentView = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+      console.log('Video Recommendations:', data);
       return data;
     } catch (error) {
       console.error('Error fetching video recommendations:', error);
