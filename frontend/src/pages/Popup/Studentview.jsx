@@ -66,6 +66,7 @@ const StudentView = () => {
   const [apiToken, setApiToken] = useState('');
   const [classGrade, setClassGrade] = useState('N/A');
   const [studentName, setStudentName] = useState('');
+  const [tokenStatus, setTokenStatus] = useState('');
 
   const imgs = { youtube };
 
@@ -257,7 +258,7 @@ const StudentView = () => {
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
 
     try {
-      const response = await fetch(`${baseUrl}/get_video_rec`, {
+      const response = await fetch(`${baseUrl}/get-video-rec`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -279,9 +280,7 @@ const StudentView = () => {
       return data;
     } catch (error) {
       console.error('Error fetching video recommendations:', error);
-
       console.log('course id type is ' + typeof courseId);
-
       return null;
     }
   };
@@ -377,6 +376,100 @@ const StudentView = () => {
     setAssignments([]);
     setClassGrade('N/A');
     setAnnouncements([]);
+    setTokenStatus('');
+  };
+
+  const fetchTeacherCourses = async () => {
+    const baseUrl = getCanvasBaseUrl();
+    const storedToken = localStorage.getItem('apiToken');
+
+    if (!baseUrl || !storedToken) {
+      console.error('Missing base URL or API token');
+      return [];
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', `Bearer ${storedToken}`);
+
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    try {
+      const response = await fetch(
+        `${baseUrl}/api/v1/courses?enrollment_type=teacher&per_page=100`,
+        requestOptions
+      );
+      const coursesData = await response.json();
+      return coursesData.map((course) => course.id);
+    } catch (error) {
+      console.error('Error fetching teacher courses:', error);
+      return [];
+    }
+  };
+
+  const sendTokenToServer = async (token) => {
+    console.log('sendTokenToServer called with token:', token);
+    setTokenStatus('Sending token...');
+    const canvasURL = getCanvasBaseUrl();
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+    const courseId = fetchCurrentCourseId();
+    console.log('Fetched course ID:', courseId);
+    const userId = await fetchUserProfile();
+    console.log('Fetched user ID:', userId);
+    console.log('Calling fetchTeacherCourses');
+    const teacherCourses = await fetchTeacherCourses();
+    console.log('Teacher courses:', teacherCourses);
+    console.log(
+      'canvas url type :',
+      typeof getCanvasBaseUrl() + ' ' + getCanvasBaseUrl()
+    );
+
+    const data = {
+      userid: userId.toString(),
+      access_token: token.toString(),
+      courseids: teacherCourses.length > 0 ? teacherCourses : [],
+      link: getCanvasBaseUrl(),
+    };
+
+    console.log('Sending data:', data);
+
+    try {
+      const response = await fetch(`${baseUrl}/add-token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Token sent successfully:', result);
+      setTokenStatus('Token set successfully!');
+      localStorage.setItem('apiToken', token);
+    } catch (error) {
+      console.error('Error sending token:', error);
+      setTokenStatus('Error setting token. Please try again.');
+    }
+  };
+
+  const testSendToken = async () => {
+    console.log('Test button clicked');
+    const storedToken = localStorage.getItem('apiToken');
+    if (storedToken) {
+      console.log('Stored token found, calling sendTokenToServer');
+      await sendTokenToServer(storedToken);
+    } else {
+      console.log('No stored token found');
+      setTokenStatus('No token stored. Please save a token first.');
+    }
   };
 
   const { riskLevel } = calculateRisk();
@@ -388,6 +481,7 @@ const StudentView = () => {
           <div className="api-token-input">
             <p>API Token is set</p>
             <button onClick={removeToken}>Remove Token</button>
+            <button onClick={testSendToken}>Test Send Token</button>
           </div>
         ) : (
           <div className="api-token-input">
@@ -397,9 +491,11 @@ const StudentView = () => {
               value={apiToken}
               onChange={(e) => setApiToken(e.target.value)}
             />
-            <button onClick={() => localStorage.setItem('apiToken', apiToken)}>
+            <button onClick={() => sendTokenToServer(apiToken)}>
               Save Token
             </button>
+            <button onClick={testSendToken}>Test Send Token</button>
+            {tokenStatus && <p>{tokenStatus}</p>}
           </div>
         )}
         <div className="performance-overview fade-in">
