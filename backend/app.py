@@ -82,8 +82,8 @@ def update_course_route():
     return jsonify({'status': "Complete"})
 
 # POST endpoint to update or create a user
-@app.route('/update-user-auth', methods=['POST'])
-def update_course_request_endpoint():
+@app.route('/add_token', methods=['POST'])
+def add_token():
     data = request.get_json()
     user_id = data.get('userid')
     access_token = data.get('access_token')
@@ -140,7 +140,7 @@ if __name__ == "__main__":
     app.run()
 
 @app.route('/update_course_request', methods=['POST'])
-async def update_course_request_endpoint():
+async def add_token():
     data = request.get_json()
     
     courseid = int(data.get('courseid'))
