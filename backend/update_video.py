@@ -49,25 +49,40 @@ def get_video_metadata(youtube_url):
     else:
         return {"error": "Video not found"}
 
-def update_video_link(quiz_id, old_link, new_video):
+def update_video_link(quiz_id, old_link, new_link):
     """
     Function to update a specific video in the video_data array.
 
     :param quiz_id: The quiz ID associated with the document.
     :param old_link: The link of the video to be replaced.
-    :param new_video: A dictionary with the new video details (link, title, thumbnail, etc.).
+    :param new_link: The new video link.
+    :return: A dictionary with success or error message.
     """
-    quizzes_collection = db['Quiz_Questions']
+    quizzes_collection = db['Quiz Questions']
 
-    metadata = get_video_metadata(new_video)
+    # Retrieve metadata for the new video
+    new_video_metadata = get_video_metadata(new_link)
 
-    # pull removes the video with the old link
-    quizzes_collection.update_one(
+    if "error" in new_video_metadata:
+        return {"error": new_video_metadata["error"]}
+
+    # Pull removes the video with the old link
+    pull_result = quizzes_collection.update_one(
         {"quizid": quiz_id},
-        {"$pull": {"video_data": {"link": old_link}}} 
+        {"$pull": {"video_data": {"link": old_link}}}
     )
 
-    quizzes_collection.update_one(
+    if pull_result.modified_count == 0:
+        return {"error": "Old video not found or already removed"}
+
+    # Push the new video metadata into video_data
+    push_result = quizzes_collection.update_one(
         {"quizid": quiz_id},
-        {"$push": {"video_data": metadata}} 
+        {"$push": {"video_data": new_video_metadata}}
     )
+
+    if push_result.modified_count == 0:
+        return {"error": "Failed to add new video"}
+
+    return {"success": True, "message": "Video updated successfully"}
+

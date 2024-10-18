@@ -161,7 +161,7 @@ async def update_video():
     if 'error' in update_result:
         return jsonify({'error': update_result['error']}), 400
     
-    return jsonify({'message': 'Video updated successfully'}), 200
+    return jsonify({'message': update_result['message']}), 200
 
 if __name__ == "__main__":
     app.run()
