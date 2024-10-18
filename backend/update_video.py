@@ -70,7 +70,7 @@ def update_video_link(quiz_id, old_link, new_video):
         return {"error": "Old video not found in video_data"}
 
     # Try to pull (remove) the old video from video_data
-    pull_result = quizzes_collection.update_one(
+    pull_result = quizzes_collection.update_many(
         {"quizid": quiz_id},
         {"$pull": {"video_data": {"link": old_link}}}
     )
