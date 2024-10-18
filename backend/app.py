@@ -150,13 +150,14 @@ async def update_course_request():
 async def update_video():
     data = request.get_json()
     quizid = data.get('quizid')
+    questionid= data.get('questionid')
     old_link = data.get('old_link')
     new_link = data.get('new_link')
 
     if not all([quizid, old_link, new_link]):
         return jsonify({'error': 'Missing parameters'}), 400
 
-    update_result = update_video_link(quizid, old_link, new_link)
+    update_result = update_video_link(quizid, questionid, old_link, new_link)
     
     if 'error' in update_result:
         return jsonify({'error': update_result['error']}), 400
