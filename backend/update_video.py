@@ -37,7 +37,7 @@ def get_video_metadata(youtube_url, api_key):
     else:
         return {"error": "Video not found"}
 
-def update_video_link(quiz_id, old_link, new_video):
+def update_video_link(quiz_id, old_link, new_video, mdb_client, yt_key):
     """
     Function to update a specific video in the video_data array.
 
@@ -45,12 +45,10 @@ def update_video_link(quiz_id, old_link, new_video):
     :param old_link: The link of the video to be replaced.
     :param new_video: A dictionary with the new video details (link, title, thumbnail, etc.).
     """
-    client = MongoClient('mongodb+srv://Jason:uJ3gkMl0rmG75c55@studentsatrisk.ptqdmcu.mongodb.net/')
-    db = client['NoGap']
-    quizzes_collection = db['Quiz Questions']
+    db = mdb_client['NoGap']
+    quizzes_collection = mdb_db['Quiz Questions']
 
-    api_key = os.getenv("YOUTUBE_API_KEY")
-    metadata = get_video_metadata(new_video, api_key)
+    metadata = get_video_metadata(new_video, yt_key)
 
     # pull removes the video with the old link
     quizzes_collection.update_one(
@@ -62,7 +60,3 @@ def update_video_link(quiz_id, old_link, new_video):
         {"quizid": quiz_id},
         {"$push": {"video_data": new_video}} 
     )
-
-    print(f"Video with link {old_link} updated to {new_video['link']}")
-
-update_video_link(123123, "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "https://www.youtube.com/watch?v=E9de-cmycx8")

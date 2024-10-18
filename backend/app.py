@@ -11,6 +11,7 @@ from encryption import at_risk_encrypt_token, at_risk_decrypt_token
 from pymongo import MongoClient
 from update_course_students import update_db as update_students_db
 from update_course_quizzes import update_db as update_quizzes_db
+from update_video import update_video_link
 import asyncio
 
 # Handling Environment Variables
@@ -18,6 +19,7 @@ load_dotenv()
 
 DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 HEX_ENCRYPTION_KEY = os.getenv('HEX_ENCRYPTION_KEY')
+YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
 encryption_key = bytes.fromhex(HEX_ENCRYPTION_KEY)
 
@@ -144,6 +146,18 @@ async def update_course_request():
 
     return jsonify({'status': "Complete"})
 
+# POST endpoint to override suggested video resource
+@app.route('/update_video', methods=['POST'])
+async def update_video():
+    data = request.get_json()
+    quizid = data.get('quizid')
+    old_link = data.get('old_link')
+    new_link = data.get('new_link')
+
+    if not all([quizid, old_link, new_link]):
+        return jsonif({'error': 'Missing parameters'}), 400
+
+    await update_video_link(quizid, old_link, new_link, )
 
 if __name__ == "__main__":
     app.run()
