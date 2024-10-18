@@ -156,8 +156,10 @@ async def update_video():
     if not all([quizid, old_link, new_link]):
         return jsonify({'error': 'Missing parameters'}), 400
 
-
-    update_video_link(quizid, old_link, new_link)
+    update_result = update_video_link(quizid, old_link, new_link)
+    
+    if 'error' in update_result:
+        return jsonify({'error': update_result['error']}), 400
     
     return jsonify({'message': 'Video updated successfully'}), 200
 
