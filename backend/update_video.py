@@ -61,7 +61,9 @@ def update_video_link(quiz_id, old_link, new_link):
     quizzes_collection = db['Quiz Questions']
 
     # Retrieve metadata for the new video
-    new_video_metadata = get_video_metadata(new_link)
+    new_video_metadata = get_video_metadata(new_link)       
+
+    print("New video metadata: " + str(new_video_metadata))
 
     if "error" in new_video_metadata:
         return {"error": new_video_metadata["error"]}
