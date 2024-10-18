@@ -73,6 +73,7 @@ def add_user_token():
     user_id = data.get('userid')
     access_token = data.get('access_token')
     course_ids = data.get('courseids')
+    link = data.get('link')
 
     # Input Validations
     if not user_id:
@@ -81,11 +82,13 @@ def add_user_token():
         return jsonify({'error': 'Missing Access Token'}), 400
     if not course_ids:
         return jsonify({'error': 'Missing Course ID(s)'}), 400
+    if not link:
+        return jsonify({'error': 'Missing Base Link'}), 400
 
     token_collection = get_token_collection()
     encrypted_token = at_risk_encrypt_token(encryption_key, access_token)
 
-    token_collection.update_one({'_id': user_id},{"$set": {"auth": encrypted_token, "courseids": course_ids}}, upsert=True)
+    token_collection.update_one({'_id': user_id},{"$set": {"auth": encrypted_token, "courseids": course_ids, "link": link}},upsert=True)
 
     # return updated user details
     updated_user = token_collection.find_one({'_id': user_id}, {'_id': 0})
@@ -115,7 +118,8 @@ def get_user():
             "user_details": {
                 "_id": user["_id"],
                 "auth": decrypted_token,
-                "role": user["role"]
+                "courseids": user["courseids"],
+                "link": user["link"]
             }
         }), 200
     else:
