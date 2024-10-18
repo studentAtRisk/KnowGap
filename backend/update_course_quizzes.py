@@ -173,14 +173,5 @@ def clean_text(text):
 
 
 
-async def main():
-    courseid = 10431626
-    access_token = '7~emkThJ6DucNz3u6EXTtwyLK3YY2Pt43Rn9ut8y76mvMLtDYHH7nfUXB3YH69tuMx'
-    connectionString = "mongodb+srv://jordan917222:PPJjEItclZaEECv7@studentsatrisk.ptqdmcu.mongodb.net/"
-    link = 'canvas.instructure.com/'
-    await update_db(courseid, access_token, connectionString, link)
-    print("Updated quiz questions for this course")
 
-if __name__ == "__main__":
-    asyncio.run(main())
 
