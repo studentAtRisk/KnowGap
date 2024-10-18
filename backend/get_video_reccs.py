@@ -85,7 +85,7 @@ def generate_core_topic(question_text, course_id):
 # Function to fetch YouTube videos for a given topic and return video data (link, title, channel, thumbnail)
 def fetch_videos_for_topic(topic):
     try:
-        search = VideosSearch(topic, limit=2)
+        search = VideosSearch(topic, limit=1)
         search_results = search.result()['result']
         video_data = []
 
