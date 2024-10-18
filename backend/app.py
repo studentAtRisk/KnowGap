@@ -133,7 +133,8 @@ def get_user():
             "user_details": {
                 "_id": user["_id"],
                 "auth": decrypted_token,
-                "role": user["role"]
+                "courseids": user["courseids"],
+                "link": user["link"]
             }
         }), 200
     else:
