@@ -93,3 +93,13 @@ def update_video_link(quiz_id, old_link, new_link):
 
     return {"success": True, "message": "Video updated successfully"}
 
+if __name__ == "__main__":
+    mock_json = {
+    "quizid": "19758187",
+    "old_link": "https://www.youtube.com/watch?v=VKd2ARCyqCs",
+    "new_link": "https://www.youtube.com/watch?v=EsumcNL_ujY"
+    }
+    quizzes_collection = db["Quiz Questions"]
+    result = quizzes_collection.find_one(
+    {"quizid": mock_json["quizid"], "video_data.link": mock_json["old_link"]}
+)
