@@ -82,7 +82,7 @@ def update_video_link(quiz_id, old_link, new_link):
         return {"error": "Old video not found or already removed"}
 
     # Push the new video metadata into video_data
-    push_result = quizzes_collection.update_one(
+    push_result = quizzes_collection.update_many(
         {"quizid": quiz_id},
         {"$push": {"video_data": new_video_metadata}}
     )
