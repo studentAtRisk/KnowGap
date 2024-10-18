@@ -57,6 +57,9 @@ def update_video_link(quiz_id, old_link, new_video):
     """
     quizzes_collection = mdb_client['your_database']['Quiz_Questions']
 
+    document = quizzes_collection.find_one({"quizid": 19758187})
+    print("Doc:")
+    print(document)
     # Log the document before update for debugging
     document_before = quizzes_collection.find_one({"quizid": quiz_id})
     print("Before update: ", document_before)
