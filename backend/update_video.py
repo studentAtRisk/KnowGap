@@ -1,8 +1,15 @@
+from pymongo import MongoClient
 from googleapiclient.discovery import build
 import re
 import os
 from dotenv import load_dotenv
 import json
+
+DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
+YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
+
+mongo_client = MongoClient(DB_CONNECTION_STRING)
+db = mongo_client['NoGap']
 
 def extract_video_id(youtube_url):
     video_id = None
@@ -12,12 +19,12 @@ def extract_video_id(youtube_url):
         video_id = match.group(1)
     return video_id
 
-def get_video_metadata(youtube_url, api_key):
+def get_video_metadata(youtube_url):
     video_id = extract_video_id(youtube_url)
     if not video_id:
         return {"error": "Invalid YouTube URL"}
     
-    youtube = build('youtube', 'v3', developerKey=api_key)
+    youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
     request = youtube.videos().list(
         part="snippet",
@@ -37,7 +44,7 @@ def get_video_metadata(youtube_url, api_key):
     else:
         return {"error": "Video not found"}
 
-def update_video_link(quiz_id, old_link, new_video, mdb_client, yt_key):
+def update_video_link(quiz_id, old_link, new_video, mdb_client):
     """
     Function to update a specific video in the video_data array.
 
@@ -45,10 +52,9 @@ def update_video_link(quiz_id, old_link, new_video, mdb_client, yt_key):
     :param old_link: The link of the video to be replaced.
     :param new_video: A dictionary with the new video details (link, title, thumbnail, etc.).
     """
-    db = mdb_client['NoGap']
-    quizzes_collection = mdb_db['Quiz Questions']
+    quizzes_collection = mdb_client['Quiz Questions']
 
-    metadata = get_video_metadata(new_video, yt_key)
+    metadata = get_video_metadata(new_video,)
 
     # pull removes the video with the old link
     quizzes_collection.update_one(
