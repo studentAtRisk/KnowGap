@@ -80,7 +80,7 @@ def add_user_token():
         return jsonify({'error': 'Missing User ID'}), 400
     if not access_token:
         return jsonify({'error': 'Missing Access Token'}), 400
-    if not course_ids:
+    if course_ids is None:
         return jsonify({'error': 'Missing Course ID(s)'}), 400
     if not link:
         return jsonify({'error': 'Missing Base Link'}), 400
