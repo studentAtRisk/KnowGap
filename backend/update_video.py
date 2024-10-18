@@ -74,6 +74,8 @@ def update_video_link(quiz_id, old_link, new_link):
         {"$pull": {"video_data": {"link": old_link}}}
     )
 
+    print("Pull result: " + str(pull_result))
+
     if pull_result.modified_count == 0:
         return {"error": "Old video not found or already removed"}
 
@@ -82,6 +84,9 @@ def update_video_link(quiz_id, old_link, new_link):
         {"quizid": quiz_id},
         {"$push": {"video_data": new_video_metadata}}
     )
+
+    
+    print("Push result: " + str(push_result))
 
     if push_result.modified_count == 0:
         return {"error": "Failed to add new video"}
