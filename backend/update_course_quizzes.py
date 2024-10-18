@@ -1,23 +1,24 @@
 
 from flask import jsonify
 import requests
-from pymongo import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient
 from pandas import DataFrame
 from datetime import datetime, timezone
 from bs4 import BeautifulSoup
 import asyncio
 import aiohttp
-global_amtofquizzes = 5
+
+global_amtofquizzes =  5
 
 async def get_database(connectionString):
  
    # Connection to database string. Change this to switch databases
    CONNECTION_STRING = connectionString
 
-   client = MongoClient(CONNECTION_STRING)
+   client = AsyncIOMotorClient(CONNECTION_STRING)
  
    # Create/select the database with inputted name
-   return client['NoGap']
+   return client['StudentAtRisk']
 
 async def update_quiz_rec(courseid, access_token, dbname, collection_name, currentquiz, link):
 
@@ -124,6 +125,8 @@ async def update_db(courseid, access_token, connectionString, link):
                         # Finally, save to the database.
                         for y in range(len(questiontext)):
                             print("Here!")
+                            print("courseid")
+                            print(courseid)
                             try:
                                 collection_name.update_one({'quizid': quizlist[x],  'courseid': str(courseid), "course_name": course_name, "questionid": str(questionid[y])}, {"$set": {"question_text": questiontext[y]}},upsert=True)
                             except Exception as e:
@@ -167,6 +170,8 @@ max_date = datetime.now(timezone.utc)  # Ensure max_date is in UTC
 def clean_text(text):
     # Normalize and filter to keep only ASCII characters
     return ''.join(char for char in text if ord(char) < 128)
+
+
 
 
 

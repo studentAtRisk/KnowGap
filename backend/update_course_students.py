@@ -1,7 +1,7 @@
 
 from flask import jsonify
 import requests
-from pymongo import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient
 from pandas import DataFrame
 import datetime
 from bs4 import BeautifulSoup
@@ -14,10 +14,10 @@ async def get_database(connectionString):
    # connection to database string. Change this to switch databases
    CONNECTION_STRING = connectionString
 
-   client = MongoClient(CONNECTION_STRING)
+   client = AsyncIOMotorClient(CONNECTION_STRING)
  
    # create/select the database with inputted name
-   return client['NoGap']
+   return client['StudentAtRisk']
 
 async def update_quiz_rec(courseid, access_token, dbname, collection_name, currentquiz, link):
 
@@ -73,6 +73,7 @@ async def update_quiz_rec(courseid, access_token, dbname, collection_name, curre
 
                 else:
                     print("error")
+                    print(response.text)
                     return {'error'f'Failed to fetch data from API: {response.text}'}, response.status
     except Exception as e:
         return {'error : Failed to grab quiz statistics due to': str(e)}, 500
@@ -129,11 +130,15 @@ async def update_db(courseid, access_token, connectionString, link):
 
 
                 # Update quiz topics
-
+                print("test!")
+                print(quizlist)
                 for x in range(len(quizlist)):
+                
                     results = await update_quiz_rec(courseid, access_token, dbname, collection_name, quizlist[x], link)
+                    print(results[1])
                     for y in range(len(results[1])):
-
+                        print("different")
+                        print(results[1])
                         for z in range(len(results[1][y])):
                             if results[1][y][z] != -1:
                                 student_id = results[1][y][z]
