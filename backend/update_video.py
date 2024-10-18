@@ -59,7 +59,9 @@ def update_video_link(quiz_id, old_link, new_link):
     :return: A dictionary with success or error message.
     """
     quizzes_collection = db['Quiz Questions']
-
+    result = quizzes_collection.find_one(
+    {"quizid": mock_json["quizid"], "video_data.link": mock_json["old_link"]})
+    print("Found? " + str(result))
     # Retrieve metadata for the new video
     new_video_metadata = get_video_metadata(new_link)       
 
@@ -100,6 +102,3 @@ if __name__ == "__main__":
     "new_link": "https://www.youtube.com/watch?v=EsumcNL_ujY"
     }
     quizzes_collection = db["Quiz Questions"]
-    result = quizzes_collection.find_one(
-    {"quizid": mock_json["quizid"], "video_data.link": mock_json["old_link"]}
-)
