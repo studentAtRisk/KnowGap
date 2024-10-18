@@ -54,7 +54,7 @@ def update_video_link(quiz_id, old_link, new_video, mdb_client):
     """
     quizzes_collection = mdb_client['Quiz Questions']
 
-    metadata = get_video_metadata(new_video,)
+    metadata = get_video_metadata(new_video)
 
     # pull removes the video with the old link
     quizzes_collection.update_one(
@@ -64,5 +64,5 @@ def update_video_link(quiz_id, old_link, new_video, mdb_client):
 
     quizzes_collection.update_one(
         {"quizid": quiz_id},
-        {"$push": {"video_data": new_video}} 
+        {"$push": {"video_data": metadata}} 
     )
