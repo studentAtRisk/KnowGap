@@ -57,7 +57,7 @@ def update_video_link(quiz_id, old_link, new_video):
     :param old_link: The link of the video to be replaced.
     :param new_video: A dictionary with the new video details (link, title, thumbnail, etc.).
     """
-    quizzes_collection = mdb_client['Quiz_Questions']
+    quizzes_collection = db['Quiz_Questions']
 
     metadata = get_video_metadata(new_video)
 
