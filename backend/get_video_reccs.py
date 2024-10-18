@@ -40,15 +40,20 @@ def get_video_recommendation_and_store():
             print(f"Reusing stored video data for topic: {core_topic}")
         else:
             video_data = fetch_videos_for_topic(core_topic)
-
+        cur_question_text = question.get("question_text")
+        cur_course_name = question.get("cur_course_name")
         cur_course_id = question.get("courseid")
         cur_quiz_id = question.get("quizid")
         cur_question_id = question.get("questionid")
 
         #Store the core topic and video data in MongoDB for the specific question
         quizzes_collection.update_one(
-            {'questionid' : cur_question_id},
-            {'$set': {
+            {'questionid' : cur_question_id,
+             'course_name':cur_course_name,
+             'courseid': cur_course_id,
+             'quizid' : cur_quiz_id,
+             'question_text' : cur_question_text,
+            '$set': {
                 'core_topic': core_topic,
                 'video_data': video_data 
             }}, upsert=True
