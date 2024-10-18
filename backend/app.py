@@ -21,7 +21,6 @@ HEX_ENCRYPTION_KEY = os.getenv('HEX_ENCRYPTION_KEY')
 
 encryption_key = bytes.fromhex(HEX_ENCRYPTION_KEY)
 
-from flask import Flask, request, jsonify
 app = Flask(__name__)
 CORS(app)
 
@@ -49,20 +48,6 @@ def get_video_recc_route():
     reccs = get_curated_videos.get_assessment_videos(student_id, course_id)
     print(f"Returning recommendations: {reccs}")  # Log the returned data
     return jsonify(reccs)
-#@app.route('/get-video-rec', methods=['POST'])
-# def get_video_recc_route():
-#     data = request.get_json()
-#     student_id = data.get('userid')
-#     course_id = data.get('courseid')
-    
-#     # Input Validations
-#     if not student_id:
-#         return jsonify({'error': 'Missing Student ID'})
-#     if not course_id:
-#         return jsonify({'error': 'Missing Course ID'})
-    
-#     reccs = get_curated_videos.get_assessment_videos(student_id, course_id)
-#     return jsonify(reccs)
 
 @app.route('/update-course', methods=['POST'])
 def update_course_route():
@@ -83,7 +68,7 @@ def update_course_route():
 
 # POST endpoint to update or create a user
 @app.route('/add-token', methods=['POST'])
-def add_token():
+def add_user_token():
     data = request.get_json()
     user_id = data.get('userid')
     access_token = data.get('access_token')
@@ -94,13 +79,13 @@ def add_token():
         return jsonify({'error': 'Missing User ID'}), 400
     if not access_token:
         return jsonify({'error': 'Missing Access Token'}), 400
-    if not all([course_ids]):
+    if not course_ids:
         return jsonify({'error': 'Missing Course ID(s)'}), 400
 
     token_collection = get_token_collection()
     encrypted_token = at_risk_encrypt_token(encryption_key, access_token)
 
-    token_collection.update_one({'_id': user_id},{"$set": {"auth": encrypted_token, "courseids": course_ids}},upsert=True)
+    token_collection.update_one({'_id': user_id},{"$set": {"auth": encrypted_token, "courseids": course_ids}}, upsert=True)
 
     # return updated user details
     updated_user = token_collection.find_one({'_id': user_id}, {'_id': 0})
@@ -136,11 +121,9 @@ def get_user():
     else:
         return jsonify({'status': 'Error', 'message': 'User not found'}), 404
 
-if __name__ == "__main__":
-    app.run()
-
+# POST endpoint to update course requests asynchronously
 @app.route('/update_course_request', methods=['POST'])
-async def add_token():
+async def update_course_request():
     data = request.get_json()
     
     courseid = int(data.get('courseid'))
@@ -148,11 +131,31 @@ async def add_token():
     authkey = data.get('authkey')
     link = data.get('link')
 
-
     # Make sure there is no missing parameters from request
     if not all([courseid, access_token, authkey]):
         return jsonify({'error': 'Missing parameters'}), 400
+    
     await update_students_db(courseid, access_token, authkey, link)
     await update_quizzes_db(courseid, access_token, authkey, link)
 
     return jsonify({'status': "Complete"})
+
+
+if __name__ == "__main__":
+    app.run()
+
+
+#@app.route('/get-video-rec', methods=['POST'])
+# def get_video_recc_route():
+#     data = request.get_json()
+#     student_id = data.get('userid')
+#     course_id = data.get('courseid')
+    
+#     # Input Validations
+#     if not student_id:
+#         return jsonify({'error': 'Missing Student ID'})
+#     if not course_id:
+#         return jsonify({'error': 'Missing Course ID'})
+    
+#     reccs = get_curated_videos.get_assessment_videos(student_id, course_id)
+#     return jsonify(reccs)
