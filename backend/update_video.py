@@ -65,17 +65,23 @@ def update_video_link(quiz_id, old_link, new_video):
     print("Before update: ", document_before)
 
     # Check if the old_link exists
-    video_exists = quizzes_collection.find_one(
-        {"quizid": quiz_id, "video_data.link": old_link}
+    video_exists = quizzes_collection.find_one({
+        "quizid": quiz_id, 
+         "video_data": {
+            "$elemMatch" : {"link" : old_link}
+         } }
     )
     
     if not video_exists:
         return {"error": "Old video not found in video_data"}
 
     # Try to pull (remove) the old video from video_data
-    pull_result = quizzes_collection.update_many(
+    pull_result = quizzes_collection.update_one(
         {"quizid": quiz_id},
-        {"$pull": {"video_data": {"link": old_link}}}
+        {"$pull": {
+         "video_data": {
+            "$elemMatch" : {"link" : old_link}
+         }}}
     )
 
     print("Pull result: ", pull_result.modified_count)  # Log pull result
@@ -86,7 +92,10 @@ def update_video_link(quiz_id, old_link, new_video):
     # Push the new video metadata into video_data
     push_result = quizzes_collection.update_one(
         {"quizid": quiz_id},
-        {"$push": {"video_data": new_video}}
+        {"$push": {
+         "video_data": {
+            "$elemMatch" : {"link" : old_link}
+         }}}
     )
     print("Push result: ", push_result.modified_count)  # Log push result
 
