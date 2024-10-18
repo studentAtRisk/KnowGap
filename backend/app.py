@@ -28,18 +28,38 @@ def hello_world():
 
 @app.route('/get-video-rec', methods=['POST'])
 def get_video_recc_route():
-    data = request.get_json()
+    data = request.get_json()  # Extract JSON payload
+    print(f"Received data: {data}")  # Log incoming request data for debugging
+    
     student_id = data.get('userid')
     course_id = data.get('courseid')
     
-    # Input Validations
+    # Input validation with logging
     if not student_id:
-        return jsonify({'error': 'Missing Student ID'})
+        print("Missing Student ID")
+        return jsonify({'error': 'Missing Student ID'}), 400
     if not course_id:
-        return jsonify({'error': 'Missing Course ID'})
+        print("Missing Course ID")
+        return jsonify({'error': 'Missing Course ID'}), 400
     
+    # Call the logic that works locally
     reccs = get_curated_videos.get_assessment_videos(student_id, course_id)
+    print(f"Returning recommendations: {reccs}")  # Log the returned data
     return jsonify(reccs)
+#@app.route('/get-video-rec', methods=['POST'])
+# def get_video_recc_route():
+#     data = request.get_json()
+#     student_id = data.get('userid')
+#     course_id = data.get('courseid')
+    
+#     # Input Validations
+#     if not student_id:
+#         return jsonify({'error': 'Missing Student ID'})
+#     if not course_id:
+#         return jsonify({'error': 'Missing Course ID'})
+    
+#     reccs = get_curated_videos.get_assessment_videos(student_id, course_id)
+#     return jsonify(reccs)
 
 @app.route('/update-course', methods=['POST'])
 def update_course_route():
