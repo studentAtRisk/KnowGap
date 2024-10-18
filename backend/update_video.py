@@ -60,7 +60,7 @@ def update_video_link(quiz_id, old_link, new_link):
     """
     quizzes_collection = db['Quiz Questions']
     result = quizzes_collection.find_one(
-    {"quizid": mock_json["quizid"], "video_data.link": mock_json["old_link"]})
+    {"quizid": quiz_id, "video_data.link": old_link})
     print("Found? " + str(result))
     # Retrieve metadata for the new video
     new_video_metadata = get_video_metadata(new_link)       
