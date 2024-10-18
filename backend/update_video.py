@@ -1,3 +1,4 @@
+from flask import Flask, request, jsonify  # Add this import
 from pymongo import MongoClient
 from googleapiclient.discovery import build
 import re
@@ -5,11 +6,15 @@ import os
 from dotenv import load_dotenv
 import json
 
+load_dotenv()
+
+app = Flask(__name__)
+
 DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
-mongo_client = MongoClient(DB_CONNECTION_STRING)
-db = mongo_client['NoGap']
+mdb_client = MongoClient(DB_CONNECTION_STRING)
+db = mdb_client['NoGap']
 
 def extract_video_id(youtube_url):
     video_id = None
@@ -44,7 +49,7 @@ def get_video_metadata(youtube_url):
     else:
         return {"error": "Video not found"}
 
-def update_video_link(quiz_id, old_link, new_video, mdb_client):
+def update_video_link(quiz_id, old_link, new_video):
     """
     Function to update a specific video in the video_data array.
 

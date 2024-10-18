@@ -146,7 +146,6 @@ async def update_course_request():
 
     return jsonify({'status': "Complete"})
 
-# POST endpoint to override suggested video resource
 @app.route('/update_video', methods=['POST'])
 async def update_video():
     data = request.get_json()
@@ -157,7 +156,10 @@ async def update_video():
     if not all([quizid, old_link, new_link]):
         return jsonify({'error': 'Missing parameters'}), 400
 
-    await update_video_link(quizid, old_link, new_link, )
+
+    update_video_link(quizid, old_link, new_link)
+    
+    return jsonify({'message': 'Video updated successfully'}), 200
 
 if __name__ == "__main__":
     app.run()
