@@ -19,6 +19,7 @@ quizzes_collection = db['Quiz Questions']  # Collection that stores all possible
 
 # Function to get incorrect questions and their video links
 def get_assessment_videos(student_id, course_id):
+    core_topic = ""
     # Fetch student's quizzes based on course_id
     print("Getting assessment videos")
     student_record = students_collection.find_one({"_id": student_id})

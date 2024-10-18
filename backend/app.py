@@ -97,7 +97,6 @@ def update_course_request_endpoint():
     token_collection = get_token_collection()
     encrypted_token = at_risk_encrypt_token(encryption_key, access_token)
 
-
     token_collection.update_one({'_id': user_id},{"$set": {"auth": encrypted_token, "courseids": course_ids}},upsert=True)
 
     # return updated user details
