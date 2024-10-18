@@ -9,6 +9,9 @@ from flask_cors import CORS
 from update_courses import update_db, get_token_collection
 from encryption import at_risk_encrypt_token, at_risk_decrypt_token
 from pymongo import MongoClient
+from update_course_students import update_db as update_students_db
+from update_course_quizzes import update_db as update_quizzes_db
+import asyncio
 
 # Handling Environment Variables
 load_dotenv()
@@ -135,3 +138,21 @@ def get_user():
 
 if __name__ == "__main__":
     app.run()
+
+@app.route('/update_course_request', methods=['POST'])
+async def update_course_request_endpoint():
+    data = request.get_json()
+    
+    courseid = int(data.get('courseid'))
+    access_token = data.get('access_token')
+    authkey = data.get('authkey')
+    link = data.get('link')
+
+
+    # Make sure there is no missing parameters from request
+    if not all([courseid, access_token, authkey]):
+        return jsonify({'error': 'Missing parameters'}), 400
+    await update_students_db(courseid, access_token, authkey, link)
+    await update_quizzes_db(courseid, access_token, authkey, link)
+
+    return jsonify({'status': "Complete"})
