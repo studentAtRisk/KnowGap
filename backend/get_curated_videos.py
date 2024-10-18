@@ -51,20 +51,20 @@ def get_assessment_videos(student_id, course_id):
             
             if matching_question:
                 core_topic = matching_question.get("core_topic", "No topic found")
-                video_data = matching_question.get("video_data", [])
+                video_for_quiz = matching_question.get("video_data", [])
                 if core_topic == "No topic found":
                     core_topic = get_video_reccs.generate_core_topic(cur_qid, course_id)      
             
-                if not video_data:
-                    video_data = get_video_reccs.fetch_videos_for_topic(core_topic)
+                if not video_for_quiz:
+                    video_for_quiz = get_video_reccs.fetch_videos_for_topic(core_topic)
                     new_entry = {
                         "quizid": quiz_id,
                         "question_text": cur_qid,
                         "core_topic": core_topic,
-                        "video_data": video_data
+                        "video_data": video_for_quiz
                     }
                     quizzes_collection.insert_one(new_entry)
-                    
+
             if core_topic is not None:
                 print("Core topic: " + str(core_topic))
             else:
@@ -74,7 +74,7 @@ def get_assessment_videos(student_id, course_id):
             # Store the video data by question
             videos_for_quiz[cur_qid] = {
                 "topic": core_topic,
-                "videos": video_data
+                "videos": video_for_quiz
             }
         # Group by assessment (quiz)
         assessment_videos[quiz_name] = videos_for_quiz
