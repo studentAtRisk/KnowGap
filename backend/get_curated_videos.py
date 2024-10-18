@@ -64,8 +64,12 @@ def get_assessment_videos(student_id, course_id):
                         "video_data": video_data
                     }
                     quizzes_collection.insert_one(new_entry)
+                    
+            if core_topic is not None:
+                print("Core topic: " + str(core_topic))
+            else:
+                print("Core topic is None")
 
-            print("Core topic: " + str(core_topic))
 
             # Store the video data by question
             videos_for_quiz[cur_qid] = {
