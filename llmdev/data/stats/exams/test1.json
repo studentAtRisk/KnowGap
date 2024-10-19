@@ -1,0 +1,40 @@
+{
+    "title": "Statistics 2 - Quiz",
+    "questions": [
+        {
+            "id": 1,
+            "type": "multiple_choice",
+            "question": "Which of the following is the null hypothesis?",
+            "chosen_answer": "H₀: μ ≠ 0",
+            "correct_answer": "H₀: μ = 0",
+            "choices": ["H₀: μ = 0", "H₀: μ ≠ 0", "H₀: μ > 0", "H₀: μ < 0"]
+        },
+        {
+            "id": 2,
+            "type": "multiple_choice",
+            "question": "In simple linear regression, what does the slope of the regression line represent?",
+            "chosen_answer": "The predicted value of the dependent variable for a given value of the independent variable",
+            "correct_answer": "The change in the dependent variable for a one-unit change in the independent variable",
+            "choices": [
+                "The predicted value of the dependent variable for a given value of the independent variable",
+                "The change in the dependent variable for a one-unit change in the independent variable",
+                "The intercept of the regression line",
+                "The variation in the dependent variable"
+            ]
+        },
+        {
+            "id": 3,
+            "type": "multiple_choice",
+            "question": "What is the p-value in hypothesis testing?",
+            "chosen_answer": "The probability of rejecting the null hypothesis when it is true",
+            "correct_answer": "The probability of obtaining a result at least as extreme as the observed result, assuming the null hypothesis is true",
+            "choices": [
+                "The probability of rejecting the null hypothesis when it is true",
+                "The significance level of the test",
+                "The probability of obtaining a result at least as extreme as the observed result, assuming the null hypothesis is true",
+                "The critical value used to reject the null hypothesis"
+            ]
+        }
+    ]
+}
+

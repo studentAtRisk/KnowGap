@@ -1,0 +1,611 @@
+{
+    "title": "Advanced Statistics - Quiz",
+    "questions": [
+        {
+            "id": 1,
+            "type": "multiple_choice",
+            "question": "Which of the following represents a sample statistic?",
+            "chosen_answer": "Population mean",
+            "correct_answer": "Sample mean",
+            "choices": ["Sample mean", "Population mean", "Population variance", "Population standard deviation"]
+        },
+        {
+            "id": 2,
+            "type": "multiple_choice",
+            "question": "What does a p-value less than 0.05 typically indicate in hypothesis testing?",
+            "chosen_answer": "Fail to reject the null hypothesis",
+            "correct_answer": "Reject the null hypothesis",
+            "choices": ["Reject the null hypothesis", "Fail to reject the null hypothesis", "The test is inconclusive", "The null hypothesis is true"]
+        },
+        {
+            "id": 3,
+            "type": "multiple_choice",
+            "question": "Which of the following distributions is used to model the number of occurrences of an event in a fixed interval of time or space?",
+            "chosen_answer": "Binomial distribution",
+            "correct_answer": "Poisson distribution",
+            "choices": ["Poisson distribution", "Normal distribution", "Binomial distribution", "Exponential distribution"]
+        },
+        {
+            "id": 4,
+            "type": "multiple_choice",
+            "question": "Which of the following is a measure of central tendency?",
+            "chosen_answer": "Standard deviation",
+            "correct_answer": "Median",
+            "choices": ["Median", "Variance", "Standard deviation", "Interquartile range"]
+        },
+        {
+            "id": 5,
+            "type": "multiple_choice",
+            "question": "The F-distribution is used in which type of test?",
+            "chosen_answer": "Z-test",
+            "correct_answer": "ANOVA",
+            "choices": ["ANOVA", "Z-test", "T-test", "Chi-square test"]
+        },
+        {
+            "id": 6,
+            "type": "multiple_choice",
+            "question": "What is the mean of a standard normal distribution?",
+            "chosen_answer": "1",
+            "correct_answer": "0",
+            "choices": ["0", "1", "-1", "It depends on the data"]
+        },
+        {
+            "id": 7,
+            "type": "multiple_choice",
+            "question": "What does the R-squared value in a regression analysis represent?",
+            "chosen_answer": "The slope of the regression line",
+            "correct_answer": "The proportion of the variance in the dependent variable explained by the independent variable",
+            "choices": [
+                "The slope of the regression line",
+                "The proportion of the variance in the dependent variable explained by the independent variable",
+                "The standard error of the estimate",
+                "The strength of the linear relationship"
+            ]
+        },
+        {
+            "id": 8,
+            "type": "multiple_choice",
+            "question": "Which of the following is a characteristic of a normal distribution?",
+            "chosen_answer": "It is skewed to the right",
+            "correct_answer": "It is symmetric",
+            "choices": ["It is symmetric", "It is skewed to the left", "It is skewed to the right", "It is uniform"]
+        },
+        {
+            "id": 9,
+            "type": "multiple_choice",
+            "question": "In a hypothesis test, if the p-value is greater than the significance level, what is the appropriate conclusion?",
+            "chosen_answer": "Reject the null hypothesis",
+            "correct_answer": "Fail to reject the null hypothesis",
+            "choices": [
+                "Reject the null hypothesis",
+                "Fail to reject the null hypothesis",
+                "The result is significant",
+                "There is a Type I error"
+            ]
+        },
+        {
+            "id": 10,
+            "type": "multiple_choice",
+            "question": "What is the mode of a data set?",
+            "chosen_answer": "The arithmetic average of the data",
+            "correct_answer": "The most frequent value in the data set",
+            "choices": [
+                "The most frequent value in the data set",
+                "The arithmetic average of the data",
+                "The middle value when the data is ordered",
+                "The square root of the variance"
+            ]
+        },
+        {
+            "id": 11,
+            "type": "multiple_choice",
+            "question": "Which of the following represents a positively skewed distribution?",
+            "chosen_answer": "The tail is to the left",
+            "correct_answer": "The tail is to the right",
+            "choices": [
+                "The tail is to the right",
+                "The tail is to the left",
+                "It is symmetric",
+                "There is no tail"
+            ]
+        },
+        {
+            "id": 12,
+            "type": "multiple_choice",
+            "question": "Which of the following is true about a t-distribution as the sample size increases?",
+            "chosen_answer": "The distribution becomes more skewed",
+            "correct_answer": "The distribution approaches a normal distribution",
+            "choices": [
+                "The distribution becomes more skewed",
+                "The distribution approaches a normal distribution",
+                "The distribution becomes more spread out",
+                "The mean decreases"
+            ]
+        },
+        {
+            "id": 13,
+            "type": "multiple_choice",
+            "question": "Which of the following is a non-parametric test?",
+            "chosen_answer": "T-test",
+            "correct_answer": "Mann-Whitney U test",
+            "choices": [
+                "Mann-Whitney U test",
+                "T-test",
+                "ANOVA",
+                "Z-test"
+            ]
+        },
+        {
+            "id": 14,
+            "type": "multiple_choice",
+            "question": "What is a point estimate?",
+            "chosen_answer": "The range of values that likely includes a population parameter",
+            "correct_answer": "A single value estimate for a population parameter",
+            "choices": [
+                "A single value estimate for a population parameter",
+                "The range of values that likely includes a population parameter",
+                "The difference between two sample statistics",
+                "A probability distribution for sample means"
+            ]
+        },
+        {
+            "id": 15,
+            "type": "multiple_choice",
+            "question": "In a chi-square test, what does a large chi-square statistic indicate?",
+            "chosen_answer": "The observed frequencies are close to the expected frequencies",
+            "correct_answer": "There is a large difference between observed and expected frequencies",
+            "choices": [
+                "There is a large difference between observed and expected frequencies",
+                "The observed frequencies are close to the expected frequencies",
+                "The sample size is too small",
+                "The test is inconclusive"
+            ]
+        },
+        {
+            "id": 16,
+            "type": "multiple_choice",
+            "question": "Which of the following is an example of a discrete random variable?",
+            "chosen_answer": "Height",
+            "correct_answer": "Number of heads in a coin toss",
+            "choices": [
+                "Number of heads in a coin toss",
+                "Weight",
+                "Height",
+                "Temperature"
+            ]
+        },
+        {
+            "id": 17,
+            "type": "multiple_choice",
+            "question": "What is the purpose of a confidence interval?",
+            "chosen_answer": "To estimate the probability of a sample statistic",
+            "correct_answer": "To provide a range of values that likely contains the population parameter",
+            "choices": [
+                "To provide a range of values that likely contains the population parameter",
+                "To estimate the probability of a sample statistic",
+                "To test a hypothesis",
+                "To calculate the mean of a sample"
+            ]
+        },
+        {
+            "id": 18,
+            "type": "multiple_choice",
+            "question": "In a normal distribution, what percentage of the data falls within two standard deviations of the mean?",
+            "chosen_answer": "68%",
+            "correct_answer": "95%",
+            "choices": ["68%", "95%", "99%", "50%"]
+        },
+        {
+            "id": 19,
+            "type": "multiple_choice",
+            "question": "What is the main difference between parametric and non-parametric tests?",
+            "chosen_answer": "Parametric tests are based on means, while non-parametric tests are based on medians",
+            "correct_answer": "Parametric tests assume a specific distribution for the data, while non-parametric tests do not",
+            "choices": [
+                "Parametric tests assume a specific distribution for the data, while non-parametric tests do not",
+                "Parametric tests are based on means, while non-parametric tests are based on medians",
+                "Parametric tests are used for small sample sizes, while non-parametric tests are used for large sample sizes",
+                "Non-parametric tests are more accurate than parametric tests"
+            ]
+        },
+        {
+            "id": 20,
+            "type": "multiple_choice",
+            "question": "What does the term 'power' refer to in the context of hypothesis testing?",
+            "chosen_answer": "The probability of rejecting the null hypothesis when it is true",
+            "correct_answer": "The probability of correctly rejecting the null hypothesis when it is false",
+            "choices": [
+                "The probability of correctly rejecting the null hypothesis when it is false",
+                "The probability of rejecting the null hypothesis when it is true",
+                "The probability of failing to reject the null hypothesis when it is true",
+                "The probability of a Type I error"
+            ]
+        },
+        {
+            "id": 21,
+            "type": "multiple_choice",
+            "question": "What does the standard error measure?",
+            "chosen_answer": "The variance of the population",
+            "correct_answer": "The standard deviation of the sampling distribution of a statistic",
+            "choices": [
+                "The standard deviation of the sampling distribution of a statistic",
+                "The variance of the population",
+                "The average deviation from the mean",
+                "The confidence interval width"
+            ]
+        },
+        {
+            "id": 22,
+            "type": "multiple_choice",
+            "question": "What does a right-tailed test imply?",
+            "chosen_answer": "The critical region is in the left tail of the distribution",
+            "correct_answer": "The critical region is in the right tail of the distribution",
+            "choices": [
+                "The critical region is in the right tail of the distribution",
+                "The critical region is in the left tail of the distribution",
+                "The test does not have a critical region",
+                "The test is two-tailed"
+            ]
+        },
+        {
+            "id": 23,
+            "type": "multiple_choice",
+            "question": "What is a common use of a chi-square test?",
+            "chosen_answer": "To test for differences between means",
+            "correct_answer": "To test for independence between categorical variables",
+            "choices": [
+                "To test for independence between categorical variables",
+                "To test for differences between means",
+                "To test for relationships between two continuous variables",
+                "To estimate a population mean"
+            ]
+        },
+        {
+            "id": 24,
+            "type": "multiple_choice",
+            "question": "Which of the following tests is used to compare the means of two related groups?",
+            "chosen_answer": "Independent t-test",
+            "correct_answer": "Paired t-test",
+            "choices": [
+                "Paired t-test",
+                "Independent t-test",
+                "ANOVA",
+                "Z-test"
+            ]
+        },
+        {
+            "id": 25,
+            "type": "multiple_choice",
+            "question": "Which of the following is a measure of variability?",
+            "chosen_answer": "Mean",
+            "correct_answer": "Variance",
+            "choices": ["Variance", "Mean", "Median", "Mode"]
+        },
+        {
+            "id": 26,
+            "type": "multiple_choice",
+            "question": "Which of the following is not a requirement of a binomial experiment?",
+            "chosen_answer": "The probability of success changes with each trial",
+            "correct_answer": "The probability of success changes with each trial",
+            "choices": [
+                "The probability of success changes with each trial",
+                "The experiment consists of a fixed number of trials",
+                "Each trial has two possible outcomes",
+                "The trials are independent"
+            ]
+        },
+        {
+            "id": 27,
+            "type": "multiple_choice",
+            "question": "Which of the following is used to measure the strength and direction of a linear relationship between two variables?",
+            "chosen_answer": "The mean",
+            "correct_answer": "The correlation coefficient",
+            "choices": [
+                "The correlation coefficient",
+                "The mean",
+                "The variance",
+                "The mode"
+            ]
+        },
+        {
+            "id": 28,
+            "type": "multiple_choice",
+            "question": "What does the law of large numbers state?",
+            "chosen_answer": "As sample size increases, the standard deviation decreases",
+            "correct_answer": "As sample size increases, the sample mean approaches the population mean",
+            "choices": [
+                "As sample size increases, the sample mean approaches the population mean",
+                "As sample size increases, the standard deviation decreases",
+                "As sample size increases, the sample median approaches the population median",
+                "As sample size increases, the variance decreases"
+            ]
+        },
+        {
+            "id": 29,
+            "type": "multiple_choice",
+            "question": "What is a random variable?",
+            "chosen_answer": "A variable that takes on any value",
+            "correct_answer": "A variable that takes on values determined by chance",
+            "choices": [
+                "A variable that takes on values determined by chance",
+                "A variable that takes on any value",
+                "A variable that takes on only positive values",
+                "A variable that remains constant"
+            ]
+        },
+        {
+            "id": 30,
+            "type": "multiple_choice",
+            "question": "Which of the following is true of a discrete probability distribution?",
+            "chosen_answer": "It represents continuous outcomes",
+            "correct_answer": "It represents the probability of each outcome for a discrete random variable",
+            "choices": [
+                "It represents the probability of each outcome for a discrete random variable",
+                "It represents continuous outcomes",
+                "It has an infinite number of possible outcomes",
+                "It must have a mean of zero"
+            ]
+        },
+        {
+            "id": 31,
+            "type": "multiple_choice",
+            "question": "What does the z-score represent in a standard normal distribution?",
+            "chosen_answer": "The number of standard deviations an observation is from the mean",
+            "correct_answer": "The number of standard deviations an observation is from the mean",
+            "choices": [
+                "The number of standard deviations an observation is from the mean",
+                "The probability of an event occurring",
+                "The mean of the data set",
+                "The range of the data set"
+            ]
+        },
+        {
+            "id": 32,
+            "type": "multiple_choice",
+            "question": "What is the difference between a one-tailed and a two-tailed test?",
+            "chosen_answer": "A one-tailed test has two critical regions, while a two-tailed test has only one",
+            "correct_answer": "A one-tailed test has one critical region, while a two-tailed test has two",
+            "choices": [
+                "A one-tailed test has one critical region, while a two-tailed test has two",
+                "A one-tailed test has two critical regions, while a two-tailed test has only one",
+                "A one-tailed test is used for smaller sample sizes",
+                "There is no difference between the two tests"
+            ]
+        },
+        {
+            "id": 33,
+            "type": "multiple_choice",
+            "question": "What is the purpose of a residual in regression analysis?",
+            "chosen_answer": "To measure the accuracy of the slope",
+            "correct_answer": "To measure the difference between observed and predicted values",
+            "choices": [
+                "To measure the difference between observed and predicted values",
+                "To measure the accuracy of the slope",
+                "To calculate the confidence interval",
+                "To estimate the standard error"
+            ]
+        },
+        {
+            "id": 34,
+            "type": "multiple_choice",
+            "question": "What does an outlier represent in a data set?",
+            "chosen_answer": "A value close to the mean",
+            "correct_answer": "A value that is significantly different from other values in the data set",
+            "choices": [
+                "A value that is significantly different from other values in the data set",
+                "A value close to the mean",
+                "A value close to the median",
+                "A value equal to the mode"
+            ]
+        },
+        {
+            "id": 35,
+            "type": "multiple_choice",
+            "question": "What does the term 'degrees of freedom' refer to in statistics?",
+            "chosen_answer": "The number of independent data points in a data set",
+            "correct_answer": "The number of independent data points used in a calculation",
+            "choices": [
+                "The number of independent data points used in a calculation",
+                "The number of independent data points in a data set",
+                "The sample size",
+                "The number of variables in a data set"
+            ]
+        },
+        {
+            "id": 36,
+            "type": "multiple_choice",
+            "question": "What does a negatively skewed distribution look like?",
+            "chosen_answer": "The tail is on the right side",
+            "correct_answer": "The tail is on the left side",
+            "choices": [
+                "The tail is on the left side",
+                "The tail is on the right side",
+                "It is symmetric",
+                "There is no tail"
+            ]
+        },
+        {
+            "id": 37,
+            "type": "multiple_choice",
+            "question": "Which of the following represents the probability of rejecting the null hypothesis when it is false?",
+            "chosen_answer": "Type I error",
+            "correct_answer": "Power of the test",
+            "choices": [
+                "Power of the test",
+                "Type I error",
+                "Type II error",
+                "Significance level"
+            ]
+        },
+        {
+            "id": 38,
+            "type": "multiple_choice",
+            "question": "What is a scatter plot used for?",
+            "chosen_answer": "To test a hypothesis",
+            "correct_answer": "To visualize the relationship between two variables",
+            "choices": [
+                "To visualize the relationship between two variables",
+                "To test a hypothesis",
+                "To compare sample means",
+                "To calculate the correlation coefficient"
+            ]
+        },
+        {
+            "id": 39,
+            "type": "multiple_choice",
+            "question": "What does homoscedasticity refer to in regression analysis?",
+            "chosen_answer": "The linearity of the relationship between variables",
+            "correct_answer": "The assumption that the variance of residuals is constant across all levels of the independent variable",
+            "choices": [
+                "The assumption that the variance of residuals is constant across all levels of the independent variable",
+                "The linearity of the relationship between variables",
+                "The absence of multicollinearity",
+                "The normality of the residuals"
+            ]
+        },
+        {
+            "id": 40,
+            "type": "multiple_choice",
+            "question": "What does the null hypothesis typically state?",
+            "chosen_answer": "There is a relationship between variables",
+            "correct_answer": "There is no relationship between variables",
+            "choices": [
+                "There is no relationship between variables",
+                "There is a relationship between variables",
+                "The sample mean is greater than the population mean",
+                "The sample mean is less than the population mean"
+            ]
+        },
+        {
+            "id": 41,
+            "type": "multiple_choice",
+            "question": "What is multicollinearity?",
+            "chosen_answer": "The absence of a linear relationship between variables",
+            "correct_answer": "A condition where independent variables in a regression model are highly correlated",
+            "choices": [
+                "A condition where independent variables in a regression model are highly correlated",
+                "The absence of a linear relationship between variables",
+                "The variance of the residuals is constant",
+                "The presence of outliers in the data"
+            ]
+        },
+        {
+            "id": 42,
+            "type": "multiple_choice",
+            "question": "Which of the following is true about a large sample size in hypothesis testing?",
+            "chosen_answer": "It increases the Type II error rate",
+            "correct_answer": "It reduces the standard error",
+            "choices": [
+                "It reduces the standard error",
+                "It increases the Type II error rate",
+                "It increases the p-value",
+                "It reduces the test power"
+            ]
+        },
+        {
+            "id": 43,
+            "type": "multiple_choice",
+            "question": "What is the relationship between sample size and margin of error in confidence intervals?",
+            "chosen_answer": "As sample size increases, the margin of error increases",
+            "correct_answer": "As sample size increases, the margin of error decreases",
+            "choices": [
+                "As sample size increases, the margin of error decreases",
+                "As sample size increases, the margin of error increases",
+                "There is no relationship",
+                "As sample size increases, the margin of error remains the same"
+            ]
+        },
+        {
+            "id": 44,
+            "type": "multiple_choice",
+            "question": "What does a two-tailed test imply?",
+            "chosen_answer": "The critical region is only on one side of the distribution",
+            "correct_answer": "The critical region is on both sides of the distribution",
+            "choices": [
+                "The critical region is on both sides of the distribution",
+                "The critical region is only on one side of the distribution",
+                "The test is more powerful",
+                "The sample size is small"
+            ]
+        },
+        {
+            "id": 45,
+            "type": "multiple_choice",
+            "question": "What is the purpose of a random sample?",
+            "chosen_answer": "To minimize bias in the selection process",
+            "correct_answer": "To minimize bias in the selection process",
+            "choices": [
+                "To minimize bias in the selection process",
+                "To maximize variability in the sample",
+                "To reduce the sample size",
+                "To ensure equal sample means"
+            ]
+        },
+        {
+            "id": 46,
+            "type": "multiple_choice",
+            "question": "Which of the following is a characteristic of the exponential distribution?",
+            "chosen_answer": "It is symmetric",
+            "correct_answer": "It models the time between events in a Poisson process",
+            "choices": [
+                "It models the time between events in a Poisson process",
+                "It is symmetric",
+                "It is discrete",
+                "It has a constant variance"
+            ]
+        },
+        {
+            "id": 47,
+            "type": "multiple_choice",
+            "question": "What does a high standard deviation in a data set imply?",
+            "chosen_answer": "The data points are closely clustered around the mean",
+            "correct_answer": "The data points are spread out from the mean",
+            "choices": [
+                "The data points are spread out from the mean",
+                "The data points are closely clustered around the mean",
+                "The data is normally distributed",
+                "The data is skewed"
+            ]
+        },
+        {
+            "id": 48,
+            "type": "multiple_choice",
+            "question": "Which of the following is true for a uniform distribution?",
+            "chosen_answer": "All outcomes have different probabilities",
+            "correct_answer": "All outcomes have the same probability",
+            "choices": [
+                "All outcomes have the same probability",
+                "All outcomes have different probabilities",
+                "The distribution is skewed to the right",
+                "The distribution has a mean of zero"
+            ]
+        },
+        {
+            "id": 49,
+            "type": "multiple_choice",
+            "question": "What is the goal of stratified random sampling?",
+            "chosen_answer": "To divide the population into clusters",
+            "correct_answer": "To divide the population into subgroups and sample from each subgroup",
+            "choices": [
+                "To divide the population into subgroups and sample from each subgroup",
+                "To divide the population into clusters",
+                "To select every nth member of the population",
+                "To maximize bias in the sample"
+            ]
+        },
+        {
+            "id": 50,
+            "type": "multiple_choice",
+            "question": "What is the null hypothesis in a chi-square goodness-of-fit test?",
+            "chosen_answer": "The observed distribution is different from the expected distribution",
+            "correct_answer": "The observed distribution is the same as the expected distribution",
+            "choices": [
+                "The observed distribution is the same as the expected distribution",
+                "The observed distribution is different from the expected distribution",
+                "The observed frequencies are too large",
+                "The sample size is too small"
+            ]
+        }
+    ]
+}
+

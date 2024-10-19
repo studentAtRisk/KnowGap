@@ -1,0 +1,76 @@
+{
+  "title": "Physics 2 - Electricity & Magnetism Quiz",
+  "questions": [
+    {
+      "id": 1,
+      "type": "multiple_choice",
+      "question": "Which of the following is true about electric field lines?",
+      "chosen_answer": "",
+      "correct_answer": "They point away from positive charges and toward negative charges."
+    },
+    {
+      "id": 2,
+      "type": "multiple_choice",
+      "question": "What is the unit of capacitance?",
+      "chosen_answer": "",
+      "correct_answer": "Farad"
+    },
+    {
+      "id": 3,
+      "type": "multiple_choice",
+      "question": "According to Ohm’s Law, what is the relationship between voltage (V), current (I), and resistance (R)?",
+      "chosen_answer": "",
+      "correct_answer": "V = IR"
+    },
+    {
+      "id": 4,
+      "type": "multiple_choice",
+      "question": "A 5 µC charge is placed in a uniform electric field of 200 N/C. What is the force on the charge?",
+      "chosen_answer": "",
+      "correct_answer": "1.0 x 10^-3 N"
+    },
+    {
+      "id": 5,
+      "type": "multiple_choice",
+      "question": "Which law describes the relationship between the electric flux through a surface and the charge enclosed by that surface?",
+      "chosen_answer": "",
+      "correct_answer": "Gauss's Law"
+    },
+    {
+      "id": 6,
+      "type": "multiple_choice",
+      "question": "In a series circuit, the total resistance is:",
+      "chosen_answer": "",
+      "correct_answer": "The sum of all resistances in the circuit."
+    },
+    {
+      "id": 7,
+      "type": "multiple_choice",
+      "question": "The direction of the magnetic field around a current-carrying wire is given by:",
+      "chosen_answer": "",
+      "correct_answer": "The right-hand rule."
+    },
+    {
+      "id": 8,
+      "type": "multiple_choice",
+      "question": "The magnetic field inside a long, straight solenoid is:",
+      "chosen_answer": "",
+      "correct_answer": "Uniform and parallel to the axis of the solenoid."
+    },
+    {
+      "id": 9,
+      "type": "multiple_choice",
+      "question": "What is the SI unit of magnetic flux?",
+      "chosen_answer": "",
+      "correct_answer": "Weber"
+    },
+    {
+      "id": 10,
+      "type": "multiple_choice",
+      "question": "In a capacitor, the energy stored is proportional to:",
+      "chosen_answer": "",
+      "correct_answer": "The square of the voltage across the plates."
+    }
+  ]
+}
+

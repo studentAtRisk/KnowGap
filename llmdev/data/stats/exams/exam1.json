@@ -1,0 +1,126 @@
+{
+    "title": "Statistics 2 - Quiz",
+    "questions": [
+        {
+            "id": 1,
+            "type": "multiple_choice",
+            "question": "Which of the following is the null hypothesis?",
+            "chosen_answer": "H₀: μ ≠ 0",
+            "correct_answer": "H₀: μ = 0",
+            "choices": ["H₀: μ = 0", "H₀: μ ≠ 0", "H₀: μ > 0", "H₀: μ < 0"]
+        },
+        {
+            "id": 2,
+            "type": "multiple_choice",
+            "question": "In simple linear regression, what does the slope of the regression line represent?",
+            "chosen_answer": "The predicted value of the dependent variable for a given value of the independent variable",
+            "correct_answer": "The change in the dependent variable for a one-unit change in the independent variable",
+            "choices": [
+                "The predicted value of the dependent variable for a given value of the independent variable",
+                "The change in the dependent variable for a one-unit change in the independent variable",
+                "The intercept of the regression line",
+                "The variation in the dependent variable"
+            ]
+        },
+        {
+            "id": 3,
+            "type": "multiple_choice",
+            "question": "What is the p-value in hypothesis testing?",
+            "chosen_answer": "The probability of rejecting the null hypothesis when it is true",
+            "correct_answer": "The probability of obtaining a result at least as extreme as the observed result, assuming the null hypothesis is true",
+            "choices": [
+                "The probability of rejecting the null hypothesis when it is true",
+                "The significance level of the test",
+                "The probability of obtaining a result at least as extreme as the observed result, assuming the null hypothesis is true",
+                "The critical value used to reject the null hypothesis"
+            ]
+        },
+        {
+            "id": 4,
+            "type": "multiple_choice",
+            "question": "Which of the following represents a Type I error?",
+            "chosen_answer": "Failing to reject the null hypothesis when it is false",
+            "correct_answer": "Rejecting the null hypothesis when it is true",
+            "choices": [
+                "Rejecting the null hypothesis when it is true",
+                "Failing to reject the null hypothesis when it is true",
+                "Rejecting the null hypothesis when it is false",
+                "Failing to reject the null hypothesis when it is false"
+            ]
+        },
+        {
+            "id": 5,
+            "type": "multiple_choice",
+            "question": "What is the standard deviation a measure of?",
+            "chosen_answer": "The average value of a data set",
+            "correct_answer": "The spread or dispersion of a data set",
+            "choices": [
+                "The average value of a data set",
+                "The range of a data set",
+                "The spread or dispersion of a data set",
+                "The variance of a data set"
+            ]
+        },
+        {
+            "id": 6,
+            "type": "multiple_choice",
+            "question": "If the correlation coefficient between two variables is -1, what does this imply?",
+            "chosen_answer": "There is no linear relationship between the variables",
+            "correct_answer": "The variables have a perfect negative linear relationship",
+            "choices": [
+                "The variables have a perfect positive linear relationship",
+                "The variables have a perfect negative linear relationship",
+                "There is no linear relationship between the variables",
+                "The variables are independent of each other"
+            ]
+        },
+        {
+            "id": 7,
+            "type": "multiple_choice",
+            "question": "What does a confidence interval represent?",
+            "chosen_answer": "The range of possible values for a population parameter",
+            "correct_answer": "The range of values that is likely to contain the population parameter with a certain level of confidence",
+            "choices": [
+                "The range of possible values for a population parameter",
+                "The range of values that is likely to contain the population parameter with a certain level of confidence",
+                "The range of values that is equally distributed around the sample mean",
+                "The significance level of the test"
+            ]
+        },
+        {
+            "id": 8,
+            "type": "multiple_choice",
+            "question": "In a normal distribution, what percentage of the data falls within one standard deviation of the mean?",
+            "chosen_answer": "95%",
+            "correct_answer": "68%",
+            "choices": ["68%", "95%", "99%", "50%"]
+        },
+        {
+            "id": 9,
+            "type": "multiple_choice",
+            "question": "What is the central limit theorem?",
+            "chosen_answer": "The probability distribution of a sample mean is approximately normal for large sample sizes, regardless of the population's distribution",
+            "correct_answer": "The sampling distribution of the sample mean approaches a normal distribution as the sample size increases, regardless of the population's distribution",
+            "choices": [
+                "The sample mean is always normally distributed",
+                "The sampling distribution of the sample mean approaches a normal distribution as the sample size increases, regardless of the population's distribution",
+                "The probability distribution of a sample mean is approximately normal for large sample sizes, regardless of the population's distribution",
+                "The sample size does not affect the normality of the distribution"
+            ]
+        },
+        {
+            "id": 10,
+            "type": "multiple_choice",
+            "question": "What is the purpose of an ANOVA test?",
+            "chosen_answer": "To test for relationships between two variables",
+            "correct_answer": "To compare the means of three or more groups",
+            "choices": [
+                "To test for relationships between two variables",
+                "To compare the means of two groups",
+                "To compare the means of three or more groups",
+                "To test for independence between categorical variables"
+            ]
+        }
+    ]
+}
+
