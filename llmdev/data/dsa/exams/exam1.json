@@ -1,0 +1,356 @@
+{
+    "title": "Data Structures and Algorithms - Final Exam",
+    "questions": [
+        {
+            "id": 1,
+            "type": "multiple_choice",
+            "question": "What is the time complexity of inserting an element into a binary search tree (BST) on average?",
+            "chosen_answer": "",
+            "correct_answer": "O(log n)"
+        },
+        {
+            "id": 2,
+            "type": "multiple_choice",
+            "question": "Which of the following data structures uses a FIFO (First In, First Out) principle?",
+            "chosen_answer": "",
+            "correct_answer": "Queue"
+        },
+        {
+            "id": 3,
+            "type": "multiple_choice",
+            "question": "What is the time complexity of accessing an element in an array?",
+            "chosen_answer": "",
+            "correct_answer": "O(1)"
+        },
+        {
+            "id": 4,
+            "type": "multiple_choice",
+            "question": "Which of the following is a self-balancing binary search tree?",
+            "chosen_answer": "",
+            "correct_answer": "AVL Tree"
+        },
+        {
+            "id": 5,
+            "type": "multiple_choice",
+            "question": "What is the worst-case time complexity of QuickSort?",
+            "chosen_answer": "",
+            "correct_answer": "O(n^2)"
+        },
+        {
+            "id": 6,
+            "type": "multiple_choice",
+            "question": "What data structure is used to implement recursion?",
+            "chosen_answer": "",
+            "correct_answer": "Stack"
+        },
+        {
+            "id": 7,
+            "type": "multiple_choice",
+            "question": "Which of the following algorithms is used to find the shortest path in a weighted graph?",
+            "chosen_answer": "",
+            "correct_answer": "Dijkstra's Algorithm"
+        },
+        {
+            "id": 8,
+            "type": "multiple_choice",
+            "question": "What is the best-case time complexity of Merge Sort?",
+            "chosen_answer": "",
+            "correct_answer": "O(n log n)"
+        },
+        {
+            "id": 9,
+            "type": "multiple_choice",
+            "question": "Which of the following data structures provides constant-time access to elements by key?",
+            "chosen_answer": "",
+            "correct_answer": "Hash Table"
+        },
+        {
+            "id": 10,
+            "type": "multiple_choice",
+            "question": "What is the time complexity of enqueuing an element in a Queue?",
+            "chosen_answer": "",
+            "correct_answer": "O(1)"
+        },
+        {
+            "id": 11,
+            "type": "multiple_choice",
+            "question": "Which algorithm is used to traverse a tree in depth-first order?",
+            "chosen_answer": "",
+            "correct_answer": "DFS (Depth-First Search)"
+        },
+        {
+            "id": 12,
+            "type": "multiple_choice",
+            "question": "Which of the following data structures is used for implementing a LIFO (Last In, First Out) principle?",
+            "chosen_answer": "",
+            "correct_answer": "Stack"
+        },
+        {
+            "id": 13,
+            "type": "multiple_choice",
+            "question": "Which data structure is best for searching a fixed set of data?",
+            "chosen_answer": "",
+            "correct_answer": "Hash Table"
+        },
+        {
+            "id": 14,
+            "type": "multiple_choice",
+            "question": "What is the worst-case time complexity for searching an element in a binary search tree (BST)?",
+            "chosen_answer": "",
+            "correct_answer": "O(n)"
+        },
+        {
+            "id": 15,
+            "type": "multiple_choice",
+            "question": "Which sorting algorithm is stable and has a worst-case time complexity of O(n^2)?",
+            "chosen_answer": "",
+            "correct_answer": "Insertion Sort"
+        },
+        {
+            "id": 16,
+            "type": "multiple_choice",
+            "question": "What is the best-case time complexity of Bubble Sort?",
+            "chosen_answer": "",
+            "correct_answer": "O(n)"
+        },
+        {
+            "id": 17,
+            "type": "multiple_choice",
+            "question": "Which of the following is a graph traversal algorithm?",
+            "chosen_answer": "",
+            "correct_answer": "BFS (Breadth-First Search)"
+        },
+        {
+            "id": 18,
+            "type": "multiple_choice",
+            "question": "What is the time complexity of searching an element in a Hash Table with good hash function?",
+            "chosen_answer": "",
+            "correct_answer": "O(1)"
+        },
+        {
+            "id": 19,
+            "type": "multiple_choice",
+            "question": "Which data structure is used in Prim's Algorithm?",
+            "chosen_answer": "",
+            "correct_answer": "Priority Queue"
+        },
+        {
+            "id": 20,
+            "type": "multiple_choice",
+            "question": "What is the worst-case time complexity of Heap Sort?",
+            "chosen_answer": "",
+            "correct_answer": "O(n log n)"
+        },
+        {
+            "id": 21,
+            "type": "multiple_choice",
+            "question": "What is the time complexity of deleting an element from a linked list?",
+            "chosen_answer": "",
+            "correct_answer": "O(n)"
+        },
+        {
+            "id": 22,
+            "type": "multiple_choice",
+            "question": "What is the primary advantage of a doubly linked list over a singly linked list?",
+            "chosen_answer": "",
+            "correct_answer": "Traversal can be done in both directions."
+        },
+        {
+            "id": 23,
+            "type": "multiple_choice",
+            "question": "Which of the following is a balanced binary search tree?",
+            "chosen_answer": "",
+            "correct_answer": "Red-Black Tree"
+        },
+        {
+            "id": 24,
+            "type": "multiple_choice",
+            "question": "Which of the following algorithms is NOT a divide and conquer algorithm?",
+            "chosen_answer": "",
+            "correct_answer": "Bubble Sort"
+        },
+        {
+            "id": 25,
+            "type": "multiple_choice",
+            "question": "Which sorting algorithm has the best worst-case time complexity?",
+            "chosen_answer": "",
+            "correct_answer": "Merge Sort"
+        },
+        {
+            "id": 26,
+            "type": "multiple_choice",
+            "question": "Which of the following operations has O(1) complexity for a stack?",
+            "chosen_answer": "",
+            "correct_answer": "Push"
+        },
+        {
+            "id": 27,
+            "type": "multiple_choice",
+            "question": "Which data structure is typically used to implement Dijkstra's algorithm?",
+            "chosen_answer": "",
+            "correct_answer": "Priority Queue"
+        },
+        {
+            "id": 28,
+            "type": "multiple_choice",
+            "question": "What is the space complexity of Merge Sort?",
+            "chosen_answer": "",
+            "correct_answer": "O(n)"
+        },
+        {
+            "id": 29,
+            "type": "multiple_choice",
+            "question": "Which of the following is a non-linear data structure?",
+            "chosen_answer": "",
+            "correct_answer": "Graph"
+        },
+        {
+            "id": 30,
+            "type": "multiple_choice",
+            "question": "What is the main difference between a stack and a queue?",
+            "chosen_answer": "",
+            "correct_answer": "A stack is LIFO, while a queue is FIFO."
+        },
+        {
+            "id": 31,
+            "type": "multiple_choice",
+            "question": "What is the time complexity of accessing an element in a linked list?",
+            "chosen_answer": "",
+            "correct_answer": "O(n)"
+        },
+        {
+            "id": 32,
+            "type": "multiple_choice",
+            "question": "What is the key feature of a circular queue?",
+            "chosen_answer": "",
+            "correct_answer": "The rear of the queue is connected to the front."
+        },
+        {
+            "id": 33,
+            "type": "multiple_choice",
+            "question": "Which data structure is most suitable for implementing a breadth-first search (BFS) algorithm?",
+            "chosen_answer": "",
+            "correct_answer": "Queue"
+        },
+        {
+            "id": 34,
+            "type": "multiple_choice",
+            "question": "Which of the following is true about a max heap?",
+            "chosen_answer": "",
+            "correct_answer": "The parent node is always greater than or equal to its children."
+        },
+        {
+            "id": 35,
+            "type": "multiple_choice",
+            "question": "Which of the following data structures is most efficient for priority-based scheduling?",
+            "chosen_answer": "",
+            "correct_answer": "Priority Queue"
+        },
+        {
+            "id": 36,
+            "type": "multiple_choice",
+            "question": "What is the time complexity of Heapify operation?",
+            "chosen_answer": "",
+            "correct_answer": "O(log n)"
+        },
+        {
+            "id": 37,
+            "type": "multiple_choice",
+            "question": "Which algorithm is used for cycle detection in a graph?",
+            "chosen_answer": "",
+            "correct_answer": "DFS (Depth-First Search)"
+        },
+        {
+            "id": 38,
+            "type": "multiple_choice",
+            "question": "Which of the following is a property of B-Trees?",
+            "chosen_answer": "",
+            "correct_answer": "All leaf nodes are at the same level."
+        },
+        {
+            "id": 39,
+            "type": "multiple_choice",
+            "question": "What is the time complexity of searching for an element in a balanced binary search tree?",
+            "chosen_answer": "",
+            "correct_answer": "O(log n)"
+        },
+        {
+            "id": 40,
+            "type": "multiple_choice",
+            "question": "Which data structure uses a dynamic array to allow for resizing?",
+            "chosen_answer": "",
+            "correct_answer": "ArrayList"
+        },
+        {
+            "id": 41,
+            "type": "multiple_choice",
+            "question": "Which algorithm is used to find the minimum spanning tree of a graph?",
+            "chosen_answer": "",
+            "correct_answer": "Kruskal's Algorithm"
+        },
+        {
+            "id": 42,
+            "type": "multiple_choice",
+            "question": "Which of the following sorting algorithms is NOT in-place?",
+            "chosen_answer": "",
+            "correct_answer": "Merge Sort"
+        },
+        {
+            "id": 43,
+            "type": "multiple_choice",
+            "question": "Which of the following is an advantage of using a linked list over an array?",
+            "chosen_answer": "",
+            "correct_answer": "Dynamic size"
+        },
+        {
+            "id": 44,
+            "type": "multiple_choice",
+            "question": "Which of the following algorithms is typically used for solving the shortest path problem in unweighted graphs?",
+            "chosen_answer": "",
+            "correct_answer": "BFS (Breadth-First Search)"
+        },
+        {
+            "id": 45,
+            "type": "multiple_choice",
+            "question": "What is the worst-case time complexity of Bubble Sort?",
+            "chosen_answer": "",
+            "correct_answer": "O(n^2)"
+        },
+        {
+            "id": 46,
+            "type": "multiple_choice",
+            "question": "Which of the following is true about binary heaps?",
+            "chosen_answer": "",
+            "correct_answer": "A binary heap is a complete binary tree."
+        },
+        {
+            "id": 47,
+            "type": "multiple_choice",
+            "question": "Which of the following algorithms is used to detect negative-weight cycles in a graph?",
+            "chosen_answer": "",
+            "correct_answer": "Bellman-Ford Algorithm"
+        },
+        {
+            "id": 48,
+            "type": "multiple_choice",
+            "question": "Which of the following data structures is most suitable for implementing an undo feature?",
+            "chosen_answer": "",
+            "correct_answer": "Stack"
+        },
+        {
+            "id": 49,
+            "type": "multiple_choice",
+            "question": "Which of the following is an example of a greedy algorithm?",
+            "chosen_answer": "",
+            "correct_answer": "Huffman Coding"
+        },
+        {
+            "id": 50,
+            "type": "multiple_choice",
+            "question": "Which algorithm is used for topological sorting?",
+            "chosen_answer": "",
+            "correct_answer": "DFS (Depth-First Search)"
+        }
+    ]
+}
+

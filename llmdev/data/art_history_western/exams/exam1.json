@@ -1,0 +1,356 @@
+{
+    "title": "Western Art History - Final Exam",
+    "questions": [
+        {
+            "id": 1,
+            "type": "multiple_choice",
+            "question": "Which of the following is an example of Renaissance art?",
+            "chosen_answer": "",
+            "correct_answer": "Michelangelo’s Sistine Chapel ceiling"
+        },
+        {
+            "id": 2,
+            "type": "multiple_choice",
+            "question": "Who is considered the father of modern art criticism?",
+            "chosen_answer": "",
+            "correct_answer": "John Ruskin"
+        },
+        {
+            "id": 3,
+            "type": "multiple_choice",
+            "question": "Which art movement is associated with the use of light and color to depict modern life?",
+            "chosen_answer": "",
+            "correct_answer": "Impressionism"
+        },
+        {
+            "id": 4,
+            "type": "multiple_choice",
+            "question": "Who painted the 'School of Athens'?",
+            "chosen_answer": "",
+            "correct_answer": "Raphael"
+        },
+        {
+            "id": 5,
+            "type": "multiple_choice",
+            "question": "What is the primary characteristic of Baroque art?",
+            "chosen_answer": "",
+            "correct_answer": "Dramatic use of light and shadow"
+        },
+        {
+            "id": 6,
+            "type": "multiple_choice",
+            "question": "Which of the following is a work by Leonardo da Vinci?",
+            "chosen_answer": "",
+            "correct_answer": "The Last Supper"
+        },
+        {
+            "id": 7,
+            "type": "multiple_choice",
+            "question": "What innovation is attributed to Brunelleschi?",
+            "chosen_answer": "",
+            "correct_answer": "Linear perspective"
+        },
+        {
+            "id": 8,
+            "type": "multiple_choice",
+            "question": "Which of these artists was a leader of the Romantic movement?",
+            "chosen_answer": "",
+            "correct_answer": "Eugène Delacroix"
+        },
+        {
+            "id": 9,
+            "type": "multiple_choice",
+            "question": "What is one of the key characteristics of Gothic architecture?",
+            "chosen_answer": "",
+            "correct_answer": "Pointed arches"
+        },
+        {
+            "id": 10,
+            "type": "multiple_choice",
+            "question": "Which artist is known for his painting 'Starry Night'?",
+            "chosen_answer": "",
+            "correct_answer": "Vincent van Gogh"
+        },
+        {
+            "id": 11,
+            "type": "multiple_choice",
+            "question": "Which of the following artists is associated with Cubism?",
+            "chosen_answer": "",
+            "correct_answer": "Pablo Picasso"
+        },
+        {
+            "id": 12,
+            "type": "multiple_choice",
+            "question": "Which of the following buildings is an example of Greek Classical architecture?",
+            "chosen_answer": "",
+            "correct_answer": "The Parthenon"
+        },
+        {
+            "id": 13,
+            "type": "multiple_choice",
+            "question": "Which period is known for its use of chiaroscuro?",
+            "chosen_answer": "",
+            "correct_answer": "Baroque"
+        },
+        {
+            "id": 14,
+            "type": "multiple_choice",
+            "question": "Who is the artist behind the famous sculpture 'David'?",
+            "chosen_answer": "",
+            "correct_answer": "Michelangelo"
+        },
+        {
+            "id": 15,
+            "type": "multiple_choice",
+            "question": "What is the defining characteristic of Romanesque architecture?",
+            "chosen_answer": "",
+            "correct_answer": "Thick walls and rounded arches"
+        },
+        {
+            "id": 16,
+            "type": "multiple_choice",
+            "question": "Which artist is known for his frescoes in the Arena Chapel?",
+            "chosen_answer": "",
+            "correct_answer": "Giotto"
+        },
+        {
+            "id": 17,
+            "type": "multiple_choice",
+            "question": "What style of art is Salvador Dalí most associated with?",
+            "chosen_answer": "",
+            "correct_answer": "Surrealism"
+        },
+        {
+            "id": 18,
+            "type": "multiple_choice",
+            "question": "Which of the following is considered a hallmark of Rococo art?",
+            "chosen_answer": "",
+            "correct_answer": "Ornamentation and playful themes"
+        },
+        {
+            "id": 19,
+            "type": "multiple_choice",
+            "question": "Which famous painting is housed in the Louvre Museum in Paris?",
+            "chosen_answer": "",
+            "correct_answer": "The Mona Lisa"
+        },
+        {
+            "id": 20,
+            "type": "multiple_choice",
+            "question": "What is the primary subject matter of Edward Hopper’s paintings?",
+            "chosen_answer": "",
+            "correct_answer": "American urban and rural scenes"
+        },
+        {
+            "id": 21,
+            "type": "multiple_choice",
+            "question": "Who painted 'The Persistence of Memory'?",
+            "chosen_answer": "",
+            "correct_answer": "Salvador Dalí"
+        },
+        {
+            "id": 22,
+            "type": "multiple_choice",
+            "question": "Which of the following is a key feature of Renaissance art?",
+            "chosen_answer": "",
+            "correct_answer": "Realism and attention to human anatomy"
+        },
+        {
+            "id": 23,
+            "type": "multiple_choice",
+            "question": "Which movement is associated with the use of vibrant, unnatural colors?",
+            "chosen_answer": "",
+            "correct_answer": "Fauvism"
+        },
+        {
+            "id": 24,
+            "type": "multiple_choice",
+            "question": "What technique did Georges Seurat use in his paintings?",
+            "chosen_answer": "",
+            "correct_answer": "Pointillism"
+        },
+        {
+            "id": 25,
+            "type": "multiple_choice",
+            "question": "What subject is depicted in 'Liberty Leading the People'?",
+            "chosen_answer": "",
+            "correct_answer": "The French Revolution"
+        },
+        {
+            "id": 26,
+            "type": "multiple_choice",
+            "question": "Which of the following artists is best known for his ceiling painting in the Palace of Versailles?",
+            "chosen_answer": "",
+            "correct_answer": "Charles Le Brun"
+        },
+        {
+            "id": 27,
+            "type": "multiple_choice",
+            "question": "Which of the following is a work by Rembrandt?",
+            "chosen_answer": "",
+            "correct_answer": "The Night Watch"
+        },
+        {
+            "id": 28,
+            "type": "multiple_choice",
+            "question": "What distinguishes the Neoclassical style from the Baroque?",
+            "chosen_answer": "",
+            "correct_answer": "Emphasis on simplicity and classical themes"
+        },
+        {
+            "id": 29,
+            "type": "multiple_choice",
+            "question": "Which of the following painters is known for his series of 'Water Lilies' paintings?",
+            "chosen_answer": "",
+            "correct_answer": "Claude Monet"
+        },
+        {
+            "id": 30,
+            "type": "multiple_choice",
+            "question": "Which architectural structure is an example of Gothic architecture?",
+            "chosen_answer": "",
+            "correct_answer": "Notre Dame Cathedral"
+        },
+        {
+            "id": 31,
+            "type": "multiple_choice",
+            "question": "Which art movement is considered a reaction to the Industrial Revolution?",
+            "chosen_answer": "",
+            "correct_answer": "Romanticism"
+        },
+        {
+            "id": 32,
+            "type": "multiple_choice",
+            "question": "Which artist is known for his depiction of ballerinas?",
+            "chosen_answer": "",
+            "correct_answer": "Edgar Degas"
+        },
+        {
+            "id": 33,
+            "type": "multiple_choice",
+            "question": "Which of the following is an example of Art Nouveau architecture?",
+            "chosen_answer": "",
+            "correct_answer": "Casa Batlló by Antoni Gaudí"
+        },
+        {
+            "id": 34,
+            "type": "multiple_choice",
+            "question": "Who painted 'Guernica'?",
+            "chosen_answer": "",
+            "correct_answer": "Pablo Picasso"
+        },
+        {
+            "id": 35,
+            "type": "multiple_choice",
+            "question": "Which of the following is a feature of Byzantine art?",
+            "chosen_answer": "",
+            "correct_answer": "Religious icons and mosaics"
+        },
+        {
+            "id": 36,
+            "type": "multiple_choice",
+            "question": "Which artist is associated with the Hudson River School of landscape painting?",
+            "chosen_answer": "",
+            "correct_answer": "Thomas Cole"
+        },
+        {
+            "id": 37,
+            "type": "multiple_choice",
+            "question": "Which artist is famous for his paintings of flowers and the American Southwest?",
+            "chosen_answer": "",
+            "correct_answer": "Georgia O'Keeffe"
+        },
+        {
+            "id": 38,
+            "type": "multiple_choice",
+            "question": "Which of the following is an example of Rococo painting?",
+            "chosen_answer": "",
+            "correct_answer": "The Swing by Jean-Honoré Fragonard"
+        },
+        {
+            "id": 39,
+            "type": "multiple_choice",
+            "question": "Which of the following artists is known for his depictions of peasants and landscapes in the Northern Renaissance?",
+            "chosen_answer": "",
+            "correct_answer": "Pieter Bruegel the Elder"
+        },
+        {
+            "id": 40,
+            "type": "multiple_choice",
+            "question": "Which artist painted 'The Birth of Venus'?",
+            "chosen_answer": "",
+            "correct_answer": "Sandro Botticelli"
+        },
+        {
+            "id": 41,
+            "type": "multiple_choice",
+            "question": "Which of the following is characteristic of the Fauvist movement?",
+            "chosen_answer": "",
+            "correct_answer": "Bold, vibrant colors and simplified forms"
+        },
+        {
+            "id": 42,
+            "type": "multiple_choice",
+            "question": "Which of the following is an example of Dada art?",
+            "chosen_answer": "",
+            "correct_answer": "Marcel Duchamp’s 'Fountain'"
+        },
+        {
+            "id": 43,
+            "type": "multiple_choice",
+            "question": "Which artist is known for developing abstract art through works like 'Composition VII'?",
+            "chosen_answer": "",
+            "correct_answer": "Wassily Kandinsky"
+        },
+        {
+            "id": 44,
+            "type": "multiple_choice",
+            "question": "Which artist is associated with the Blue Period?",
+            "chosen_answer": "",
+            "correct_answer": "Pablo Picasso"
+        },
+        {
+            "id": 45,
+            "type": "multiple_choice",
+            "question": "Which of the following is an important concept in the art of the Italian Renaissance?",
+            "chosen_answer": "",
+            "correct_answer": "Humanism"
+        },
+        {
+            "id": 46,
+            "type": "multiple_choice",
+            "question": "Which of these artists is known for his work on 'The Garden of Earthly Delights'?",
+            "chosen_answer": "",
+            "correct_answer": "Hieronymus Bosch"
+        },
+        {
+            "id": 47,
+            "type": "multiple_choice",
+            "question": "Which of the following is a key feature of Symbolist art?",
+            "chosen_answer": "",
+            "correct_answer": "Use of metaphor and symbolic imagery"
+        },
+        {
+            "id": 48,
+            "type": "multiple_choice",
+            "question": "Which artist is known for his depictions of political unrest and war in works like 'The Third of May 1808'?",
+            "chosen_answer": "",
+            "correct_answer": "Francisco Goya"
+        },
+        {
+            "id": 49,
+            "type": "multiple_choice",
+            "question": "Which artist is known for creating large-scale color field paintings?",
+            "chosen_answer": "",
+            "correct_answer": "Mark Rothko"
+        },
+        {
+            "id": 50,
+            "type": "multiple_choice",
+            "question": "Which artist is known for the sculpture 'The Thinker'?",
+            "chosen_answer": "",
+            "correct_answer": "Auguste Rodin"
+        }
+    ]
+}
+
