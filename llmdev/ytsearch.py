@@ -1,44 +1,25 @@
-import os
-from googleapiclient.discovery import build
+import json
+from youtubesearchpython import VideosSearch
 
-# Set your API key here
-API_KEY = 'YOUR_API_KEY'
-API_SERVICE_NAME = 'youtube'
-API_VERSION = 'v3'
-
-def youtube_search(query):
-    youtube = build(API_SERVICE_NAME, API_VERSION, developerKey=API_KEY)
+"""
+query_videos: wrapper around ytsearch api that
+returns the list of videos (default limit of 10) queried
+by a search term
+"""
+def query_videos(query: str, num_results: int = 10):
+    videos_search = VideosSearch(query, limit=num_results)
+    video_results = videos_search.result()["result"]
     
-    search_response = youtube.search().list(
-        q=query,
-        part='snippet',
-        maxResults=10
-    ).execute()
-    
-    video_metadata_list = []
-    
-    for item in search_response.get('items', []):
-        video_metadata = {
-            'videoId': item['id']['videoId'],
-            'title': item['snippet']['title'],
-            'description': item['snippet']['description'],
-            'channelTitle': item['snippet']['channelTitle'],
-            'publishedAt': item['snippet']['publishedAt']
+    video_list = []
+    for video in video_results:
+        video_info = {
+            "title": video["title"],
+            "link": video["link"],
+            "duration": video["duration"],
+            "view_count": video["viewCount"]["short"],
+            "published_time": video["publishedTime"],
+            "channel_name": video["channel"]["name"]
         }
-        video_metadata_list.append(video_metadata)
+        video_list.append(video_info)
     
-    return video_metadata_list
-
-if __name__ == '__main__':
-    query = 'Python programming tutorials'
-    
-    results = youtube_search(query)
-    
-    for idx, video in enumerate(results):
-        print(f"Result {idx + 1}:")
-        print(f"Video ID: {video['videoId']}")
-        print(f"Title: {video['title']}")
-        print(f"Description: {video['description']}")
-        print(f"Channel: {video['channelTitle']}")
-        print(f"Published At: {video['publishedAt']}")
-        print('-' * 50)
+    return video_list

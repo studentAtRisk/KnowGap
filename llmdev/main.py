@@ -4,10 +4,12 @@
 # an assignment/quiz/test 
 #
 
+import json
 import openai
 import os
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
+from ytsearch import query_videos
 
 load_dotenv()
 app = Flask(__name__)
@@ -16,7 +18,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 def generate_query(question):
 
     prompt = f"""
-    Take the following question from a quiz, homework, or exam, and generate an effective YouTube video search query that will help someone find educational videos to study the topic. The search query should:
+    Take the following question and generate an effective YouTube video search query that will help someone find educational videos to study the topic. The search query should:
     Be concise and include the most relevant keywords and phrases from the question.
     Optimize for YouTube's search algorithm by considering common video titles and descriptions.
     Avoid unnecessary words or details that don't aid in finding helpful videos.
@@ -39,28 +41,42 @@ def generate_query(question):
         print(f"Error calling OpenAI API: {e}")
         return "Error generating query"
 
-# endpoint
-@app.route('/process_quiz', methods=['POST'])
-def process_quiz():
-    data = request.json
+def process_quiz(quiz_data):
+    if 'questions' not in quiz_data:
+        print("Invalid quiz data: 'questions' key not found.")
+        return
 
-    if not data or 'questions' not in data:
-        return jsonify({'error': 'Invalid request, see documentation'}), 400
-
-    questions = data['questions']
-    if not isinstance(quiz, list):
-        return jsonify({'error': 'Invalid questions format, expected a list of questions'}), 400
-
+    questions = quiz_data['questions']
     results = []
 
-    for question in quiz:
-        search_query = get_youtube_search_query(question['question'])
+    for question in questions:
+        question_text = question['question']
+        search_query = generate_query(question_text)  # Call the generate_query function
         results.append({
-            'question': question['question'],
+            'question': question_text,
             'youtube_query': search_query
         })
 
-    return jsonify({'recommendations': results})
+    return results
 
+def load_quiz_from_file(file_path):
+    """Loads the quiz data from a given JSON file path."""
+    try:
+        with open(file_path, 'r') as file:
+            quiz_data = json.load(file)
+            return quiz_data
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+        return None
+    except json.JSONDecodeError:
+        print(f"Error decoding JSON from file: {file_path}")
+        return None
 
-print(generate_query("What happens when you dereference a null pointer?"))
+if __name__ == "__main__":
+    path = "/home/dsantamaria/ucf/UCF-Student-Risk-Predictor/querygen/data/stats/exams/exam1.json"
+    quiz_data = load_quiz_from_file(path)
+    if quiz_data:
+        results = process_quiz(quiz_data)
+        for result in results:
+            print(f"Question: {result['question']}")
+            print(f"Suggested YouTube query: {result['youtube_query']}\n")
