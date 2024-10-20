@@ -11,7 +11,7 @@ from encryption import at_risk_encrypt_token, at_risk_decrypt_token
 from pymongo import MongoClient
 from update_course_students import update_db as update_students_db
 from update_course_quizzes import update_db as update_quizzes_db
-from update_course_context import update_course_context
+from update_course_context import update_context
 from update_video import update_video_link
 
 import asyncio
@@ -167,33 +167,19 @@ async def update_video():
     return jsonify({'message': update_result['message']}), 200
 
 @app.route('/update_course_context', methods=['POST'])
-def update_course_context():
-    mdb_client = MongoClient(DB_CONNECTION_STRING)
-    db = mdb_client['NoGap']
-
+def update_course_context_request():
     data = request.get_json()
-    course_id = data.get('courseid')
-    new_course_context = data.get('course_context', "")
+    courseid = request.get('courseid')
+    new_course_context = request.get('course_context')
 
-    if not course_id:
-        return jsonify({'error': 'courseid is required'}), 400
+    if not all([courseid, new_course_context]):
+         return jsonify({'error': 'Missing parameters'}), 400
+    update_result = update_context(courseid, new_course_context)
 
-    try:
-        result = db['Quiz Questions'].update_many(
-            {
-                'courseid': course_id,
-                'course_context': {'$ne': new_course_context}
-            },
-            {
-                '$set': {
-                    'course_context': new_course_context
-                }
-            }
-        )
-        return jsonify({'matched_count': result.matched_count, 'modified_count': result.modified_count}), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
+    if 'error' in update_result:
+        return jsonify({'error': update_result['error']}), 400
+    
+    return jsonify({'message': update_result['message']}), 200
 
 
 if __name__ == "__main__" :

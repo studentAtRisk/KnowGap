@@ -15,7 +15,7 @@ DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mongo_client = MongoClient(DB_CONNECTION_STRING)
 db = mongo_client['NoGap']
 quizzes_collection = db['Quiz Questions']
-topic_links_collection = db['topic_links']
+contexts_collection = db['Course Contexts']
 
 def get_video_recommendation_and_store():
     videos = {}
@@ -24,16 +24,22 @@ def get_video_recommendation_and_store():
         question_text = question.get('question_text')
         cur_video_data = question.get('video_data')
         if not question_text or question.get('video_data'):
-            continue  
-        
-        course_name = ""
-        if question.get('courseid') == '10496761': 
-            course_name = "Public Speaking"
-        
-        course_context = question.get('course_context', "")
-        
+            continue
+
+        # Retrieve course information from the quiz question
+        course_id = question.get('courseid')
+        course_name = question.get('course_name', "")
+
+        # Fetch the course context from the contexts_collection using the course_id
+        course_context = ""
+        course_context_data = contexts_collection.find_one({'courseid': course_id})
+        if course_context_data:
+            course_context = course_context_data.get('course_context', "")
+
+        # Generate the core topic with course context
         core_topic = generate_core_topic(question_text, course_name, course_context)
 
+        # Check if there's an existing topic with the same core topic
         existing_topic = quizzes_collection.find_one({'core_topic': core_topic})
 
         if existing_topic:
@@ -41,12 +47,14 @@ def get_video_recommendation_and_store():
             print(f"Reusing stored video data for topic: {core_topic}")
         else:
             video_data = fetch_videos_for_topic(core_topic)
-        
+
+        # Update the quiz question with the generated core topic and fetched video data
         cur_question_text = question.get("question_text")
         cur_course_name = question.get("course_name")
         cur_course_id = question.get("courseid")
         cur_quiz_id = question.get("quizid")
         cur_question_id = question.get("questionid")
+        
         quizzes_collection.update_one(
             {
                 'questionid': cur_question_id,

@@ -12,30 +12,31 @@ DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mdb_client = MongoClient(DB_CONNECTION_STRING)
 db = mdb_client['NoGap']
 
-@app.route('/update_course_context', methods=['POST'])
-def update_course_context():
-    data = request.get_json()
-    course_id = data.get('courseid')
-    new_course_context = data.get('course_context', "")
 
-    if not course_id:
-        return jsonify({'error': 'courseid is required'}), 400
+# Load environment variables for DB connection
+DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 
+def update_context(course_id, course_context):
     try:
-        result = db['Quiz Questions'].update_many(
-            {
-                'courseid': course_id,
-                'course_context': {'$ne': new_course_context}
-            },
+        # Connect to MongoDB
+        course_context_collection = db['course_context']
+
+        # Update or insert the course context
+        course_context_collection.update_one(
+            {'courseid': course_id},
             {
                 '$set': {
-                    'course_context': new_course_context
+                    'courseid': course_id,
+                    'course_context': course_context,
                 }
-            }
+            },
+            upsert=True  # Create a new document if it doesn't exist
         )
-        return jsonify({'matched_count': result.matched_count, 'modified_count': result.modified_count}), 200
+        return {'status': 'Success', 'message': 'Course context updated successfully'}
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return {'status': 'Error', 'message': str(e)}
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
