@@ -13,7 +13,7 @@ from update_course_students import update_db as update_students_db
 from update_course_quizzes import update_db as update_quizzes_db
 from update_course_context import update_context
 from update_video import update_video_link
-
+import logging
 import asyncio
 
 # Handling Environment Variables
@@ -27,6 +27,9 @@ encryption_key = bytes.fromhex(HEX_ENCRYPTION_KEY)
 
 app = Flask(__name__)
 CORS(app)
+
+db = MongoClient(DB_CONNECTION_STRING)
+tokens_collection = db["Tokens"]
 
 @app.route('/')
 def hello_world():
@@ -187,6 +190,10 @@ def update_course_context_request():
         return jsonify({'error': update_result['error']}), 400
     
     return jsonify({'message': update_result['message']}), 200
+
+
+
+
 
 
 if __name__ == "__main__" :

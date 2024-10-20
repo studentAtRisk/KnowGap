@@ -50,7 +50,8 @@ def get_assessment_videos(student_id, course_id):
                 core_topic = matching_question.get("core_topic", "No topic found")
                 videos_for_question = matching_question.get('video_data', [])
             else:
-                core_topic = get_video_reccs.generate_core_topic(cur_qid, course_id)
+                cur_question_text = question.get('question_text')
+                core_topic = get_video_reccs.generate_core_topic(cur_question_text,cur_qid, course_id)
                 videos_for_question = get_video_reccs.fetch_videos_for_topic(core_topic)
             
             quiz_videos.append({
