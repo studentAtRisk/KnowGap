@@ -170,7 +170,7 @@ async def update_video():
 def update_course_context_request():
     data = request.get_json()
     courseid = data.get('courseid')
-    new_course_context = data.get('course_context')
+    new_course_context = data.get('Course Contexts')
 
     if not all([courseid, new_course_context]):
          return jsonify({'error': 'Missing parameters'}), 400
