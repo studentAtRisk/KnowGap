@@ -94,6 +94,7 @@ def generate_core_topic(question_text, course_name, course_context=""):
     )
 
     core_topic = response.choices[0].text.strip()
+    core_topic = core_topic.strip('"').strip("'")
     print(f"Generated core topic: {core_topic}")  
     return core_topic
 
