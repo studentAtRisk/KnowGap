@@ -6,9 +6,9 @@ const InstructorView = () => {
   const [activeTab, setActiveTab] = useState('assignments');
   const [students, setStudents] = useState([]);
   const [notifications, setNotifications] = useState([]);
-  const [videoRecommendations, setVideoRecommendations] = useState({});
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [newVideo, setNewVideo] = useState({ title: '', url: '', reason: '' });
+  const [courseVideos, setCourseVideos] = useState([]);
+  const [newVideo, setNewVideo] = useState({ title: '', url: '' });
+  const [courseContext, setCourseContext] = useState('');
 
   const imgs = { youtube };
 
@@ -127,6 +127,7 @@ const InstructorView = () => {
           })
         );
         setStudents(studentData);
+        fetchCourseVideos(courseId);
       }
     };
 
@@ -188,12 +189,12 @@ const InstructorView = () => {
     setNotifications([...notifications, message]);
   };
 
-  const fetchVideoRecommendations = async (userId, courseId) => {
+  const fetchCourseVideos = async (courseId) => {
     const baseUrl =
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
     try {
       const response = await fetch(
-        `${baseUrl}/get_video_rec?userid=${userId}&courseid=${courseId}`,
+        `${baseUrl}/get_course_videos?courseid=${courseId}`,
         {
           method: 'GET',
           headers: {
@@ -206,63 +207,70 @@ const InstructorView = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setVideoRecommendations((prevState) => ({
-        ...prevState,
-        [userId]: data,
-      }));
+      setCourseVideos(data.videos || []);
     } catch (error) {
-      console.error('Error fetching video recommendations:', error);
+      console.error('Error fetching course videos:', error);
     }
   };
 
   const handleAddVideo = async () => {
-    if (!selectedStudent) return;
+    const courseId = fetchCurrentCourseId();
+    if (!courseId) return;
 
-    const updatedRecommendations = {
-      ...videoRecommendations[selectedStudent.id],
-      [newVideo.reason]: {
-        topic: newVideo.reason,
-        videos: [
-          ...(videoRecommendations[selectedStudent.id]?.[newVideo.reason]
-            ?.videos || []),
-          { title: newVideo.title, link: newVideo.url },
-        ],
-      },
-    };
+    const updatedVideos = [...courseVideos, newVideo];
 
-    await updateVideoRecommendations(
-      selectedStudent.id,
-      updatedRecommendations
-    );
+    await updateCourseVideos(courseId, updatedVideos);
 
-    setVideoRecommendations((prevState) => ({
-      ...prevState,
-      [selectedStudent.id]: updatedRecommendations,
-    }));
-
-    setNewVideo({ title: '', url: '', reason: '' });
+    setCourseVideos(updatedVideos);
+    setNewVideo({ title: '', url: '' });
   };
 
-  const updateVideoRecommendations = async (userId, recommendations) => {
+  const updateCourseVideos = async (courseId, videos) => {
     const baseUrl =
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
     try {
-      const response = await fetch(`${baseUrl}/update_video_rec`, {
+      const response = await fetch(`${baseUrl}/update_course_videos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userid: userId,
-          courseid: fetchCurrentCourseId(),
-          recommendations: recommendations,
+          courseid: courseId,
+          videos: videos,
         }),
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
     } catch (error) {
-      console.error('Error updating video recommendations:', error);
+      console.error('Error updating course videos:', error);
+    }
+  };
+
+  const updateCourseContext = async () => {
+    const courseId = fetchCurrentCourseId();
+    if (!courseId) return;
+
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+    try {
+      const response = await fetch(`${baseUrl}/update_course_context`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          courseid: courseId,
+          course_context: courseContext,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      sendNotification('Course context updated successfully');
+    } catch (error) {
+      console.error('Error updating course context:', error);
+      sendNotification('Failed to update course context');
     }
   };
 
@@ -493,75 +501,60 @@ const InstructorView = () => {
 
       <div style={styles.container}>
         <div>
-          <h2 style={styles.title}>Manage Video Recommendations</h2>
-          <select
-            onChange={(e) => {
-              const student = students.find((s) => s.id === e.target.value);
-              setSelectedStudent(student);
-              fetchVideoRecommendations(student.id, fetchCurrentCourseId());
-            }}
-          >
-            <option value="">Select a student</option>
-            {students.map((student) => (
-              <option key={student.id} value={student.id}>
-                {student.name}
-              </option>
-            ))}
-          </select>
-
-          {selectedStudent && (
-            <div>
-              <h3>{selectedStudent.name}'s Video Recommendations</h3>
-              {Object.entries(
-                videoRecommendations[selectedStudent.id] || {}
-              ).map(([topic, data]) => (
-                <div key={topic}>
-                  <h4>{topic}</h4>
-                  <ul>
-                    {data.videos.map((video, index) => (
-                      <li key={index}>
-                        {video.title} -{' '}
-                        <a
-                          href={video.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Watch
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+          <h2 style={styles.title}>Manage Course Videos</h2>
+          <div>
+            <h3>Current Course Videos</h3>
+            <ul>
+              {courseVideos.map((video, index) => (
+                <li key={index}>
+                  {video.title} -{' '}
+                  <a href={video.url} target="_blank" rel="noopener noreferrer">
+                    Watch
+                  </a>
+                </li>
               ))}
+            </ul>
 
-              <h4>Add New Video</h4>
-              <input
-                type="text"
-                placeholder="Video Title"
-                value={newVideo.title}
-                onChange={(e) =>
-                  setNewVideo({ ...newVideo, title: e.target.value })
-                }
-              />
-              <input
-                type="text"
-                placeholder="Video URL"
-                value={newVideo.url}
-                onChange={(e) =>
-                  setNewVideo({ ...newVideo, url: e.target.value })
-                }
-              />
-              <input
-                type="text"
-                placeholder="Reason/Topic"
-                value={newVideo.reason}
-                onChange={(e) =>
-                  setNewVideo({ ...newVideo, reason: e.target.value })
-                }
-              />
-              <button onClick={handleAddVideo}>Add Video</button>
-            </div>
-          )}
+            <h4>Add New Video</h4>
+            <input
+              type="text"
+              placeholder="Video Title"
+              value={newVideo.title}
+              onChange={(e) =>
+                setNewVideo({ ...newVideo, title: e.target.value })
+              }
+            />
+            <input
+              type="text"
+              placeholder="Video URL"
+              value={newVideo.url}
+              onChange={(e) =>
+                setNewVideo({ ...newVideo, url: e.target.value })
+              }
+            />
+            <button onClick={handleAddVideo}>Add Video</button>
+          </div>
+        </div>
+      </div>
+
+      <div style={styles.container}>
+        <div>
+          <h2 style={styles.title}>Course Context</h2>
+          <textarea
+            style={styles.textArea}
+            value={courseContext}
+            onChange={(e) => setCourseContext(e.target.value)}
+            placeholder="Enter course context..."
+          ></textarea>
+          <button
+            style={{
+              ...styles.messageButton,
+              ':hover': styles.messageButtonHover,
+            }}
+            onClick={updateCourseContext}
+          >
+            Update Course Context
+          </button>
         </div>
       </div>
 
