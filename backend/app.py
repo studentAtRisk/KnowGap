@@ -28,9 +28,10 @@ encryption_key = bytes.fromhex(HEX_ENCRYPTION_KEY)
 app = Flask(__name__)
 CORS(app)
 
-db = MongoClient(DB_CONNECTION_STRING)
+client = MongoClient(DB_CONNECTION_STRING)
+db = client("NoGap")
 tokens_collection = db["Tokens"]
-quizzes_collection = db["Quiz Questions"]
+quizzes_collection = db['Quiz Questions']
 
 @app.route('/')
 def hello_world():
