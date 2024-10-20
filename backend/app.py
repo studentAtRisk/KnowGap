@@ -1,20 +1,15 @@
-from youtubesearchpython import VideosSearch
-import os
-from openai import OpenAI
+import logging
+import asyncio
+from quart import Quart, request, jsonify
+from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
-import json
-import get_curated_videos
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from update_courses import update_db, get_token_collection
+import os
 from encryption import at_risk_encrypt_token, at_risk_decrypt_token
-from pymongo import MongoClient
 from update_course_students import update_db as update_students_db
 from update_course_quizzes import update_db as update_quizzes_db
 from update_course_context import update_context
 from update_video import update_video_link
-import logging
-import asyncio
+import get_curated_videos  # Ensure this is properly imported for the video recommendations logic
 
 # Handling Environment Variables
 load_dotenv()
@@ -25,19 +20,23 @@ YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
 encryption_key = bytes.fromhex(HEX_ENCRYPTION_KEY)
 
-app = Flask(__name__)
-CORS(app)
+app = Quart(__name__)
 
-db = MongoClient(DB_CONNECTION_STRING)
+# MongoDB setup
+client = AsyncIOMotorClient(DB_CONNECTION_STRING)
+db = client['NoGap']
 tokens_collection = db["Tokens"]
+
+CORS(app)
 
 @app.route('/')
 def hello_world():
     return jsonify('Welcome to the KnowGap Backend API!')
 
+# Add your new endpoint for getting video recommendations
 @app.route('/get-video-rec', methods=['POST'])
-def get_video_recc_route():
-    data = request.get_json()  # Extract JSON payload
+async def get_video_recc_route():
+    data = await request.get_json()  # Extract JSON payload
     print(f"Received data: {data}")  # Log incoming request data for debugging
     
     student_id = data.get('userid')
@@ -56,27 +55,10 @@ def get_video_recc_route():
     print(f"Returning recommendations: {reccs}")  # Log the returned data
     return jsonify(reccs)
 
-@app.route('/update-course', methods=['POST'])
-def update_course_route():
-    data = request.get_json()
-    
-    course_id = data.get('courseid')
-    access_token = data.get('access_token')
-    
-    # Input Validations
-    if not course_id:
-        return jsonify({'error': 'Missing Course ID'}), 400
-    if not access_token:
-        return jsonify({'error': 'Missing Access Token'}), 400
-    
-    update_db(course_id, access_token)
-
-    return jsonify({'status': "Complete"})
-
 # POST endpoint to update or create a user
 @app.route('/add-token', methods=['POST'])
-def add_user_token():
-    data = request.get_json()
+async def add_user_token():
+    data = await request.get_json()
     user_id = data.get('userid')
     access_token = data.get('access_token')
     course_ids = data.get('courseids')
@@ -92,30 +74,28 @@ def add_user_token():
     if not link:
         return jsonify({'error': 'Missing Base Link'}), 400
 
-    token_collection = get_token_collection()
     encrypted_token = at_risk_encrypt_token(encryption_key, access_token)
 
+    token_collection = db["Tokens"]
     token_collection.update_one({'_id': user_id},{"$set": {"auth": encrypted_token, "courseids": course_ids, "link": link}},upsert=True)
 
-    # return updated user details
     updated_user = token_collection.find_one({'_id': user_id}, {'_id': 0})
     if updated_user:
         return jsonify({'status': 'Complete'}), 200
     else:
         return jsonify({'status': 'Error', 'message': 'User not found'}), 404
-    
+
 # GET endpoint to retrieve user data
 @app.route('/get-user', methods=['GET'])
-def get_user():
-    data = request.get_json()
+async def get_user():
+    data = await request.get_json()
     userid = data.get('userid')
 
     if not userid:
         return jsonify({'error': 'Missing user ID(s) parameter'}), 400
     
-    token_collection = get_token_collection()
+    token_collection = db["Tokens"]
 
-    # fetch the user from MongoDB
     user = token_collection.find_one({'_id': userid})
 
     if user:
@@ -135,7 +115,7 @@ def get_user():
 # POST endpoint to update course requests asynchronously
 @app.route('/update_course_request', methods=['POST'])
 async def update_course_request_endpoint():
-    data = request.get_json()
+    data = await request.get_json()
     
     courseid = int(data.get('courseid'))
     access_token = data.get('access_token')
@@ -160,7 +140,7 @@ async def update_course_request_endpoint():
 
 @app.route('/update_video', methods=['POST'])
 async def update_video():
-    data = request.get_json()
+    data = await request.get_json()
     quizid = data.get('quizid')
     questionid= data.get('questionid')
     old_link = data.get('old_link')
@@ -177,13 +157,13 @@ async def update_video():
     return jsonify({'message': update_result['message']}), 200
 
 @app.route('/update_course_context', methods=['POST'])
-def update_course_context_request():
-    data = request.get_json()
+async def update_course_context_request():
+    data = await request.get_json()
     courseid = data.get('courseid')
     new_course_context = data.get('course_context')
 
     if not all([courseid, new_course_context]):
-         return jsonify({'error': 'Missing parameters'}), 400
+        return jsonify({'error': 'Missing parameters'}), 400
     update_result = update_context(courseid, new_course_context)
 
     if 'error' in update_result:
@@ -192,25 +172,5 @@ def update_course_context_request():
     return jsonify({'message': update_result['message']}), 200
 
 
-
-
-
-
 if __name__ == "__main__" :
-    app.run()
-
-
-#@app.route('/get-video-rec', methods=['POST'])
-# def get_video_recc_route():
-#     data = request.get_json()
-#     student_id = data.get('userid')
-#     course_id = data.get('courseid')
-    
-#     # Input Validations
-#     if not student_id:
-#         return jsonify({'error': 'Missing Student ID'})
-#     if not course_id:
-#         return jsonify({'error': 'Missing Course ID'})
-    
-#     reccs = get_curated_videos.get_assessment_videos(student_id, course_id)
-#     return jsonify(reccs)
+    app.run(debug=True)
