@@ -69,6 +69,38 @@ const StudentView = () => {
   const [tokenStatus, setTokenStatus] = useState('');
 
   const imgs = { youtube };
+  const mockVideos = [
+    {
+      id: 'dQw4w9WgXcQ',
+      title: 'Introduction to React Hooks',
+      channel: 'React Tutorials',
+      viewCount: '1.2M views',
+      duration: '15:30',
+      reason: 'Learn about React Hooks',
+      url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg',
+    },
+    {
+      id: 'rTsz09zRuTU',
+      title: 'JavaScript ES6 Arrow Functions',
+      channel: 'JavaScript Mastery',
+      viewCount: '800K views',
+      duration: '10:15',
+      reason: 'Improve your JavaScript skills',
+      url: 'https://www.youtube.com/watch?v=rTsz09zRuTU',
+      thumbnail: 'https://img.youtube.com/vi/rTsz09zRuTU/mqdefault.jpg',
+    },
+    {
+      id: '8aGhZQkoFbQ',
+      title: 'What the heck is the event loop anyway?',
+      channel: 'JSConf',
+      viewCount: '1.5M views',
+      duration: '26:52',
+      reason: 'Understand JavaScripts edward event loop',
+      url: 'https://www.youtube.com/watch?v=8aGhZQkoFbQ',
+      thumbnail: 'https://img.youtube.com/vi/8aGhZQkoFbQ/mqdefault.jpg',
+    },
+  ];
 
   const getCanvasBaseUrl = () => {
     const url = window.location.href;

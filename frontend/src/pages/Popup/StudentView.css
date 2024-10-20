@@ -155,8 +155,8 @@ body {
 }
 
 .youtube-link img {
-  height: 2rem;
-  width: 3rem;
+  height: 100px;
+  width: 100px;
 }
 
 .notes-textarea {
