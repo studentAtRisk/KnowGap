@@ -34,3 +34,4 @@ Flask-CORS==3.0.10
 aiohttp
 google-api-python-client==2.95.0
 Flask[async]
+motor==3.6.0
