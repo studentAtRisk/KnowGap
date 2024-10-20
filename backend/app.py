@@ -29,7 +29,7 @@ app = Flask(__name__)
 CORS(app)
 
 client = MongoClient(DB_CONNECTION_STRING)
-db = client["NoGap"]
+db = client["KnowGap"]
 tokens_collection = db["Tokens"]
 quizzes_collection = db['Quiz Questions']
 

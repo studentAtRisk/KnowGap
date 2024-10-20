@@ -18,7 +18,7 @@ async def get_database(connectionString):
    client = AsyncIOMotorClient(CONNECTION_STRING)
  
    # Create/select the database with inputted name
-   return client['NoGap']
+   return client['KnowGap']
 
 async def update_quiz_rec(courseid, access_token, dbname, collection_name, currentquiz, link):
 

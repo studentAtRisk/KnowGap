@@ -11,7 +11,7 @@ load_dotenv()
 DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mongo_client = MongoClient(DB_CONNECTION_STRING)
 
-db = mongo_client['NoGap']
+db = mongo_client['KnowGap']
 students_collection = db['Students']  # Collection that stores student records
 quizzes_collection = db['Quiz Questions']  # Collection that stores all possible quiz questions
 

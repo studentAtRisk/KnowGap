@@ -14,7 +14,7 @@ async def get_database(connectionString):
     CONNECTION_STRING = connectionString
     client = MongoClient(CONNECTION_STRING)
     # Create/select the database with inputted name
-    return client['NoGap']
+    return client['KnowGap']
 
 async def update_quiz_rec(courseid, access_token, dbname, collection_name, current_quiz, link):
     api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{current_quiz}/statistics'
@@ -190,6 +190,6 @@ def clean_text(text):
 def get_token_collection():
     DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
     client = MongoClient(DB_CONNECTION_STRING)
-    database = client['NoGap']
+    database = client['KnowGap']
 
     return database['Tokens']

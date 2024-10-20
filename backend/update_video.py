@@ -14,7 +14,7 @@ DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
 mdb_client = MongoClient(DB_CONNECTION_STRING)
-db = mdb_client['NoGap']
+db = mdb_client['KnowGap']
 
 def extract_video_id(youtube_url):
     video_id = None

@@ -13,7 +13,7 @@ client = OpenAI(api_key=API_KEY)
 DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 
 mongo_client = MongoClient(DB_CONNECTION_STRING)
-db = mongo_client['NoGap']
+db = mongo_client['KnowGap']
 quizzes_collection = db['Quiz Questions']
 contexts_collection = db['Course Contexts']
 

@@ -10,7 +10,7 @@ app = Flask(__name__)
 DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 
 mdb_client = MongoClient(DB_CONNECTION_STRING)
-db = mdb_client['NoGap']
+db = mdb_client['KnowGap']
 
 def update_context(course_id, course_context):
     try:
