@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify  # Add this import
+from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from googleapiclient.discovery import build
 import re
@@ -42,76 +42,44 @@ def get_video_metadata(youtube_url):
         metadata = {
             "title": video["title"],
             "channel": video["channelTitle"],
-            "thumbnail": video["thumbnails"]["high"]["url"], # high = HD
+            "thumbnail": video["thumbnails"]["high"]["url"],
         }
         return metadata
     else:
         return {"error": "Video not found"}
 
 def update_video_link(quiz_id, question_id, old_link, new_video):
-    print("heyya")
-    """
-    Function to update a specific video in the video_data array.
-    :param quiz_id: The quiz ID associated with the document.
-    :param old_link: The link of the video to be replaced.
-    :param new_video: A dictionary with the new video details (link, title, thumbnail, etc.).
-    """
     quizzes_collection = db['Quiz Questions']
 
-    document = quizzes_collection.find_one({"quizid": 19758187})
-    print("Doc:")
-    print(document)
-    # Log the document before update for debugging
-    document_before = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
-    print("Before update: ", document_before)
-
-    # Check if the old_link exists
-    video_exists = quizzes_collection.find_one({
-        "quizid": quiz_id,
-        "questionid": question_id, 
-         "video_data": {
-            "$elemMatch" : {"link" : old_link}
-         } }
-    )
+    # Fetch the document based on quiz_id and question_id
+    document = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
     
-    print("hey")
-    if not video_exists:
-        return {"error": "Old video not found in video_data"}
-    else:
-        print("IT DOES")
+    if not document:
+        return {"message": "Document not found", "success": False}
 
+    # Extract the video_data array (assuming it's an array of strings)
+    video_data = document.get('video_data', [])
 
-    try:
-        pull_result = quizzes_collection.update_one(
-            {"quizid": quiz_id, "questionid": question_id},
-            {"$pull": {
-                "video_data": {"link": old_link}
-            }}
-        )
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    # Check if the old_link is in the video_data array
+    if old_link not in video_data:
+        return {"message": "Old video not found in video_data", "success": False}
 
-    print("hey?")
-    print(pull_result)
-    print("Pull result: ", pull_result.modified_count)  # Log pull result
+    # Remove the old link from the in-memory array
+    updated_video_data = [link for link in video_data if link != old_link]
 
-    if pull_result.modified_count == 0:
-        return {"error": "Old video not found or already removed"}
+    # Add the new link (optional: add more metadata like title, thumbnail if required)
+    updated_video_data.append(new_video)
 
-    # Push the new video metadata into video_data
-    push_result = quizzes_collection.update_many(
-        {"quizid": quiz_id},
-        {"$push": {
-         "video_data": {
-            "$elemMatch" : {"link" : old_link}
-         }}}
+    # Update the document in the database with the modified video_data array
+    update_result = quizzes_collection.update_one(
+        {"quizid": quiz_id, "questionid": question_id},
+        {"$set": {"video_data": updated_video_data}}
     )
-    print("Push result: ", push_result.modified_count)  # Log push result
 
-    # Log the document after update for debugging
-    document_after = quizzes_collection.find_one({"quizid": quiz_id})
-    print("After update: ", document_after)
-    return {"success": True}
+    if update_result.modified_count == 0:
+        return {"message": "Failed to update video_data", "success": False}
+
+    return {"message": "Video successfully updated", "success": True}
 
 
 if __name__ == "__main__":
@@ -123,4 +91,3 @@ if __name__ == "__main__":
     }
     update_video_link(mock_json["quizid"], mock_json["questionid"], mock_json["old_link"], mock_json["new_link"])
     quizzes_collection = db["Quiz Questions"]
-
