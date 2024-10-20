@@ -169,8 +169,8 @@ async def update_video():
 @app.route('/update_course_context', methods=['POST'])
 def update_course_context_request():
     data = request.get_json()
-    courseid = request.get('courseid')
-    new_course_context = request.get('course_context')
+    courseid = data.get('courseid')
+    new_course_context = data.get('course_context')
 
     if not all([courseid, new_course_context]):
          return jsonify({'error': 'Missing parameters'}), 400
