@@ -131,21 +131,28 @@ def get_user():
 
 # POST endpoint to update course requests asynchronously
 @app.route('/update_course_request', methods=['POST'])
-async def update_course_request():
+async def update_course_request_endpoint():
     data = request.get_json()
     
     courseid = int(data.get('courseid'))
     access_token = data.get('access_token')
     authkey = data.get('authkey')
-    link = data.get('link')
+    link = data.get('link', '').replace("https://", "").replace("http://", "")
 
-    # Make sure there is no missing parameters from request
+    # Make sure there are no missing parameters from request
     if not all([courseid, access_token, authkey]):
         return jsonify({'error': 'Missing parameters'}), 400
-    
-    await update_students_db(courseid, access_token, authkey, link)
-    await update_quizzes_db(courseid, access_token, authkey, link)
 
+    try:
+        await update_students_db(courseid, access_token, authkey, link)
+    except Exception as e:
+        return jsonify({'error': f'Error updating students collection: {str(e)}'}), 500
+    
+    try:
+        await update_quizzes_db(courseid, access_token, authkey, link)
+    except Exception as e:
+        return jsonify({'error': f'Error updating quizzes collection: {str(e)}'}), 500
+    
     return jsonify({'status': "Complete"})
 
 @app.route('/update_video', methods=['POST'])
