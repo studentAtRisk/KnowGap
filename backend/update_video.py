@@ -110,8 +110,7 @@ def update_video_link(quiz_id, question_id, old_link, new_video):
 
     # Log the document after update for debugging
     document_after = quizzes_collection.find_one({"quizid": quiz_id})
-    print("After update: ", document_after)man
-
+    print("After update: ", document_after)
     return {"success": True}
 
 
