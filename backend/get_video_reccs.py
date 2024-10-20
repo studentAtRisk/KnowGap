@@ -47,7 +47,6 @@ def get_video_recommendation_and_store():
         cur_course_id = question.get("courseid")
         cur_quiz_id = question.get("quizid")
         cur_question_id = question.get("questionid")
-
         quizzes_collection.update_one(
             {
                 'questionid': cur_question_id,
