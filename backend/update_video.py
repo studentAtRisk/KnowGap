@@ -51,39 +51,36 @@ def get_video_metadata(youtube_url):
 def update_video_link(quiz_id, question_id, old_link, new_video):
     quizzes_collection = db['Quiz Questions']
 
-    document_before = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
-    print("Before update: ", document_before)
+    # Fetch the document based on quiz_id and question_id
+    document = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
+    
+    if not document:
+        return {"message": "Document not found", "success": False}
 
-    video_exists = quizzes_collection.find_one({
-        "quizid": quiz_id,
-        "questionid": question_id, 
-        "video_data.link": old_link
-    })
+    # Extract the video_data array (assuming it's an array of strings)
+    video_data = document.get('video_data', [])
 
-    if not video_exists:
-        return {"error": "Old video not found in video_data"}
+    # Check if the old_link is in the video_data array
+    if old_link not in video_data:
+        return {"message": "Old video not found in video_data", "success": False}
 
-    pull_result = quizzes_collection.update_one(
+    # Remove the old link from the in-memory array
+    updated_video_data = [link for link in video_data if link != old_link]
+
+    # Add the new link (optional: add more metadata like title, thumbnail if required)
+    updated_video_data.append(new_video)
+
+    # Update the document in the database with the modified video_data array
+    update_result = quizzes_collection.update_one(
         {"quizid": quiz_id, "questionid": question_id},
-        {"$pull": {"video_data": {"link": old_link}}}
+        {"$set": {"video_data": updated_video_data}}
     )
 
-    print(str(pull_result))
-
-    if pull_result.modified_count == 0:
-        return {"error": "Old video not found or already removed"}
-
-    push_result = quizzes_collection.update_one(
-        {"quizid": quiz_id, "questionid": question_id},
-        {"$push": {"video_data": new_video}}
-    )
-
-    print("Push result: ", push_result.modified_count)
-
-    document_after = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
-    print("After update: ", document_after)
+    if update_result.modified_count == 0:
+        return {"message": "Failed to update video_data", "success": False}
 
     return {"message": "Video successfully updated", "success": True}
+
 
 if __name__ == "__main__":
     mock_json = {
