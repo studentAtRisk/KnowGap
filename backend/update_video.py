@@ -99,7 +99,7 @@ def update_video_link(quiz_id, question_id, old_link, new_video):
         return {"error": "Old video not found or already removed"}
 
     # Push the new video metadata into video_data
-    push_result = quizzes_collection.update_one(
+    push_result = quizzes_collection.update_many(
         {"quizid": quiz_id},
         {"$push": {
          "video_data": {
@@ -110,7 +110,7 @@ def update_video_link(quiz_id, question_id, old_link, new_video):
 
     # Log the document after update for debugging
     document_after = quizzes_collection.find_one({"quizid": quiz_id})
-    print("After update: ", document_after)
+    print("After update: ", document_after)man
 
     return {"success": True}
 
