@@ -83,7 +83,7 @@ def update_video_link(quiz_id, question_id, old_link, new_video):
     document_after = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
     print("After update: ", document_after)
 
-    return {"success": True}
+    return {"message": "Video successfully updated", "success": True}
 
 if __name__ == "__main__":
     mock_json = {
