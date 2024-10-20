@@ -19,7 +19,7 @@ DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 def update_context(course_id, course_context):
     try:
         # Connect to MongoDB
-        course_context_collection = db['course_context']
+        course_context_collection = db['Course Contexts']
 
         # Update or insert the course context
         course_context_collection.update_one(
