@@ -49,18 +49,15 @@ def get_video_metadata(youtube_url):
         return {"error": "Video not found"}
 
 def update_video_link(quiz_id, question_id, old_link, new_video):
-    print("heyya")
     """
     Function to update a specific video in the video_data array.
     :param quiz_id: The quiz ID associated with the document.
+    :param question_id: The question ID associated with the document.
     :param old_link: The link of the video to be replaced.
     :param new_video: A dictionary with the new video details (link, title, thumbnail, etc.).
     """
     quizzes_collection = db['Quiz Questions']
 
-    document = quizzes_collection.find_one({"quizid": 19758187})
-    print("Doc:")
-    print(document)
     # Log the document before update for debugging
     document_before = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
     print("Before update: ", document_before)
@@ -69,49 +66,35 @@ def update_video_link(quiz_id, question_id, old_link, new_video):
     video_exists = quizzes_collection.find_one({
         "quizid": quiz_id,
         "questionid": question_id, 
-         "video_data": {
-            "$elemMatch" : {"link" : old_link}
-         } }
-    )
-    
-    print("hey")
+        "video_data": {"$elemMatch": {"link": old_link}}
+    })
+
     if not video_exists:
         return {"error": "Old video not found in video_data"}
-    else:
-        print("IT DOES")
 
-
-    try:
-        pull_result = quizzes_collection.update_one(
-            {"quizid": quiz_id, "questionid": question_id},
-            {"$pull": {
-                "video_data": {"link": old_link}
-            }}
-        )
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-    print("hey?")
-    print(pull_result)
-    print("Pull result: ", pull_result.modified_count)  # Log pull result
+    # Pull the old video link
+    pull_result = quizzes_collection.update_one(
+        {"quizid": quiz_id, "questionid": question_id},
+        {"$pull": {"video_data": {"link": old_link}}}
+    )
 
     if pull_result.modified_count == 0:
         return {"error": "Old video not found or already removed"}
 
     # Push the new video metadata into video_data
-    push_result = quizzes_collection.update_many(
-        {"quizid": quiz_id},
-        {"$push": {
-         "video_data": {
-            "$elemMatch" : {"link" : old_link}
-         }}}
+    push_result = quizzes_collection.update_one(
+        {"quizid": quiz_id, "questionid": question_id},
+        {"$push": {"video_data": new_video}}
     )
+
     print("Push result: ", push_result.modified_count)  # Log push result
 
     # Log the document after update for debugging
-    document_after = quizzes_collection.find_one({"quizid": quiz_id})
+    document_after = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
     print("After update: ", document_after)
+
     return {"success": True}
+
 
 
 if __name__ == "__main__":
