@@ -12,10 +12,6 @@ DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mdb_client = MongoClient(DB_CONNECTION_STRING)
 db = mdb_client['NoGap']
 
-
-# Load environment variables for DB connection
-DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
-
 def update_context(course_id, course_context):
     try:
         # Connect to MongoDB

@@ -163,7 +163,7 @@ async def update_video():
     old_link = data.get('old_link')
     new_link = data.get('new_link')
 
-    if not all([quizid, old_link, new_link]):
+    if not all([quizid, old_link, new_link, questionid]):
         return jsonify({'error': 'Missing parameters'}), 400
 
     update_result = update_video_link(quizid, questionid, old_link, new_link)

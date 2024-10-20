@@ -68,6 +68,8 @@ def update_video_link(quiz_id, question_id, old_link, new_video):
         {"$pull": {"video_data": {"link": old_link}}}
     )
 
+    print(str(pull_result))
+
     if pull_result.modified_count == 0:
         return {"error": "Old video not found or already removed"}
 
