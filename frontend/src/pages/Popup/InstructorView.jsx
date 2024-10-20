@@ -9,6 +9,7 @@ const InstructorView = () => {
   const [courseVideos, setCourseVideos] = useState([]);
   const [newVideo, setNewVideo] = useState({ title: '', url: '' });
   const [courseContext, setCourseContext] = useState('');
+  const [courseQuestions, setCourseQuestions] = useState([]);
 
   const imgs = { youtube };
 
@@ -194,7 +195,7 @@ const InstructorView = () => {
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
     try {
       const response = await fetch(
-        `${baseUrl}/get_course_videos?courseid=${courseId}`,
+        `${baseUrl}/get-questions-by-course/${courseId}`,
         {
           method: 'GET',
           headers: {
@@ -207,7 +208,7 @@ const InstructorView = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setCourseVideos(data.videos || []);
+      setCourseQuestions(data.questions || []);
     } catch (error) {
       console.error('Error fetching course videos:', error);
     }
@@ -412,6 +413,35 @@ const InstructorView = () => {
       borderLeft: '4px solid #3182ce',
       borderRadius: '0.375rem',
     },
+    videoCard: {
+      border: '1px solid #e2e8f0',
+      borderRadius: '0.375rem',
+      padding: '1rem',
+      marginBottom: '1rem',
+      boxShadow:
+        '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+    },
+    videoThumbnail: {
+      width: '100%',
+      height: 'auto',
+      borderRadius: '0.25rem',
+      marginBottom: '0.5rem',
+    },
+    videoTitle: {
+      fontSize: '1rem',
+      fontWeight: '600',
+      marginBottom: '0.25rem',
+    },
+    videoChannel: {
+      fontSize: '0.875rem',
+      color: '#718096',
+      marginBottom: '0.5rem',
+    },
+    questionText: {
+      fontSize: '0.875rem',
+      color: '#4a5568',
+      marginTop: '0.5rem',
+    },
   };
 
   return (
@@ -502,38 +532,74 @@ const InstructorView = () => {
       <div style={styles.container}>
         <div>
           <h2 style={styles.title}>Manage Course Videos</h2>
-          <div>
-            <h3>Current Course Videos</h3>
-            <ul>
-              {courseVideos.map((video, index) => (
-                <li key={index}>
-                  {video.title} -{' '}
-                  <a href={video.url} target="_blank" rel="noopener noreferrer">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+              gap: '1rem',
+            }}
+          >
+            {courseQuestions.flatMap((question) =>
+              question.video_data.map((video, index) => (
+                <div
+                  key={`${question.questionid}-${index}`}
+                  style={styles.videoCard}
+                >
+                  <img
+                    src={video.thumbnail || '/placeholder-image.jpg'}
+                    alt={video.title}
+                    style={styles.videoThumbnail}
+                  />
+                  <h3 style={styles.videoTitle}>{video.title}</h3>
+                  <p style={styles.videoChannel}>{video.channel}</p>
+                  <a
+                    href={video.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Watch
                   </a>
-                </li>
-              ))}
-            </ul>
-
-            <h4>Add New Video</h4>
-            <input
-              type="text"
-              placeholder="Video Title"
-              value={newVideo.title}
-              onChange={(e) =>
-                setNewVideo({ ...newVideo, title: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Video URL"
-              value={newVideo.url}
-              onChange={(e) =>
-                setNewVideo({ ...newVideo, url: e.target.value })
-              }
-            />
-            <button onClick={handleAddVideo}>Add Video</button>
+                  <p style={styles.questionText}>
+                    <strong>Question:</strong>{' '}
+                    {question.question_text.substring(0, 100)}...
+                  </p>
+                  <p style={styles.questionText}>
+                    <strong>Core Topic:</strong> {question.core_topic}
+                  </p>
+                </div>
+              ))
+            )}
           </div>
+
+          <h4>Add New Video</h4>
+          <select
+            value={newVideo.questionId}
+            onChange={(e) =>
+              setNewVideo({ ...newVideo, questionId: e.target.value })
+            }
+          >
+            <option value="">Select a question</option>
+            {courseQuestions.map((question) => (
+              <option key={question.questionid} value={question.questionid}>
+                {question.question_text.substring(0, 50)}...
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            placeholder="Video Title"
+            value={newVideo.title}
+            onChange={(e) =>
+              setNewVideo({ ...newVideo, title: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            placeholder="Video URL"
+            value={newVideo.url}
+            onChange={(e) => setNewVideo({ ...newVideo, url: e.target.value })}
+          />
+          <button onClick={handleAddVideo}>Add Video</button>
         </div>
       </div>
 
