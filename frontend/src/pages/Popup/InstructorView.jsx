@@ -6,10 +6,13 @@ const InstructorView = () => {
   const [activeTab, setActiveTab] = useState('assignments');
   const [students, setStudents] = useState([]);
   const [notifications, setNotifications] = useState([]);
-  const [courseVideos, setCourseVideos] = useState([]);
-  const [newVideo, setNewVideo] = useState({ title: '', url: '' });
-  const [courseContext, setCourseContext] = useState('');
   const [courseQuestions, setCourseQuestions] = useState([]);
+  const [newVideo, setNewVideo] = useState({
+    title: '',
+    url: '',
+    questionId: '',
+  });
+  const [courseContext, setCourseContext] = useState('');
 
   const imgs = { youtube };
 
@@ -214,38 +217,46 @@ const InstructorView = () => {
     }
   };
 
-  const handleAddVideo = async () => {
-    const courseId = fetchCurrentCourseId();
-    if (!courseId) return;
-
-    const updatedVideos = [...courseVideos, newVideo];
-
-    await updateCourseVideos(courseId, updatedVideos);
-
-    setCourseVideos(updatedVideos);
-    setNewVideo({ title: '', url: '' });
+  const addVideoToQuestion = (questionId, video) => {
+    setCourseQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.questionid === questionId
+          ? { ...question, video_data: [...question.video_data, video] }
+          : question
+      )
+    );
   };
 
-  const updateCourseVideos = async (courseId, videos) => {
-    const baseUrl =
-      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
-    try {
-      const response = await fetch(`${baseUrl}/update_course_videos`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          courseid: courseId,
-          videos: videos,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error('Error updating course videos:', error);
+  const removeVideoFromQuestion = (questionId, videoIndex) => {
+    setCourseQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.questionid === questionId
+          ? {
+              ...question,
+              video_data: question.video_data.filter(
+                (_, index) => index !== videoIndex
+              ),
+            }
+          : question
+      )
+    );
+  };
+
+  const handleAddVideo = () => {
+    if (!newVideo.questionId || !newVideo.title || !newVideo.url) {
+      alert('Please fill in all fields');
+      return;
     }
+
+    const videoToAdd = {
+      title: newVideo.title,
+      link: newVideo.url,
+      thumbnail: '',
+      channel: 'Custom Added',
+    };
+
+    addVideoToQuestion(newVideo.questionId, videoToAdd);
+    setNewVideo({ title: '', url: '', questionId: '' });
   };
 
   const updateCourseContext = async () => {
@@ -442,6 +453,15 @@ const InstructorView = () => {
       color: '#4a5568',
       marginTop: '0.5rem',
     },
+    removeButton: {
+      backgroundColor: '#e53e3e',
+      color: '#fff',
+      border: 'none',
+      padding: '0.5rem',
+      borderRadius: '0.25rem',
+      cursor: 'pointer',
+      marginTop: '0.5rem',
+    },
   };
 
   return (
@@ -539,10 +559,10 @@ const InstructorView = () => {
               gap: '1rem',
             }}
           >
-            {courseQuestions.flatMap((question) =>
-              question.video_data.map((video, index) => (
+            {courseQuestions.flatMap((question, questionIndex) =>
+              question.video_data.map((video, videoIndex) => (
                 <div
-                  key={`${question.questionid}-${index}`}
+                  key={`${question.questionid}-${videoIndex}`}
                   style={styles.videoCard}
                 >
                   <img
@@ -566,6 +586,14 @@ const InstructorView = () => {
                   <p style={styles.questionText}>
                     <strong>Core Topic:</strong> {question.core_topic}
                   </p>
+                  <button
+                    onClick={() =>
+                      removeVideoFromQuestion(question.questionid, videoIndex)
+                    }
+                    style={styles.removeButton}
+                  >
+                    Remove Video
+                  </button>
                 </div>
               ))
             )}

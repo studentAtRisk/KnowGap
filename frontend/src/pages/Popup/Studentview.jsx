@@ -513,7 +513,7 @@ const StudentView = () => {
           <div className="api-token-input">
             <p>API Token is set</p>
             <button onClick={removeToken}>Remove Token</button>
-            <button onClick={testSendToken}>Test Send Token</button>
+            <button onClick={testSendToken}>Refresh Status</button>
           </div>
         ) : (
           <div className="api-token-input">
