@@ -22,6 +22,7 @@ def get_assessment_videos(student_id, course_id):
     core_topic = ""
     print("Getting assessment videos")
     student_record = students_collection.find_one({"_id": student_id})
+    
     if not student_record:
         return {"error": "Student not found"}
     
@@ -42,7 +43,7 @@ def get_assessment_videos(student_id, course_id):
 
         for question in incorrect_questions:
             cur_qid = question.get("questionid")
-
+            cur_question_text = question.get('question_text')
             matching_question = quizzes_collection.find_one({"quizid": quiz_id, "questionid": cur_qid})
             print("Matching question = " + str(matching_question))
 
@@ -65,7 +66,8 @@ def get_assessment_videos(student_id, course_id):
                     "quizid": quiz_id,
                     "questionid": cur_qid,
                     "core_topic": core_topic,
-                    "video_data": videos_for_question
+                    "video_data": videos_for_question,
+                    "question_text": cur_question_text
                 }
                 quizzes_collection.insert_one(new_entry)
 
