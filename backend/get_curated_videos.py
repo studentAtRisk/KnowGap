@@ -57,10 +57,9 @@ def get_assessment_videos(student_id, course_id):
 
             unique_videos = []
             for video in videos_for_question:
-                # Check if the video link is already used
                 if video['link'] not in used_video_links:
-                    unique_videos.append(video)  # Add the video if it's not a duplicate
-                    used_video_links.add(video['link'])  # Mark this video as used
+                    unique_videos.append(video)
+                    used_video_links.add(video['link']) 
             
             if unique_videos:
                 quiz_videos.append({
@@ -79,8 +78,6 @@ def get_cid_from_sid(studentid):
     student_record = students_collection.find_one({"_id": student_id})
 
     if student_record:
-        # Assume that we want to extract the top-level key in the student's data hierarchy
-        # Loop over the keys in the document and skip MongoDB's default '_id' key
         top_level_key = None
         for key in student_record:
             print("Cur key = " + str(key))
@@ -100,12 +97,12 @@ def get_course_videos(course_id):
     core_topic = ""
     print("Getting assessment videos for course:", course_id)
     
-    # Query quizzes based on course_id directly
     quizzes = quizzes_collection.find({"course_id": course_id})
     if not quizzes:
         return {"error": f"No quizzes found for course: {course_id}"}
     
     assessment_videos = {}
+    used_videos = set()  
 
     for quiz in quizzes:
         quiz_name = quiz.get('quizname', 'Unknown Quiz')
@@ -116,7 +113,7 @@ def get_course_videos(course_id):
             continue
 
         quiz_videos = []
-        used_videos = set()
+        
         for question in incorrect_questions:
             cur_qid = question.get("questionid")
 
@@ -131,13 +128,17 @@ def get_course_videos(course_id):
                 core_topic = get_video_reccs.generate_core_topic(cur_question_text, cur_qid, course_id)
                 videos_for_question = get_video_reccs.fetch_videos_for_topic(core_topic)
             
-       
-
+            unique_videos = []
+            for video in videos_for_question:
+                if video['link'] not in used_videos:
+                    unique_videos.append(video)  
+                    used_videos.add(video['link']) 
+            
             quiz_videos.append({
                 "questionid": cur_qid,
                 "topic": core_topic,
                 "question_text": cur_question_text,
-                "videos": videos_for_question
+                "videos": unique_videos
             })
             
             if not matching_question:
@@ -145,11 +146,12 @@ def get_course_videos(course_id):
                     "quizid": quiz_id,
                     "questionid": cur_qid,
                     "core_topic": core_topic,
-                    "video_data": videos_for_question
+                    "video_data": unique_videos
                 }
                 quizzes_collection.insert_one(new_entry)
 
-        assessment_videos[quiz_name] = quiz_videos
+        if quiz_videos: 
+            assessment_videos[quiz_name] = quiz_videos
     
     return assessment_videos
 
