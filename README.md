@@ -1,39 +1,23 @@
-# 🎓 KnowGap
+# KnowGap - Course Video Recommendations & Student Risk Prediction
 
-## 🌟 Overview
-The Student-At-Risk Predictor is an innovative tool integrated into Canvas, aimed at helping instructors identify and support students at risk of not passing their courses. It employs advanced AI techniques, including custom generative GPT models and predictive algorithms such as regression, to accurately predict at-risk students and recommend tailored instructional content.
+## Overview
 
-## 💡 Motivation
-Driven by personal experiences and a deep understanding of the academic challenges faced by students, our tool is designed to efficiently identify academic weaknesses and provide targeted support, enhancing study efficacy and academic success.
+**KnowGap** is an intelligent platform designed to enhance student learning and course management. It combines student performance prediction with personalized video recommendations to improve understanding of incorrectly answered quiz questions. The platform integrates with learning management systems like Canvas to monitor student progress and provide instructors with critical insights, while helping students close knowledge gaps through targeted video recommendations.
 
-## 🚀 Features
-- **Risk Identification**: Utilizes regression and custom GPT models for accurate risk assessment.
-- **Content Recommendation**: Offers custom YouTube video recommendations for relevant study materials.
-- **Canvas Integration**: Designed for seamless interaction within the Canvas UI, ensuring a user-friendly experience.
-- **Data-Driven Insights**: Leverages Canvas API to gather comprehensive data on student performance, assignments, and more.
+## Features
 
-## 🔨 Current Progress
-- [ ] **Prototype Development**: A low-code prototype has been developed to confirm technical requirements.
-- [ ] **Front-End Integration**: Working on integrating the tool with Canvas UI.
-- [ ] **Back-End Integration**: Focusing on API development for efficient data processing.
-- [ ] **AI/ML Model Training**: Refining regression and GPT models for precise predictions.
+1. **Student Risk Prediction**
+   - Identifies students at risk of underperforming or failing based on quiz performance and other course metrics.
+   - Offers insights to instructors, enabling timely intervention to help students succeed.
 
-## 📆 Upcoming Milestones
-- [ ] **UI Enhancement**: Finalize an intuitive and user-friendly interface that aligns with Canvas's design aesthetics.
-- [ ] **System Integration & Testing**: Plan for full integration of front-end and back-end systems followed by comprehensive testing.
-- [ ] **AI/ML Model Optimizat
+2. **Curated Video Recommendations**
+   - Automatically generates personalized video recommendations for quiz questions that students answer incorrectly.
+   - Leverages predefined or dynamically generated core topics for each question.
+   - Stores new video data in the system, ensuring future reuse without redundant lookups.
 
-## 👥 Team
-- **Jason (Project Manager)**: Leads project management, leveraging experience in software development and AI.
-- **Justin (Frontend)**: Responsible for front-end design and Canvas integration.
-- **David (AI/ML Interface)**: Develops AI/ML models for risk prediction and content recommendation.
-- **Jordan & Ramir (Backend)**: Manages backend development, database integration, and security compliance.
-- **Collaborative Approach**: Focus on strong communication, efficient time management, and strategic resource allocation.
+3. **Integration with Canvas**
+   - Uses course and quiz data from Canvas to monitor student performance.
+   - Tracks quiz results and triggers video recommendations based on incorrect answers.
 
-## 🛠 Technical Stack
-- [ ] **Front-End**: Finalizing technologies for seamless integration with Canvas UI.
-- [ ] **Back-End**: Selecting appropriate back-end technologies for efficient data handling and API development.
-- [ ] **AI/ML**: Determining the best AI/ML frameworks for accurate predictions and content generation.
-
-## Note: the new files in the "main assignments in initial columns" directory is the same courses seen in the main directory.
-
+4. **Caching and Storing Results**
+   - Caches dynamically generated core topics and videos, reducing the need for repeated API calls or queries.
