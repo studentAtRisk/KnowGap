@@ -54,6 +54,19 @@ def update_course_videos_route():
     return update_course_videos(course_id)
 
 
+@app.route('/get_course_videos', methods=['GET'])
+def get_videos_for_course():
+    course_id = request.args.get('course_id')
+
+    if not course_id:
+        return jsonify({"error": "Missing course_id"}), 400
+    
+    # Call the get_course_videos function
+    result = get_curated_videos.get_course_videos(course_id=course_id)
+    
+    # Return the result as a JSON response
+    return jsonify(result)
+
 @app.route('/get-video-rec', methods=['POST'])
 def get_video_recc_route():
     data = request.get_json()  # Extract JSON payload
