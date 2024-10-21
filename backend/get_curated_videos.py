@@ -12,15 +12,12 @@ DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mongo_client = MongoClient(DB_CONNECTION_STRING)
 
 db = mongo_client['KnowGap']
-students_collection = db['Students']
-quizzes_collection = db['Quiz Questions']  
-def is_duplicate_video(quiz_videos, questionid):
-    for video in quiz_videos:
-        if video["questionid"] == questionid:
-            return True
-    return False
+students_collection = db['Students']  # Collection that stores student records
+quizzes_collection = db['Quiz Questions']  # Collection that stores all possible quiz questions
 
 
+
+# Function to get incorrect questions and their video links
 def get_assessment_videos(student_id, course_id):
     core_topic = ""
     print("Getting assessment videos")
@@ -34,9 +31,6 @@ def get_assessment_videos(student_id, course_id):
 
     print("Quizzes: " + str(quizzes))
 
-    # To track used videos by topic, preventing duplicates
-    used_videos_by_topic = {}
-
     for quiz in quizzes:
         quiz_name = quiz.get('quizname', 'Unknown Quiz')
         quiz_id = quiz.get('quizid')
@@ -45,7 +39,7 @@ def get_assessment_videos(student_id, course_id):
         if not quiz_id:
             continue
 
-        quiz_videos = []  
+        quiz_videos = []
 
         for question in incorrect_questions:
             cur_qid = question.get("questionid")
@@ -57,51 +51,29 @@ def get_assessment_videos(student_id, course_id):
                 core_topic = matching_question.get("core_topic", "No topic found")
                 videos_for_question = matching_question.get('video_data', [])
             else:
-                core_topic = get_video_reccs.generate_core_topic(cur_question_text, cur_qid, course_id)
+                cur_question_text = question.get('question_text')
+                core_topic = get_video_reccs.generate_core_topic(cur_question_text,cur_qid, course_id)
                 videos_for_question = get_video_reccs.fetch_videos_for_topic(core_topic)
             
-            # Initialize set of used videos for this topic if not already initialized
-            if core_topic not in used_videos_by_topic:
-                used_videos_by_topic[core_topic] = set()
-
-            # Filter videos to avoid adding duplicates
-            unique_videos = []
-            for video in videos_for_question:
-                if video['link'] not in used_videos_by_topic[core_topic]:
-                    unique_videos.append(video)
-                    used_videos_by_topic[core_topic].add(video['link'])  # Mark video as used
-
-            # Skip if there are no unique videos
-            if not unique_videos:
-                continue
-
-            # Append only if there are unique videos
             quiz_videos.append({
                 "questionid": cur_qid,
                 "topic": core_topic,
-                "videos": unique_videos
+                "videos": videos_for_question
             })
-
-            # If the question doesn't exist in the collection, store it
+            
             if not matching_question:
                 new_entry = {
                     "quizid": quiz_id,
                     "questionid": cur_qid,
                     "core_topic": core_topic,
-                    "video_data": unique_videos,
+                    "video_data": videos_for_question,
                     "question_text": cur_question_text
                 }
-                quizzes_collection.update_one(
-                    {"quizid": quiz_id, "questionid": cur_qid}, 
-                    {"$set": new_entry}, 
-                    upsert=True
-                )
+                quizzes_collection.insert_one(new_entry)
 
         assessment_videos[quiz_name] = quiz_videos
     
     return assessment_videos
-
-
 
 
 def get_cid_from_sid(studentid):
@@ -163,6 +135,7 @@ def get_course_videos(course_id):
             quiz_videos.append({
                 "questionid": cur_qid,
                 "topic": core_topic,
+                "question_text": cur_question_text,
                 "videos": videos_for_question
             })
             
