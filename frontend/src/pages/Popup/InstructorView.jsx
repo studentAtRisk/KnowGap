@@ -13,8 +13,9 @@ const InstructorView = () => {
     questionId: '',
   });
   const [courseContext, setCourseContext] = useState('');
+  const [editingVideo, setEditingVideo] = useState(null);
 
-  const imgs = { youtube };
+  const imgs = { youtube: '/path/to/youtube/icon.png' };
 
   const getCanvasBaseUrl = () => {
     const url = window.location.href;
@@ -286,6 +287,64 @@ const InstructorView = () => {
     }
   };
 
+  const handleEditVideo = (questionId, videoIndex, currentLink) => {
+    setEditingVideo({ questionId, videoIndex, currentLink });
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingVideo) return;
+
+    const question = courseQuestions.find(
+      (q) => q.questionid === editingVideo.questionId
+    );
+    const video = question.video_data[editingVideo.videoIndex];
+
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+    try {
+      const response = await fetch(`${baseUrl}/update_video`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quizid: fetchCurrentCourseId(),
+          questionid: editingVideo.questionId,
+          old_link: editingVideo.currentLink,
+          new_link: editingVideo.newLink,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      // Update the local state
+      setCourseQuestions((prevQuestions) =>
+        prevQuestions.map((q) =>
+          q.questionid === editingVideo.questionId
+            ? {
+                ...q,
+                video_data: q.video_data.map((v, index) =>
+                  index === editingVideo.videoIndex
+                    ? { ...v, link: editingVideo.newLink }
+                    : v
+                ),
+              }
+            : q
+        )
+      );
+
+      setEditingVideo(null);
+      sendNotification(result.message);
+    } catch (error) {
+      console.error('Error updating video:', error);
+      sendNotification('Failed to update video');
+    }
+  };
+
   const styles = {
     body: {
       backgroundColor: '#f7fafc',
@@ -462,6 +521,51 @@ const InstructorView = () => {
       cursor: 'pointer',
       marginTop: '0.5rem',
     },
+    editButton: {
+      backgroundColor: '#4299e1',
+      color: '#fff',
+      border: 'none',
+      padding: '0.5rem',
+      borderRadius: '0.25rem',
+      cursor: 'pointer',
+      marginTop: '0.5rem',
+      marginLeft: '0.5rem',
+    },
+    editModal: {
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      backgroundColor: '#fff',
+      padding: '2rem',
+      borderRadius: '0.5rem',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      zIndex: 1000,
+    },
+    input: {
+      width: '100%',
+      padding: '0.5rem',
+      marginBottom: '1rem',
+      borderRadius: '0.25rem',
+      border: '1px solid #e2e8f0',
+    },
+    saveButton: {
+      backgroundColor: '#48bb78',
+      color: '#fff',
+      border: 'none',
+      padding: '0.5rem 1rem',
+      borderRadius: '0.25rem',
+      cursor: 'pointer',
+      marginRight: '0.5rem',
+    },
+    cancelButton: {
+      backgroundColor: '#e53e3e',
+      color: '#fff',
+      border: 'none',
+      padding: '0.5rem 1rem',
+      borderRadius: '0.25rem',
+      cursor: 'pointer',
+    },
   };
 
   return (
@@ -594,10 +698,45 @@ const InstructorView = () => {
                   >
                     Remove Video
                   </button>
+                  <button
+                    onClick={() =>
+                      handleEditVideo(
+                        question.questionid,
+                        videoIndex,
+                        video.link
+                      )
+                    }
+                    style={styles.editButton}
+                  >
+                    Edit Video
+                  </button>
                 </div>
               ))
             )}
           </div>
+
+          {editingVideo && (
+            <div style={styles.editModal}>
+              <h3>Edit Video Link</h3>
+              <input
+                type="text"
+                value={editingVideo.newLink || editingVideo.currentLink}
+                onChange={(e) =>
+                  setEditingVideo({ ...editingVideo, newLink: e.target.value })
+                }
+                style={styles.input}
+              />
+              <button onClick={handleSaveEdit} style={styles.saveButton}>
+                Save
+              </button>
+              <button
+                onClick={() => setEditingVideo(null)}
+                style={styles.cancelButton}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
 
           <h4>Add New Video</h4>
           <select
