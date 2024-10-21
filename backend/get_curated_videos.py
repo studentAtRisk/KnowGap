@@ -31,6 +31,8 @@ def get_assessment_videos(student_id, course_id):
 
     print("Quizzes: " + str(quizzes))
 
+    used_video_links = set()  # Set to track unique video links
+
     for quiz in quizzes:
         quiz_name = quiz.get('quizname', 'Unknown Quiz')
         quiz_id = quiz.get('quizid')
@@ -45,34 +47,31 @@ def get_assessment_videos(student_id, course_id):
             cur_qid = question.get("questionid")
             cur_question_text = question.get('question_text')
             matching_question = quizzes_collection.find_one({"quizid": quiz_id, "questionid": cur_qid})
-            print("Matching question = " + str(matching_question))
 
             if matching_question:
                 core_topic = matching_question.get("core_topic", "No topic found")
                 videos_for_question = matching_question.get('video_data', [])
             else:
-                cur_question_text = question.get('question_text')
-                core_topic = get_video_reccs.generate_core_topic(cur_question_text,cur_qid, course_id)
+                core_topic = get_video_reccs.generate_core_topic(cur_question_text, cur_qid, course_id)
                 videos_for_question = get_video_reccs.fetch_videos_for_topic(core_topic)
-            
-            quiz_videos.append({
-                "questionid": cur_qid,
-                "topic": core_topic,
-                "videos": videos_for_question
-            })
-            
-            if not matching_question:
-                new_entry = {
-                    "quizid": quiz_id,
-                    "questionid": cur_qid,
-                    "core_topic": core_topic,
-                    "video_data": videos_for_question,
-                    "question_text": cur_question_text
-                }
-                quizzes_collection.insert_one(new_entry)
 
-        assessment_videos[quiz_name] = quiz_videos
-    
+            unique_videos = []
+            for video in videos_for_question:
+                # Check if the video link is already used
+                if video['link'] not in used_video_links:
+                    unique_videos.append(video)  # Add the video if it's not a duplicate
+                    used_video_links.add(video['link'])  # Mark this video as used
+            
+            if unique_videos:
+                quiz_videos.append({
+                    "questionid": cur_qid,
+                    "topic": core_topic,
+                    "videos": unique_videos
+                })
+
+        if quiz_videos:
+            assessment_videos[quiz_name] = quiz_videos
+
     return assessment_videos
 
 
@@ -117,7 +116,7 @@ def get_course_videos(course_id):
             continue
 
         quiz_videos = []
-
+        used_videos = set()
         for question in incorrect_questions:
             cur_qid = question.get("questionid")
 
@@ -132,6 +131,8 @@ def get_course_videos(course_id):
                 core_topic = get_video_reccs.generate_core_topic(cur_question_text, cur_qid, course_id)
                 videos_for_question = get_video_reccs.fetch_videos_for_topic(core_topic)
             
+       
+
             quiz_videos.append({
                 "questionid": cur_qid,
                 "topic": core_topic,
