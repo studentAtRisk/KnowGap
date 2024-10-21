@@ -51,6 +51,7 @@ def update_course_videos_route():
     if not course_id:
         print("Missing Course ID")
         return jsonify({'error': 'Missing Course ID'}), 400
+    return update_course_videos(course_id)
 
 
 @app.route('/get-video-rec', methods=['POST'])

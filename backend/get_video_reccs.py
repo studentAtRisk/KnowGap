@@ -80,7 +80,7 @@ def update_videos_for_filter(filter_criteria=None):
 
         videos[core_topic] = video_data
 
-    return videos
+    return jsonify(videos)
 
 
 def update_course_videos(course_id=None):
