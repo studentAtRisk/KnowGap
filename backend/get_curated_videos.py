@@ -127,28 +127,19 @@ def get_course_videos(course_id):
                 cur_question_text = question.get('question_text')
                 core_topic = get_video_reccs.generate_core_topic(cur_question_text, cur_qid, course_id)
                 videos_for_question = get_video_reccs.fetch_videos_for_topic(core_topic)
-            
+
             unique_videos = []
             for video in videos_for_question:
                 if video['link'] not in used_videos:
-                    unique_videos.append(video)  
+                    unique_videos.append(video)
                     used_videos.add(video['link']) 
             
-            quiz_videos.append({
-                "questionid": cur_qid,
-                "topic": core_topic,
-                "question_text": cur_question_text,
-                "videos": unique_videos
-            })
-            
-            if not matching_question:
-                new_entry = {
-                    "quizid": quiz_id,
+            if unique_videos:
+                quiz_videos.append({
                     "questionid": cur_qid,
-                    "core_topic": core_topic,
-                    "video_data": unique_videos
-                }
-                quizzes_collection.insert_one(new_entry)
+                    "topic": core_topic,
+                    "videos": unique_videos
+                })
 
         if quiz_videos: 
             assessment_videos[quiz_name] = quiz_videos
