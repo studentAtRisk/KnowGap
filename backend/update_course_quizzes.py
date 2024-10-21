@@ -71,16 +71,16 @@ async def get_quizzes(courseid, access_token, link):
                     max_date = datetime.now(timezone.utc)
                     # Sorts data by most recent unlocked quiz that is published to oldest
 
-                    # Filter and sort the data
                     data = sorted(
-                        [item for item in unfiltered_data if item["published"]],
+                        [
+                            item for item in unfiltered_data
+                            if item["published"] and item["all_dates"][0]["unlock_at"] and parse_date(item["all_dates"][0]["unlock_at"]) <= max_date
+                        ],
                         key=lambda x: (
-                            # First, prioritize items with an unlock date (False means it has an unlock date, True means it doesn't)
-                            x["all_dates"][0]["unlock_at"] is None,
-                            # Then sort by the actual unlock date or use a max date if not present
-                            parse_date(x["all_dates"][0]["unlock_at"]) if x["all_dates"][0].get("unlock_at") else datetime.max
+                            # Sort by unlock date in descending order (later dates first)
+                            parse_date(x["all_dates"][0]["unlock_at"])
                         ),
-                        reverse=False  # Sort in ascending order, so valid dates come first
+                        reverse=True  # Sorting in descending order to get later dates first
                     )
 
                     
@@ -183,5 +183,11 @@ def clean_text(text):
     return ''.join(char for char in text if ord(char) < 128)
 
 
+courseid = "10496683"  # Example course ID
+access_token = "7~WvADyKw8mGWm4DUk4rWvWPVw2Kr3BXwtH4GNffABcxMHRR2KTraCfc2FB2Qf6zFw"  # Example API token
+connectionString = "mongodb+srv://jordan917222:PPJjEItclZaEECv7@studentsatrisk.ptqdmcu.mongodb.net/" # MongoDB connection string
+link = "canvas.instructure.com" # Mock URL to Canvas API
 
+# Run the main async function
+asyncio.run(update_db(courseid, access_token, connectionString, link))
 
