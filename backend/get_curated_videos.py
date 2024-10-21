@@ -12,12 +12,15 @@ DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mongo_client = MongoClient(DB_CONNECTION_STRING)
 
 db = mongo_client['KnowGap']
-students_collection = db['Students']  # Collection that stores student records
-quizzes_collection = db['Quiz Questions']  # Collection that stores all possible quiz questions
+students_collection = db['Students']
+quizzes_collection = db['Quiz Questions']  
+def is_duplicate_video(quiz_videos, questionid):
+    for video in quiz_videos:
+        if video["questionid"] == questionid:
+            return True
+    return False
 
 
-
-# Function to get incorrect questions and their video links
 def get_assessment_videos(student_id, course_id):
     core_topic = ""
     print("Getting assessment videos")
@@ -39,7 +42,7 @@ def get_assessment_videos(student_id, course_id):
         if not quiz_id:
             continue
 
-        quiz_videos = []
+        quiz_videos = []  
 
         for question in incorrect_questions:
             cur_qid = question.get("questionid")
@@ -52,14 +55,16 @@ def get_assessment_videos(student_id, course_id):
                 videos_for_question = matching_question.get('video_data', [])
             else:
                 cur_question_text = question.get('question_text')
-                core_topic = get_video_reccs.generate_core_topic(cur_question_text,cur_qid, course_id)
+                core_topic = get_video_reccs.generate_core_topic(cur_question_text, cur_qid, course_id)
                 videos_for_question = get_video_reccs.fetch_videos_for_topic(core_topic)
-            
-            quiz_videos.append({
-                "questionid": cur_qid,
-                "topic": core_topic,
-                "videos": videos_for_question
-            })
+
+            # Check for duplicate before adding
+            if not is_duplicate_video(quiz_videos, cur_qid):
+                quiz_videos.append({
+                    "questionid": cur_qid,
+                    "topic": core_topic,
+                    "videos": videos_for_question
+                })
             
             if not matching_question:
                 new_entry = {
@@ -69,11 +74,12 @@ def get_assessment_videos(student_id, course_id):
                     "video_data": videos_for_question,
                     "question_text": cur_question_text
                 }
-                quizzes_collection.insert_one(new_entry)
+                quizzes_collection.update_one(new_entry, upsert=True)
 
         assessment_videos[quiz_name] = quiz_videos
     
     return assessment_videos
+
 
 
 def get_cid_from_sid(studentid):
