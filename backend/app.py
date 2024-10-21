@@ -38,7 +38,7 @@ quizzes_collection = db['Quiz Questions']
 def hello_world():
     return jsonify('Welcome to the KnowGap Backend API!')
 
-@app.route('/update-all-videos', methods = [])
+@app.route('/update-all-videos', methods = ['POST'])
 def update_all_videos():
     videos = update_videos_for_filter()
     return jsonify(videos)
