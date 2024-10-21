@@ -17,29 +17,34 @@ db = mongo_client['KnowGap']
 quizzes_collection = db['Quiz Questions']
 contexts_collection = db['Course Contexts']
 
-def get_video_recommendation_and_store():
+def update_videos_for_filter(filter_criteria=None):
+    
     videos = {}
 
-    for question in quizzes_collection.find():
+    query = filter_criteria if filter_criteria else {}
+
+    total_documents = quizzes_collection.count_documents(query)
+    
+    if total_documents == 0:
+        print("No matching quiz questions found for the given filter.")
+        return jsonify({'status': 'Error', 'message': 'No matching course data'}), 404
+    
+
+    for question in quizzes_collection.find(query):
         question_text = question.get('question_text')
         cur_video_data = question.get('video_data')
         if not question_text or question.get('video_data'):
             continue
 
-        # Retrieve course information from the quiz question
         course_id = question.get('courseid')
         course_name = question.get('course_name', "")
 
-        # Fetch the course context from the contexts_collection using the course_id
         course_context = ""
         course_context_data = contexts_collection.find_one({'courseid': course_id})
         if course_context_data:
             course_context = course_context_data.get('course_context', "")
 
-        # Generate the core topic with course context
         core_topic = generate_core_topic(question_text, course_name, course_context)
-
-        # Check if there's an existing topic with the same core topic
         existing_topic = quizzes_collection.find_one({'core_topic': core_topic})
 
         if existing_topic:
@@ -76,6 +81,12 @@ def get_video_recommendation_and_store():
         videos[core_topic] = video_data
 
     return videos
+
+
+def update_course_videos(course_id=None):
+    filter_criteria = {'courseid': course_id} if course_id else None
+    return update_videos_for_filter(filter_criteria)
+
 
 def generate_core_topic(question_text, course_name, course_context=""):
     prompt = (f"Based on the following question from course {course_name}, "
@@ -119,5 +130,5 @@ def fetch_videos_for_topic(topic):
         return []
 
 if __name__ == "__main__":
-    videos = get_video_recommendation_and_store()
+    videos = update_videos_for_filter()
     print(videos)

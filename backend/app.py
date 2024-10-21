@@ -13,7 +13,7 @@ from update_course_students import update_db as update_students_db
 from update_course_quizzes import update_db as update_quizzes_db
 from update_course_context import update_context
 from update_video import update_video_link
-from get_video_reccs import get_video_recommendation_and_store
+from get_video_reccs import update_course_videos, update_videos_for_filter
 import logging
 import asyncio
 
@@ -38,10 +38,20 @@ quizzes_collection = db['Quiz Questions']
 def hello_world():
     return jsonify('Welcome to the KnowGap Backend API!')
 
-@app.route('/update-all-videos')
+@app.route('/update-all-videos', methods = [])
 def update_all_videos():
-    videos = get_video_recommendation_and_store
+    videos = update_videos_for_filter()
     return jsonify(videos)
+
+@app.route('/update-course-videos', methods = ['POST'])
+def update_course_videos_route():
+    data = request.get_json()
+    course_id = data.get('courseid')
+
+    if not course_id:
+        print("Missing Course ID")
+        return jsonify({'error': 'Missing Course ID'}), 400
+
 
 @app.route('/get-video-rec', methods=['POST'])
 def get_video_recc_route():
