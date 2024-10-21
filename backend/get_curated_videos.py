@@ -33,7 +33,7 @@ def get_assessment_videos(student_id, course_id):
     assessment_videos = {}
 
     print("Quizzes: " + str(quizzes))
-
+    used_topics = set()
     for quiz in quizzes:
         quiz_name = quiz.get('quizname', 'Unknown Quiz')
         quiz_id = quiz.get('quizid')
@@ -52,11 +52,17 @@ def get_assessment_videos(student_id, course_id):
 
             if matching_question:
                 core_topic = matching_question.get("core_topic", "No topic found")
+                if core_topic != "No topic found":
+                    used_topics.add(core_topic)
                 videos_for_question = matching_question.get('video_data', [])
             else:
                 cur_question_text = question.get('question_text')
                 core_topic = get_video_reccs.generate_core_topic(cur_question_text, cur_qid, course_id)
                 videos_for_question = get_video_reccs.fetch_videos_for_topic(core_topic)
+                used_topics.add(core_topic)
+
+            if core_topic in used_topics:
+                continue
 
             # Check for duplicate before adding
             if not is_duplicate_video(quiz_videos, cur_qid):
