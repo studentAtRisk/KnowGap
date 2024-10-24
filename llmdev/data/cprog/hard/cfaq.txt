@@ -1,0 +1,123 @@
+1.1 How should I decide which integer type to use?
+
+1.2 Why aren't the sizes of the standard types precisely defined?
+
+1.3 Since C doesn't define sizes exactly, I've been using typedefs like int16 and int32. I can then define these typedefs to be int, short, long, etc. depending on what machine I'm using. That should solve everything, right?
+
+1.4 What should the 64-bit type be on a machine that can support it?
+
+1.5 What's wrong with this declaration?
+
+char* p1, p2;
+I get errors when I try to use p2.
+1.6 I'm trying to declare a pointer and allocate some space for it, but it's not working. What's wrong with this code?
+
+char *p;
+*p = malloc(10);
+1.7 What's the best way to declare and define global variables and functions?
+
+1.8 How can I implement opaque (abstract) data types in C?
+
+1.9 How can I make a sort of ``semi-global'' variable, that is, one that's private to a few functions spread across a few source files?
+
+1.10 Do all declarations for the same static function or variable have to include the storage class static?
+
+1.11 What does extern mean in a function declaration?
+
+1.12 What's the auto keyword good for?
+
+1.13 What's the difference between using a typedef or a #define for a user-defined type?
+
+1.14 I can't seem to define a linked list successfully. I tried
+
+	typedef struct {
+		char *item;
+		NODEPTR next;
+	} *NODEPTR;
+but the compiler gave me error messages. Can't a structure in C contain a pointer to itself?
+1.15 How can I define a pair of mutually referential structures? I tried
+
+	typedef struct {
+		int afield;
+		BPTR bpointer;
+	} *APTR;
+
+	typedef struct {
+		int bfield;
+		APTR apointer;
+	} *BPTR;
+but the compiler doesn't know about BPTR when it is used in the first structure declaration.
+1.16 What's the difference between these two declarations?
+
+	struct x1 { ... };
+	typedef struct { ... } x2;
+1.17 What does
+
+typedef int (*funcptr)();
+mean?
+1.18 I've got the declarations
+
+	typedef char *charp;
+	const charp p;
+Why is p turning out const, instead of the characters pointed to?
+1.19 I don't understand why I can't use const values in initializers and array dimensions, as in
+
+	const int n = 5;
+	int a[n];
+1.20 What's the difference between const char *p, char const *p, and char * const p?
+
+1.20b
+
+What does it mean for a function parameter to be const? What do the two const's in
+
+	int f(const * const p)
+mean?
+1.21 How do I construct declarations of complicated types such as ``array of N pointers to functions returning pointers to functions returning pointers to char'', or figure out what similarly complicated declarations mean?
+
+1.22 How can I declare a function that can return a pointer to a function of the same type? I'm building a state machine with one function for each state, each of which returns a pointer to the function for the next state. But I can't find a way to declare the functions--I seem to need a function returning a pointer to a function returning a pointer to a function returning a pointer to a function..., ad infinitum.
+
+1.23 Can I declare a local array (or parameter array) of a size matching a passed-in array, or set by another parameter?
+
+1.24 I have an extern array which is defined in one file, and used in another:
+
+file1.c:			file2.c:
+
+int array[] = {1, 2, 3};	extern int array[];
+Why doesn't sizeof work on array in file2.c?
+1.25 My compiler is complaining about an invalid redeclaration of a function, but I only define it once and call it once.
+
+1.25b What's the right declaration for main?
+Is void main() correct?
+
+1.26 My compiler is complaining about mismatched function prototypes which look fine to me.
+
+1.27 I'm getting strange syntax errors on the very first declaration in a file, but it looks fine.
+
+1.28 My compiler isn't letting me declare a big array like
+
+double array[256][256];
+1.29 How can I determine which identifiers are safe for me to use and which are reserved?
+
+1.30 What am I allowed to assume about the initial values of variables and arrays which are not explicitly initialized?
+If global variables start out as ``zero'', is that good enough for null pointers and floating-point zeroes?
+
+1.31 This code, straight out of a book, isn't compiling:
+
+int f()
+{
+	char a[] = "Hello, world!";
+}
+1.31b What's wrong with this initialization?
+
+char *p = malloc(10);
+My compiler is complaining about an ``invalid initializer'', or something.
+1.32 What is the difference between these initializations?
+
+char a[] = "string literal";
+char *p  = "string literal";
+My program crashes if I try to assign a new value to p[i].
+1.33 Is char a[3] = "abc"; legal?
+
+1.34 I finally figured out the syntax for declaring pointers to functions, but now how do I initialize one?
+
+1.35 Can I initialize unions?

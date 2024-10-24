@@ -1,0 +1,356 @@
+{
+    "title": "European History - Final Exam",
+    "questions": [
+        {
+            "id": 1,
+            "type": "multiple_choice",
+            "question": "Which event started World War I?",
+            "chosen_answer": "",
+            "correct_answer": "The assassination of Archduke Franz Ferdinand"
+        },
+        {
+            "id": 2,
+            "type": "multiple_choice",
+            "question": "Who was the leader of the Soviet Union during World War II?",
+            "chosen_answer": "",
+            "correct_answer": "Joseph Stalin"
+        },
+        {
+            "id": 3,
+            "type": "multiple_choice",
+            "question": "What was the primary goal of the Congress of Vienna (1814-1815)?",
+            "chosen_answer": "",
+            "correct_answer": "To restore stability and order in Europe after the Napoleonic Wars"
+        },
+        {
+            "id": 4,
+            "type": "multiple_choice",
+            "question": "Which of the following was a major outcome of the Treaty of Versailles?",
+            "chosen_answer": "",
+            "correct_answer": "Germany was forced to accept full responsibility for World War I"
+        },
+        {
+            "id": 5,
+            "type": "multiple_choice",
+            "question": "Which event marked the beginning of the French Revolution?",
+            "chosen_answer": "",
+            "correct_answer": "The storming of the Bastille"
+        },
+        {
+            "id": 6,
+            "type": "multiple_choice",
+            "question": "Who was the first emperor of France?",
+            "chosen_answer": "",
+            "correct_answer": "Napoleon Bonaparte"
+        },
+        {
+            "id": 7,
+            "type": "multiple_choice",
+            "question": "What was the main cause of the Thirty Years' War?",
+            "chosen_answer": "",
+            "correct_answer": "Religious conflict between Catholics and Protestants"
+        },
+        {
+            "id": 8,
+            "type": "multiple_choice",
+            "question": "Which treaty ended the Thirty Years' War in 1648?",
+            "chosen_answer": "",
+            "correct_answer": "The Treaty of Westphalia"
+        },
+        {
+            "id": 9,
+            "type": "multiple_choice",
+            "question": "What was the Renaissance?",
+            "chosen_answer": "",
+            "correct_answer": "A cultural revival of art, learning, and literature in Europe"
+        },
+        {
+            "id": 10,
+            "type": "multiple_choice",
+            "question": "Which of the following monarchs is associated with the establishment of the Anglican Church?",
+            "chosen_answer": "",
+            "correct_answer": "Henry VIII"
+        },
+        {
+            "id": 11,
+            "type": "multiple_choice",
+            "question": "Who was the leader of Nazi Germany during World War II?",
+            "chosen_answer": "",
+            "correct_answer": "Adolf Hitler"
+        },
+        {
+            "id": 12,
+            "type": "multiple_choice",
+            "question": "What was the purpose of the Berlin Wall?",
+            "chosen_answer": "",
+            "correct_answer": "To prevent East Germans from fleeing to West Berlin"
+        },
+        {
+            "id": 13,
+            "type": "multiple_choice",
+            "question": "Which of the following philosophers is associated with the Enlightenment?",
+            "chosen_answer": "",
+            "correct_answer": "John Locke"
+        },
+        {
+            "id": 14,
+            "type": "multiple_choice",
+            "question": "Who was the last Tsar of Russia before the Russian Revolution?",
+            "chosen_answer": "",
+            "correct_answer": "Nicholas II"
+        },
+        {
+            "id": 15,
+            "type": "multiple_choice",
+            "question": "Which country was the first to industrialize in Europe?",
+            "chosen_answer": "",
+            "correct_answer": "Great Britain"
+        },
+        {
+            "id": 16,
+            "type": "multiple_choice",
+            "question": "What was the main cause of the Crimean War (1853-1856)?",
+            "chosen_answer": "",
+            "correct_answer": "Disputes over the rights of Christian minorities in the Ottoman Empire"
+        },
+        {
+            "id": 17,
+            "type": "multiple_choice",
+            "question": "Which empire was known as the 'sick man of Europe' during the 19th century?",
+            "chosen_answer": "",
+            "correct_answer": "The Ottoman Empire"
+        },
+        {
+            "id": 18,
+            "type": "multiple_choice",
+            "question": "What was the Black Death?",
+            "chosen_answer": "",
+            "correct_answer": "A devastating pandemic that killed millions in Europe during the 14th century"
+        },
+        {
+            "id": 19,
+            "type": "multiple_choice",
+            "question": "Which of the following was a key feature of the Enlightenment?",
+            "chosen_answer": "",
+            "correct_answer": "A focus on reason, science, and individual rights"
+        },
+        {
+            "id": 20,
+            "type": "multiple_choice",
+            "question": "Who was the leader of the Bolshevik Revolution in Russia in 1917?",
+            "chosen_answer": "",
+            "correct_answer": "Vladimir Lenin"
+        },
+        {
+            "id": 21,
+            "type": "multiple_choice",
+            "question": "Which conflict is known as 'The Great War'?",
+            "chosen_answer": "",
+            "correct_answer": "World War I"
+        },
+        {
+            "id": 22,
+            "type": "multiple_choice",
+            "question": "Which of the following countries was part of the Triple Alliance before World War I?",
+            "chosen_answer": "",
+            "correct_answer": "Germany"
+        },
+        {
+            "id": 23,
+            "type": "multiple_choice",
+            "question": "What was the primary purpose of the Marshall Plan after World War II?",
+            "chosen_answer": "",
+            "correct_answer": "To provide economic aid to rebuild European economies"
+        },
+        {
+            "id": 24,
+            "type": "multiple_choice",
+            "question": "Which French leader declared himself emperor in 1804?",
+            "chosen_answer": "",
+            "correct_answer": "Napoleon Bonaparte"
+        },
+        {
+            "id": 25,
+            "type": "multiple_choice",
+            "question": "What was the main result of the Glorious Revolution in England?",
+            "chosen_answer": "",
+            "correct_answer": "The establishment of a constitutional monarchy"
+        },
+        {
+            "id": 26,
+            "type": "multiple_choice",
+            "question": "Which document, signed in 1215, limited the power of the English king?",
+            "chosen_answer": "",
+            "correct_answer": "Magna Carta"
+        },
+        {
+            "id": 27,
+            "type": "multiple_choice",
+            "question": "Which of the following events marked the end of Napoleon's rule?",
+            "chosen_answer": "",
+            "correct_answer": "The Battle of Waterloo"
+        },
+        {
+            "id": 28,
+            "type": "multiple_choice",
+            "question": "Who was the primary author of the Declaration of the Rights of Man and of the Citizen?",
+            "chosen_answer": "",
+            "correct_answer": "Marquis de Lafayette"
+        },
+        {
+            "id": 29,
+            "type": "multiple_choice",
+            "question": "What was the primary goal of the European Union when it was formed?",
+            "chosen_answer": "",
+            "correct_answer": "To promote economic cooperation and prevent future conflicts in Europe"
+        },
+        {
+            "id": 30,
+            "type": "multiple_choice",
+            "question": "Who was responsible for the Reign of Terror during the French Revolution?",
+            "chosen_answer": "",
+            "correct_answer": "Maximilien Robespierre"
+        },
+        {
+            "id": 31,
+            "type": "multiple_choice",
+            "question": "Which Italian leader was instrumental in the unification of Italy?",
+            "chosen_answer": "",
+            "correct_answer": "Giuseppe Garibaldi"
+        },
+        {
+            "id": 32,
+            "type": "multiple_choice",
+            "question": "What event led to the outbreak of World War II in Europe?",
+            "chosen_answer": "",
+            "correct_answer": "Germany's invasion of Poland"
+        },
+        {
+            "id": 33,
+            "type": "multiple_choice",
+            "question": "Which leader is associated with the policy of appeasement prior to World War II?",
+            "chosen_answer": "",
+            "correct_answer": "Neville Chamberlain"
+        },
+        {
+            "id": 34,
+            "type": "multiple_choice",
+            "question": "What was the main cause of the Spanish Civil War?",
+            "chosen_answer": "",
+            "correct_answer": "A struggle between Republicans and Nationalists"
+        },
+        {
+            "id": 35,
+            "type": "multiple_choice",
+            "question": "Which treaty established the European Economic Community (EEC)?",
+            "chosen_answer": "",
+            "correct_answer": "The Treaty of Rome"
+        },
+        {
+            "id": 36,
+            "type": "multiple_choice",
+            "question": "Which of the following monarchs is known for the English Reformation?",
+            "chosen_answer": "",
+            "correct_answer": "Henry VIII"
+        },
+        {
+            "id": 37,
+            "type": "multiple_choice",
+            "question": "Which event marked the fall of the Western Roman Empire?",
+            "chosen_answer": "",
+            "correct_answer": "The sack of Rome by barbarian tribes in 476 AD"
+        },
+        {
+            "id": 38,
+            "type": "multiple_choice",
+            "question": "What was the main outcome of the Battle of Hastings in 1066?",
+            "chosen_answer": "",
+            "correct_answer": "William the Conqueror became the king of England"
+        },
+        {
+            "id": 39,
+            "type": "multiple_choice",
+            "question": "Which European city experienced a cultural and artistic revival during the Renaissance?",
+            "chosen_answer": "",
+            "correct_answer": "Florence"
+        },
+        {
+            "id": 40,
+            "type": "multiple_choice",
+            "question": "Which conflict is known as the longest-running war in European history?",
+            "chosen_answer": "",
+            "correct_answer": "The Hundred Years' War"
+        },
+        {
+            "id": 41,
+            "type": "multiple_choice",
+            "question": "Who was the Holy Roman Emperor during the Protestant Reformation?",
+            "chosen_answer": "",
+            "correct_answer": "Charles V"
+        },
+        {
+            "id": 42,
+            "type": "multiple_choice",
+            "question": "Which battle is considered Napoleon's greatest defeat?",
+            "chosen_answer": "",
+            "correct_answer": "The Battle of Waterloo"
+        },
+        {
+            "id": 43,
+            "type": "multiple_choice",
+            "question": "What was the main cause of the English Civil War?",
+            "chosen_answer": "",
+            "correct_answer": "Conflict between the monarchy and Parliament"
+        },
+        {
+            "id": 44,
+            "type": "multiple_choice",
+            "question": "Which treaty ended World War II in Europe?",
+            "chosen_answer": "",
+            "correct_answer": "The unconditional surrender of Germany"
+        },
+        {
+            "id": 45,
+            "type": "multiple_choice",
+            "question": "Who was the first woman to be elected as Prime Minister of the United Kingdom?",
+            "chosen_answer": "",
+            "correct_answer": "Margaret Thatcher"
+        },
+        {
+            "id": 46,
+            "type": "multiple_choice",
+            "question": "What was the primary result of the 1848 Revolutions in Europe?",
+            "chosen_answer": "",
+            "correct_answer": "The rise of nationalist and liberal movements"
+        },
+        {
+            "id": 47,
+            "type": "multiple_choice",
+            "question": "What was the primary goal of the Spanish Inquisition?",
+            "chosen_answer": "",
+            "correct_answer": "To enforce Catholic orthodoxy"
+        },
+        {
+            "id": 48,
+            "type": "multiple_choice",
+            "question": "Which European explorer is credited with discovering the Americas in 1492?",
+            "chosen_answer": "",
+            "correct_answer": "Christopher Columbus"
+        },
+        {
+            "id": 49,
+            "type": "multiple_choice",
+            "question": "Which of the following was a major effect of the Protestant Reformation?",
+            "chosen_answer": "",
+            "correct_answer": "The division of Christianity in Western Europe"
+        },
+        {
+            "id": 50,
+            "type": "multiple_choice",
+            "question": "Who was the main leader of the Nazi Party in Germany?",
+            "chosen_answer": "",
+            "correct_answer": "Adolf Hitler"
+        }
+    ]
+}
+

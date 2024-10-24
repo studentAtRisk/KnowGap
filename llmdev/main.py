@@ -72,6 +72,25 @@ def load_quiz_from_file(file_path):
         print(f"Error decoding JSON from file: {file_path}")
         return None
 
+def get_quiz_from_path(path):
+    return load_quiz_from_file(path)
+
+def foreach_question(quiz_data, func):
+    quiz_json = process_quiz(quiz_data)
+    ret = []
+    for data in quiz_json :
+        ret.append(func(data['question']))
+    print(ret)
+    return ret
+
+def search_for_videos(query, num_results=1):
+    search = VideosSearch(query, limit=num_results)
+    results = search.result()['result']
+    links = []
+    for video in results:
+        links.append(video['link'])
+    return links
+
 if __name__ == "__main__":
     path = "/home/dsantamaria/ucf/UCF-Student-Risk-Predictor/querygen/data/stats/exams/exam1.json"
     quiz_data = load_quiz_from_file(path)

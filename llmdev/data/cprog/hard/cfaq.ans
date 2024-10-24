@@ -1,0 +1,433 @@
+1.1 
+ If you might need large values (above 32,767 or below -32,767), use long. Otherwise, if space is very important (i.e. if there are large arrays or many structures), use short. Otherwise, use int. If well-defined overflow characteristics are important and negative values are not, or if you want to steer clear of sign-extension problems when manipulating bits or bytes, use one of the corresponding unsigned types. (Beware when mixing signed and unsigned values in expressions, though; see question 3.19.)
+
+Although character types (especially unsigned char) can be used as ``tiny'' integers, doing so is sometimes more trouble than it's worth. The compiler will have to emit extra code to convert between char and int (making the executable larger), and unexpected sign extension can be troublesome. (Using unsigned char can help; see question 12.1 for a related problem.)
+
+A similar space/time tradeoff applies when deciding between float and double. (Many compilers still convert all float values to double during expression evaluation.) None of the above rules apply if pointers to the variable must have a particular type.
+
+Variables referring to certain kinds of data, such as sizes of objects in memory, can and should use predefined abstract types such as size_t.
+
+It's often incorrectly assumed that C's types are defined to have certain, exact sizes. In fact, what's guaranteed is that:
+
+type char can hold values up to 127;
+types short int and int can hold values up to 32,767; and
+type long int can hold values up to 2,147,483,647.
+something like the relation
+	sizeof(char) <= sizeof(short) <= sizeof(int) <= sizeof(long) <= sizeof(long long)
+holds. [footnote]
+From these values, it can be inferred that char is at least 8 bits, short int and int are at least 16 bits, and long int is at least 32 bits. (The signed and unsigned versions of each type are guaranteed to have the same size.) Under ANSI C, the maximum and minimum values for a particular machine can be found in the header file <limits.h>; here is a summary:
+
+Base type	Minimum size (bits)	Minimum value (signed)	Maximum value (signed)	Maximum value (unsigned)
+char	8	-127	127	255
+short	16	-32,767	32,767	65,535
+int	16	-32,767	32,767	65,535
+long	32	-2,147,483,647	2,147,483,647	4,294,967,295
+(These values are the minimums guaranteed by the Standard. Many implementations allow larger values, but portable programs shouldn't depend on it.)
+
+1.2
+ Though C is considered relatively low-level as high-level languages go, it does take the position that the exact size of an object (i.e. in bits) is an implementation detail. (The only place where C lets you specify a size in bits is in bit-fields within structures; see questions 2.25 and 2.26.) Most programs do not need precise control over these sizes; many programs that do try to achieve this control would be better off if they didn't.
+
+1.3
+ If you truly need control over exact type sizes, this is the right approach. There remain several things to be aware of:
+
+There might not be an exact match on some machines. (There are, for example, 36-bit machines.)
+A typedef like int16 or int32 accomplishes nothing if its intended meaning is ``at least'' the specified size, because types int and long are already essentially defined as being ``at least 16 bits'' and ``at least 32 bits,'' respectively.
+Typedefs will never do anything about byte order problems (e.g. if you're trying to interchange data or conform to externally-imposed storage layouts).
+You no longer have to define your own typedefs, because the Standard header <inttypes.h> contains a complete set.
+
+1.4
+ The new C99 Standard specifies type long long as effectively being at least 64 bits, and this type has been implemented by a number of compilers for some time. (Others have implemented extensions such as __longlong.) On the other hand, it's also appropriate to implement type short int as 16, int as 32, and long int as 64 bits, and some compilers do.
+
+1.5
+Nothing is wrong with the declaration--except that it doesn't do what you probably want. The * in a pointer declaration is not part of the base type; it is part of the declarator containing the name being declared (see question 1.21). That is, in C, the syntax and interpretation of a declaration is not really
+
+	type identifier ;
+but rather
+	base_type thing_that_gives_base_type ;
+where ``thing_that_gives_base_type''--the declarator--is either a simple identifier, or a notation like *p or a[10] or f() indicating that the variable being declared is a pointer to, array of, or function returning that base_type. (Of course, more complicated declarators are possible as well.)
+In the declaration as written in the question, no matter what the whitespace suggests, the base type is char and the first declarator is ``* p1'', and since the declarator contains a *, it declares p1 as a pointer-to-char. The declarator for p2, however, contains nothing but p2, so p2 is declared as a plain char, probably not what was intended. To declare two pointers within the same declaration, use
+
+	char *p1, *p2;
+Since the * is part of the declarator, it's best to use whitespace as shown; writing char* invites mistakes and confusion.
+
+1.6
+The pointer you declared is p, not *p. See question 4.2.
+
+1.7
+irst, though there can be many declarations (and in many translation units) of a single global variable or function, there must be exactly one definition. [footnote] For global variables, the definition is the declaration that actually allocates space, and provides an initialization value, if any. For functions, the definition is the ``declaration'' that provides the function body. For example, these are declarations:
+
+	extern int i;
+
+	extern int f();
+and these are definitions:
+	int i = 0;
+
+	int f()
+	{
+		return 1;
+	}
+(Actually, the keyword extern is optional in function declarations; see question 1.11.)
+When you need to share variables or functions across several source files, you will of course want to ensure that all definitions and declarations are consistent. The best arrangement is to place each definition in some relevant .c file. Then, put an external declaration in a header (``.h'') file, and #include it wherever the declaration is needed. The .c file containing the definition should also #include the same header file, so the compiler can check that the definition matches the declarations.
+
+This rule promotes a high degree of portability: it is consistent with the requirements of the ANSI C Standard, and is also consistent with most pre-ANSI compilers and linkers. (Unix compilers and linkers typically use a ``common model'' which allows multiple definitions, as long as at most one is initialized; this behavior is mentioned as a ``common extension'' by the ANSI Standard, no pun intended. A few very old systems might once have required an explicit initializer to distinguish a definition from an external declaration.)
+
+It is possible to use preprocessor tricks to arrange that a line like
+
+	DEFINE(int, i);
+need only be entered once in one header file, and turned into a definition or a declaration depending on the setting of some macro, but it's not clear if this is worth the trouble, especially since it's usually a better idea to keep global variables to a minimum.
+It's not just a good idea to put global declarations in header files: if you want the compiler to be able to catch inconsistent declarations for you, you must place them in header files. In particular, never place a prototype for an external function in a .c file--if the definition of the function ever changes, it would be too easy to forget to change the prototype, and an incompatible prototype is worse than useless.
+
+
+1.8
+See question 2.4.
+
+1.9
+You can't do this in C. If it's impossible or inconvenient to put all the functions in the same source file, there are two usual solutions:
+
+Pick a unique prefix for the names of all functions and global variables in a library or package of related routines, and warn users of the package not to define or use any symbols with names matching that prefix other than those documented as being for public consumption. (In other words, an undocumented but otherwise global symbol with a name matching that prefix is, by convention, ``private.'')
+Use a name beginning with an underscore, since such names shouldn't be used by ordinary code. (See question 1.29 for more information, and for a description of the ``no man's land'' between the user and implementation namespaces.)
+It may also be possible to use special linker invocations to adjust the visibility of names, but any such techniques are outside of the scope of the C language.
+
+1.10 
+The language in the Standard does not quite require this (what's most important is that the first declaration contain static), but the rules are rather intricate, and are slightly different for functions than for data objects. (There has also been a lot of historical variation in this area.) Therefore, it's safest if static appears consistently in the definition and all declarations.
+
+1.11
+extern is significant only with data declarations. In function declarations, it can be used as a stylistic hint to indicate that the function's definition is probably in another source file, but there is no formal difference between
+
+	extern int f();
+and
+	int f();
+
+1.12
+Nothing; it's archaic. [footnote] (It's a holdover from C's typeless predecessor language B, where in the absence of keywords like int a declaration always needed a storage class.) See also question 20.37.
+
+1.13
+Structures in C can certainly contain pointers to themselves; the discussion and example in section 6.5 of K&R make this clear.
+
+The problem with this example is the typedef. A typedef defines a new name for a type, and in simpler cases [footnote] you can define a new structure type and a typedef for it at the same time, but not in this case. A typedef declaration can not be used until it is defined, and in the fragment above, it is not yet defined at the point where the next field is declared.
+
+To fix this code, first give the structure a tag (e.g. ``struct node''). Then, declare the next field as a simple struct node *, or disentangle the typedef declaration from the structure definition, or both. One corrected version would be:
+
+	typedef struct node {
+		char *item;
+		struct node *next;
+	} *NODEPTR;
+You could also precede the struct declaration with the typedef, in which case you could use the NODEPTR typedef when declaring the next field, after all:
+	typedef struct node *NODEPTR;
+
+	struct node {
+		char *item;
+		NODEPTR next;
+	};
+(In this case, you declare a new typedef name involving struct node even though struct node has not been completely defined yet; this you're allowed to do.[footnote] )
+Finally, here is a rearrangement incorporating both suggestions:
+
+	struct node {
+		char *item;
+		struct node *next;
+	};
+
+	typedef struct node *NODEPTR;
+(It's a matter of style which method to prefer; see section 17.)
+
+1.15
+ As in question 1.14, the problem lies not in the structures or the pointers but the typedefs. First, give the two structures tags, and define the link pointers without using typedefs:
+
+	struct a {
+		int afield;
+		struct b *bpointer;
+	};
+
+	struct b {
+		int bfield;
+		struct a *apointer;
+	};
+The compiler can accept the field declaration struct b *bpointer within struct a, even though it has not yet heard of struct b. (struct b is ``incomplete'' at that point.) Occasionally it is necessary to precede this couplet with the empty declaration
+	struct b;
+to mask the declarations (if in an inner scope) from a different struct b in an outer scope.
+After declaring the two structures using struct tags, you can then declare the typedefs separately:
+
+	typedef struct a *APTR;
+	typedef struct b *BPTR;
+Alternatively, you can define the typedefs before the struct definitions[footnote] , in which case you can use them when declaring the link pointer fields:
+
+	typedef struct a *APTR;
+	typedef struct b *BPTR;
+
+	struct a {
+		int afield;
+		BPTR bpointer;
+	};
+
+	struct b {
+		int bfield;
+		APTR apointer;
+	};
+
+
+1.16
+See question 2.1.
+
+1.17
+It defines a typedef, funcptr, for a pointer to a function (taking unspecified arguments) returning an int. It can be used to declare one or more pointers to functions:
+
+	funcptr pf1, pf2;
+which is equivalent to the more verbose, and perhaps harder to understand
+	int (*pf1)(), (*pf2)();
+See also questions 1.21, 4.12, and 15.11.
+
+1.18
+See question 11.8.
+
+1.19
+
+1.20
+See questions 11.9 and 1.21.
+
+1.20b
+int f(const * const p)
+the first of the two const's is perfectly appropriate and quite useful; many functions declare parameters which are pointers to const data, and doing so documents (and tends to enforce) the function's promise that it won't modify the pointed-to data in the caller. The second const, on the other hand, is almost useless; all it says is that the function won't alter its own copy of the pointer, even though it wouldn't cause the caller or the function any problems if it did, nor is this anything the caller should care about in any case. The situation is the same as if a function declared an ordinary (non-pointer) parameter as const:
+	int f2(const int x)
+This says that nowhere in the body of f2() will the function assign a different value to x. (Compilers should try to enforce this promise, too.) But assigning a different value to x wouldn't affect the value that the caller had passed (because C always uses call-by-value), so it's an unimportant guarantee, and in fact a pretty useless one, because what does the function gain by promising (to itself, since it's the only one that could care) whether it will or won't be modifying in the passed-in copy of the value?
+
+1.21
+ The first part of this question can be answered in at least three ways:
+
+char *(*(*a[N])())();
+Build the declaration up incrementally, using typedefs:
+	typedef char *pc;	/* pointer to char */
+	typedef pc fpc();	/* function returning pointer to char */
+	typedef fpc *pfpc;	/* pointer to above */
+	typedef pfpc fpfpc();	/* function returning... */
+	typedef fpfpc *pfpfpc;	/* pointer to... */
+	pfpfpc a[N];		/* array of... */
+Use the cdecl program, which turns English into C and vice versa. You provide a longhand description of the type you want, and cdecl responds with the equivalent C declaration:
+	cdecl> declare a as array of pointer to function returning
+		pointer to function returning pointer to char
+
+	char *(*(*a[])())()
+cdecl can also explain complicated declarations (you give it a complicated declaration and it responds with an English description), help with casts, and indicate which set of parentheses the parameters go in (for complicated function definitions, like the one above). See question 18.1.
+C's declarations can be confusing because they come in two parts: a base type, and a declarator which contains the identifier or name being declared, perhaps along with *'s and []'s and ()'s saying whether the name is a pointer to, array of, or function returning the base type, or some combination.[footnote] For example, in
+
+	char *pc;
+the base type is char, the identifier is pc, and the declarator is *pc; this tells us that *pc is a char (this is what ``declaration mimics use'' means).
+One way to make sense of complicated C declarations is by reading them ``inside out,'' remembering that [] and () bind more tightly than *. For example, given
+
+	char *(*pfpc)();
+we can see that pfpc is a pointer (the inner *) to a function (the ()) to a pointer (the outer *) to char. When we later use pfpc, the expression *(*pfpc)() (the value pointed to by the return value of a function pointed to by pfpc) will be a char.
+Another way of analyzing these declarations is to decompose the declarator while composing the description, maintaining the ``declaration mimics use'' relationship:
+
+	*(*pfpc)()	is a	char
+	(*pfpc)()	is a	pointer to char
+	(*pfpc)	is a	function returning pointer to char
+	pfpc	is a	pointer to function returning pointer to char
+If you'd like to make things clearer when declaring complicated types like these, you can make the analysis explicit by using a chain of typedefs as in option 2 above.
+
+The pointer-to-function declarations in the examples above have not included parameter type information. When the parameters have complicated types, declarations can really get messy. (Modern versions of cdecl can help here, too.)
+
+
+1.22
+ You can't quite do it directly. One way is to have the function return a generic function pointer (see question 4.13), with some judicious casts to adjust the types as the pointers are passed around:
+
+typedef int (*funcptr)();	  /* generic function pointer */
+typedef funcptr (*ptrfuncptr)();  /* ptr to fcn returning g.f.p. */
+
+funcptr start(), stop();
+funcptr state1(), state2(), state3();
+
+void statemachine()
+{
+	ptrfuncptr state = start;
+
+	while(state != stop)
+		state = (ptrfuncptr)(*state)();
+}
+
+funcptr start()
+{
+	return (funcptr)state1;
+}
+(The second ptrfuncptr typedef hides some particularly dark syntax; without it, the state variable would have to be declared as funcptr (*state)() and the call would contain a bewildering cast of the form (funcptr (*)())(*state)().)
+Another way (suggested by Paul Eggert, Eugene Ressler, Chris Volpe, and perhaps others) is to have each function return a structure containing only a pointer to a function returning that structure:
+
+struct functhunk {
+	struct functhunk (*func)();
+};
+
+struct functhunk start(), stop();
+struct functhunk state1(), state2(), state3();
+
+void statemachine()
+{
+	struct functhunk state = {start};
+
+	while(state.func != stop)
+		state = (*state.func)();
+}
+
+struct functhunk start()
+{
+	struct functhunk ret;
+	ret.func = state1;
+	return ret;
+}
+(Note that these examples use the older, explicit style of calling via function pointers; see question 4.12. See also question 1.17.)
+
+1.23
+Historically, you couldn't, but in C99 (and in some pre-C99 compilers with extensions) you can. See questions 6.15 and 6.19.
+
+1.24
+An extern array of unspecified size is an incomplete type; you cannot apply sizeof to it. sizeof operates at compile time, and there is no way for it to learn the size of an array which is defined in another file.
+
+You have three options:
+
+Declare a companion variable, containing the size of the array, defined and initialized (with sizeof) in the same source file where the array is defined:
+file1.c:			file2.c:
+
+int array[] = {1, 2, 3};	extern int array[];
+int arraysz = sizeof(array);	extern int arraysz;
+(See also question 6.23.)
+#define a manifest constant for the size so that it can be used consistently in the definition and the extern declaration:
+file1.h:
+
+#define ARRAYSZ 3
+extern int array[ARRAYSZ];
+
+file1.c:			file2.c:
+
+#include "file1.h"		#include "file1.h"
+int array[ARRAYSZ];
+Use some sentinel value (typically 0, -1, or NULL) in the array's last element, so that code can determine the end without an explicit size indication:
+file1.c:			file2.c:
+
+int array[] = {1, 2, 3, -1};	extern int array[];
+(Obviously, the choice will depend to some extent on whether the array was already being initialized; if it was, option 2 is poor.)
+
+1.25
+Functions which are called without a declaration in scope, perhaps because the first call precedes the function's definition, are assumed to be declared as if by:
+
+	extern int f();
+That is, an undeclared function is assumed to return int, and to accept an unspecified number of arguments (though there must be a fixed number of them and none may be ``narrow''). If the function is later defined otherwise, the compiler complains about the discrepancy. Functions returning other than int, or accepting any ``narrow'' arguments, or accepting a variable number of arguments, must all be declared before they are called. (And it's by all means safest to declare all functions, so that function prototypes can check that arguments are passed correctly.)
+Another possible source of this problem is that the function has the same name as another one declared in some header file.
+
+See also questions 11.3 and 15.1.
+
+1.25b
+See questions 11.12a through 11.15. (But no, it's not correct.)
+
+1.26
+See question 11.3.
+
+1.27
+ See question 10.9.
+
+1.28
+ See question 19.23, and maybe 7.16.
+
+1.29
+Namespace management can be a sticky issue. The problem--which isn't always obvious--is that you don't want to pick identifiers already in use by the implementation, such that you get ``multiply defined'' errors or--even worse--quietly replace one of the implementation's symbols and break everything. You also want some guarantee that later releases won't usurp names you're legitimately using. [footnote] (Few things are more frustrating than taking a debugged, working, production program, recompiling it under a new release of a compiler, and having the build fail due to namespace or other problems.) Therefore, the ANSI/ISO C Standard contains rather elaborate definitions carving out distinct namespace subsets for the user and the implementation.
+
+To make sense of ANSI's rules, and before we can say whether a given identifier is reserved, we must understand three attributes of the identifier: its scope, namespace, and linkage.
+
+There are four kinds of scope (regions over which an identifier's declaration is in effect) in C: function, file, block, and prototype. (The fourth one exists only in the parameter lists of function prototype declarations; see also question 11.5.)
+
+There are four different kinds of namespaces, for:
+
+labels (i.e. goto targets);
+tags (names of structures, unions, and enumerations; these three aren't separate even though they theoretically could be);
+structure/union members (one namespace per structure or union); and
+everything else (functions, variables, typedef names, enumeration constants), termed ``ordinary identifiers'' by the Standard.
+Another set of names (though not termed a ``namespace'' by the Standard) consists of preprocessor macros; these are all expanded before the compiler gets around to considering the four formal namespaces.
+
+The standard defines three kinds of ``linkage'': external, internal, and none. For our purposes, external linkage means global, non-static variables and functions (across all source files), internal linkage means static variables and functions with file scope, and ``no linkage'' refers to local variables, and also things like typedef names and enumeration constants.
+
+The rules, paraphrased from ANSI Sec. 4.1.2.1, are:
+
+1. All identifiers beginning with an underscore followed by an upper-case letter or another underscore are always reserved (all scopes, all namespaces).
+2. All identifiers beginning with an underscore are reserved for ordinary identifiers (functions, variables, typedefs, enumeration constants) with file scope.
+3. A macro name defined in a standard header is reserved for any use if any header which #defines it is #included.
+4. All standard library identifiers with external linkage (e.g. function names) are always reserved as identifiers with external linkage.
+5. Typedef and tag names, with file scope, defined in standard headers, are reserved at file scope (in the same namespace) if the corresponding header is #included. (The Standard really says ``each identifier with file scope,'' but the only standard identifiers not covered by rule 4 are typedef and tag names.)
+Rules 3 and 4 are additionally complicated by the fact that several sets of macro names and standard library identifiers are reserved for ``future directions'' that is, later revisions of the Standard may define new names matching certain patterns.
+
+Here is a list of the patterns which are reserved for ``future directions'' associared with each standard header:
+
+[TABLE GOES HERE]
+(The notation [A-Z] means ``any uppercase letter''; similarly, [a-z] and [0-9] indicate lower-case letters and digits. The notation * means ``anything.'' For example, the pattern for <stdlib.h> says that all external identifiers beginning with the letters str followed by a lower-case letter are reserved.)
+What do the above rules really mean? If you want to be on the safe side:
+
+1,2. Don't give anything a name with a leading underscore.
+3. Don't give anything a name which is already a standard macro (including the ``future directions'' patterns).
+4. Don't give any functions or global variables names which are already taken by functions or variables in the standard library, or which match any of the ``future directions'' patterns. (Strictly speaking, ``matching'' means matching in the first six characters, without regard to case; see question 11.27.)
+5. Don't redefine standard typedef or tag names.
+In fact, the preceding subparagraphs are overly conservative. If you wish, you may remember the following exceptions:
+
+1,2. You may use identifiers consisting of an underscore followed by a digit or lower case letter for labels and structure/union members.
+1,2. You may use identifiers consisting of an underscore followed by a digit or lower case letter at function, block, or prototype scope.
+3. You may use names matching standard macro names if you don't #include any header files which #define them.
+4. You may use names of standard library routines as static or local variables (strictly speaking, as identifiers with internal or no linkage).
+5. You may use standard typedef and tag names if you don't #include any header files which declare them.
+However, before making use of any of these exceptions, recognize that some of them are pretty risky (especially exceptions 3 and 5, since you could accidentally #include the relevant header file at a later time, perhaps through a chain of nested #include files), and others (especially the ones labeled 1,2) represent sort of a ``no man's land'' between the user namespaces and the namespaces reserved to the implementation.
+
+One reason for providing these exceptions is to allow the implementors of various add-in libraries a way to declare their own internal or ``hidden'' identifiers. If you make use of any of the exceptions, you won't clash with any identifiers defined by the Standard, but you might clash with something defined by a third-party library you're using. (If, on the other hand, you're the one who's implementing an add-on library, you're welcome to make use of them, if necessary, and if you're careful.)
+
+(It is generally safe to make use of exception 4 to give function parameters or local variables names matching standard library routines or ``future directions'' patterns. For example, ``string'' is a common--and legal--name for a parameter or local variable.)
+
+
+1.30
+ Uninitialized variables with static duration (that is, those declared outside of functions, and those declared with the storage class static), are guaranteed to start out as zero, just as if the programmer had typed ``= 0'' or ``= {0}''. Therefore, such variables are implicitly initialized to the null pointer (of the correct type; see also section 5) if they are pointers, and to 0.0 if they are floating-point. [footnote]
+
+Variables with automatic duration (i.e. local variables without the static storage class) start out containing garbage, unless they are explicitly initialized. (Nothing useful can be predicted about the garbage.) If they do have initializers, they are initialized each time the function is called (or, for variables local to inner blocks, each time the block is entered at the top[footnote] ).
+
+These rules do apply to arrays and structures (termed aggregates); arrays and structures are considered ``variables'' as far as initialization is concerned. When an automatic array or structure has a partial initializer, the remainder is initialized to 0, just as for statics. [footnote] See also question 1.31.
+
+Finally, dynamically-allocated memory obtained with malloc and realloc is likely to contain garbage, and must be initialized by the calling program, as appropriate. Memory obtained with calloc is all-bits-0, but this is not necessarily useful for pointer or floating-point values (see question 7.31, and section 5).
+
+
+1.31
+Perhaps you have an old, pre-ANSI compiler, which doesn't allow initialization of ``automatic aggregates'' (i.e. non-static local arrays, structures, or unions). You have four possible workarounds:
+
+If the array won't be written to or if you won't need a fresh copy during any subsequent calls, you can declare it static (or perhaps make it global).
+If the array won't be written to, you could replace it with a pointer:
+	f()
+	{
+		char *a = "Hello, world!";
+	}
+You can always initialize local char * variables to point to string literals (but see question 1.32).
+If neither of the above conditions hold, you'll have to initialize the array by hand with strcpy when the function is called:
+	f()
+	{
+		char a[14];
+		strcpy(a, "Hello, world!");
+	}
+Get an ANSI-compatible compiler.
+
+1.31b
+ Is the declaration of a static or non-local variable? Function calls are allowed in initializers only for automatic variables (that is, for local, non-static variables).
+
+
+1.32
+A string literal (the formal term for a double-quoted string in C source) can be used in two slightly different ways:
+
+As the initializer for an array of char, as in the declaration of char a[] , it specifies the initial values of the characters in that array (and, if necessary, its size).
+Anywhere else, it turns into an unnamed, static array of characters, and this unnamed array may be stored in read-only memory, and which therefore cannot necessarily be modified. In an expression context, the array is converted at once to a pointer, as usual (see section 6), so the second declaration initializes p to point to the unnamed array's first element.
+Some compilers have a switch controlling whether string literals are writable or not (for compiling old code), and some may have options to cause string literals to be formally treated as arrays of const char (for better error catching).
+
+See also questions 1.31, 6.1, 6.2, 6.8, and 11.8b.
+
+1.33
+Yes. See question 11.22.
+
+1.34
+ Use something like
+
+extern int func();
+int (*fp)() = func;
+When the name of a function appears in an expression, it ``decays'' into a pointer (that is, it has its address implicitly taken), much as an array name does.
+
+A prior, explicit declaration for the function (perhaps in a header file) is normally needed, as shown. The implicit external function declaration that can occur when a function is called does not help when a function name's only use is for its value.
+
+1.35
+See question 2.20.
+
+
