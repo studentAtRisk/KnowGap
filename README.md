@@ -4,6 +4,7 @@
 
 **KnowGap** is an intelligent platform designed to enhance student learning and course management. It combines student performance prediction with personalized video recommendations to improve understanding of incorrectly answered quiz questions. The platform integrates with learning management systems like Canvas to monitor student progress and provide instructors with critical insights, while helping students close knowledge gaps through targeted video recommendations.
 
+
 ## Features
 
 1. **Student Risk Prediction**
@@ -21,6 +22,14 @@
 
 4. **Caching and Storing Results**
    - Caches dynamically generated core topics and videos, reducing the need for repeated API calls or queries.
+  
+Current Student View          |  Current Instructor View
+:-------------------------:|:-------------------------:
+![](https://i.ibb.co/592pv8d/image-2024-10-26-204812751.png)| ![](https://i.ibb.co/hRjdT0R/demo.png)
+
+
+
+
 ## TODOs & Milestones
 The following items are pending development or review:
 
