@@ -16,6 +16,7 @@ from update_video import update_video_link
 from get_video_reccs import update_course_videos, update_videos_for_filter
 import logging
 import asyncio
+from get_support_video import get_videos_for_risk_level, get_random_video
 
 # Handling Environment Variables
 load_dotenv()
@@ -240,6 +241,11 @@ def get_questions_by_course(course_id):
 
 
 
+@app.route('/get-support-video', methods=['GET'])
+def get_support_video(risk_level):
+    result_videos = get_videos_for_risk_level(risk_level)
+    random_video = get_random_video(result_videos)
+    return jsonify(random_video)    
 
 
 if __name__ == "__main__" :
