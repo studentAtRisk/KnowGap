@@ -245,6 +245,10 @@ def get_questions_by_course(course_id):
 def get_support_video(risk_level):
     data = request.get_json()
     risk_level = data.get('risk')
+
+    if not risk_level or risk_level not in ["low", "medium", "high"]:
+        return jsonify("Invalid risk submitted!")
+    
     result_videos = get_videos_for_risk_level(risk_level)
     random_video = get_random_video(result_videos)
     return jsonify(random_video)    
