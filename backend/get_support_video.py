@@ -3,7 +3,6 @@ import os
 import random
 
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
-YOUTUBE_API_KEY = "AIzaSyCx-dZM2OcjcAqTzL9gu9FiEdRzfDRb-jA"
 
 def get_youtube_videos(query, channel, max_results=5):
     youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
