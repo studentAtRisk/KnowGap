@@ -242,7 +242,7 @@ def get_questions_by_course(course_id):
 
 
 @app.route('/get-support-video', methods=['GET'])
-def get_support_video(risk_level):
+def get_support_video():
     data = request.get_json()
     risk_level = data.get('risk')
 
