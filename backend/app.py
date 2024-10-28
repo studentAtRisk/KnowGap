@@ -247,4 +247,8 @@ async def get_support_video():
         return jsonify("Invalid risk submitted!")
     
     result_videos = await get_videos_for_risk_level(risk_level)
-    random_video = await
+    random_video = await get_random_video(result_videos)
+    return jsonify(random_video)
+
+if __name__ == "__main__":
+    app.run(debug=True)
