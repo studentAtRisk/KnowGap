@@ -36,4 +36,5 @@ Flask[async]
 motor==3.6.0
 quart==0.17.0
 quart-cors==0.2.0
-Werkzeug>=3.0.0
+werkzeug==2.1.2
+
