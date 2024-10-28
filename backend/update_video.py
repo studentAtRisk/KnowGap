@@ -78,8 +78,8 @@ def update_video_link(quiz_id, question_id, old_link, new_video):
 
     if update_result.modified_count == 0:
         return {"message": "Failed to update video_data", "success": False}
-
     return {"message": "Video successfully updated", "success": True}
+
 
 
 if __name__ == "__main__":

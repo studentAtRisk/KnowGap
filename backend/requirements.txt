@@ -35,3 +35,5 @@ aiohttp
 google-api-python-client==2.95.0
 Flask[async]
 motor==3.6.0
+quart==0.17.0
+quart-cors==0.2.0
