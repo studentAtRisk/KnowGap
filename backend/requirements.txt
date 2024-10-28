@@ -29,10 +29,11 @@ pandas==2.2.3
 beautifulsoup4==4.12.3
 python-dotenv==1.0.1
 pycryptodome==3.18.0
+Flask==2.2.5
 Flask-CORS==3.0.10
+Flask[async]
 aiohttp
 google-api-python-client==2.95.0
-Flask[async]
 motor==3.6.0
 quart==0.17.0
 quart-cors==0.2.0
