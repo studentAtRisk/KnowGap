@@ -37,4 +37,4 @@ Flask==2.2.5
 Flask-CORS==3.0.10
 quart==0.17.0
 quart-cors==0.2.0
-werkzeug==2.0.3
+werkzeug==2.2.2
