@@ -246,7 +246,7 @@ async def get_support_video():
     if not risk_level or risk_level not in ["low", "medium", "high"]:
         return jsonify("Invalid risk submitted!")
     
-    result_videos =  get_videos_for_risk_level(risk_level)
+    result_videos =  await get_videos_for_risk_level(risk_level)
     random_video =  get_random_video(result_videos)
     return jsonify(random_video)
 
