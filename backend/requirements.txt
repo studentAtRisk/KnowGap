@@ -36,5 +36,5 @@ jinja2==3.1.2
 Flask==2.2.5
 Flask-CORS==3.0.10
 quart==0.17.0   # Updated for compatibility
-quart-cors==0.3.1 
+quart-cors==0.3.0
 werkzeug==2.2.2
