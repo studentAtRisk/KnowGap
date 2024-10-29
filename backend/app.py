@@ -41,7 +41,7 @@ async def hello_world():
 
 @app.route('/update-all-videos', methods=['POST'])
 async def update_all_videos():
-    videos = await update_videos_for_filter()
+    videos = update_videos_for_filter()
     return jsonify(videos)
 
 @app.route('/update-course-videos', methods=['POST'])
@@ -246,7 +246,7 @@ async def get_support_video():
     if not risk_level or risk_level not in ["low", "medium", "high"]:
         return jsonify("Invalid risk submitted!")
     
-    result_videos = await get_videos_for_risk_level(risk_level)
+    result_videos =  get_videos_for_risk_level(risk_level)
     random_video =  get_random_video(result_videos)
     return jsonify(random_video)
 
