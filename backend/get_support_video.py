@@ -1,32 +1,39 @@
-from googleapiclient.discovery import build
 import os
 import random
+import asyncio
+import aiohttp
 
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
-def get_youtube_videos(query, channel, max_results=5):
-    youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+async def get_youtube_videos(query, channel, max_results=5):
     search_query = f"{query} {channel}"
-    request = youtube.search().list(
-        part='snippet',
-        q=search_query,
-        maxResults=max_results,
-        safeSearch='strict',
-        type='video'
-    )
-    response = request.execute()
+    url = "https://www.googleapis.com/youtube/v3/search"
+    params = {
+        'part': 'snippet',
+        'q': search_query,
+        'maxResults': max_results,
+        'safeSearch': 'strict',
+        'type': 'video',
+        'key': YOUTUBE_API_KEY
+    }
     
-    videos = []
-    for item in response['items']:
-        video_data = {
-            'title': item['snippet']['title'],
-            'channelTitle': item['snippet']['channelTitle'],
-            'videoId': item['id']['videoId'],
-            'url': f"https://www.youtube.com/watch?v={item['id']['videoId']}"
-        }
-        videos.append(video_data)
-    
-    return videos
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, params=params) as response:
+            if response.status == 200:
+                data = await response.json()
+                videos = [
+                    {
+                        'title': item['snippet']['title'],
+                        'channelTitle': item['snippet']['channelTitle'],
+                        'videoId': item['id']['videoId'],
+                        'url': f"https://www.youtube.com/watch?v={item['id']['videoId']}"
+                    }
+                    for item in data.get('items', [])
+                ]
+                return videos
+            else:
+                print(f"Error fetching videos: {response.status}")
+                return []
 
 youtube_queries = {
     'low': [
@@ -55,14 +62,14 @@ mental_health_channels = {
     'high': ['Psych2Go', "Psych Hub", "Dr. K"]
 }
 
-def get_videos_for_risk_level(risk_level, max_results=3):
+async def get_videos_for_risk_level(risk_level, max_results=3):
     query_list = youtube_queries.get(risk_level, [])
     channel_list = mental_health_channels.get(risk_level, [])
     
     if query_list and channel_list:
         query = random.choice(query_list)
         channel = random.choice(channel_list)
-        videos = get_youtube_videos(query, channel, max_results)
+        videos = await get_youtube_videos(query, channel, max_results)
         return videos
     else:
         return []
@@ -74,12 +81,14 @@ def get_random_video(videos):
         return None
 
 if __name__ == '__main__':
-    risk_level = 'high'
-    result_videos = get_videos_for_risk_level(risk_level)
+    async def main():
+        risk_level = 'high'
+        result_videos = await get_videos_for_risk_level(risk_level)
+        random_video = get_random_video(result_videos)
+        
+        if random_video:
+            print(f"Random Video Selected: Title: {random_video['title']}, Channel: {random_video['channelTitle']}, URL: {random_video['url']}")
+        else:
+            print("No videos found.")
 
-    random_video = get_random_video(result_videos)
-    
-    if random_video:
-        print(f"Random Video Selected: Title: {random_video['title']}, Channel: {random_video['channelTitle']}, URL: {random_video['url']}")
-    else:
-        print("No videos found.")
+    asyncio.run(main())
