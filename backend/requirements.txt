@@ -1,3 +1,4 @@
+# Core Dependencies
 annotated-types==0.7.0
 anyio==4.5.0
 blinker==1.8.2
@@ -31,8 +32,9 @@ google-api-python-client==2.95.0
 motor==3.6.0
 jinja2==3.1.2
 
+# Flask and Quart Dependencies
 Flask==2.2.5
 Flask-CORS==3.0.10
-quart==0.14.0
+quart==0.17.0   # Updated for compatibility
 quart-cors==0.2.0
 werkzeug==2.2.2
