@@ -250,5 +250,15 @@ async def get_support_video():
     random_video =  get_random_video(result_videos)
     return jsonify(random_video)
 
+@app.route('/add-video', methods=['POST'])
+def add_video():
+    data = request.get_json()
+    quiz_id = data.get('quiz_id')
+    
+
+@app.route('remove-video')
+def remove_video():
+    data = request.get_json()
+
 if __name__ == "__main__":
     app.run(debug=True)

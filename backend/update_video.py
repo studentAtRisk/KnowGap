@@ -80,6 +80,43 @@ def update_video_link(quiz_id, question_id, old_link, new_video):
         return {"message": "Failed to update video_data", "success": False}
     return {"message": "Video successfully updated", "success": True}
 
+def add_video(quiz_id, question_id, video_link):
+    quizzes_collection = db['Quiz Questions']
+    
+    # Fetch the document based on quiz_id and question_id
+    document = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
+    
+    # Error checking
+    if not document:
+        return {
+            "error": "document not found",
+            "success": False
+        }
+        
+    # Getting the video data
+    video_data = document.get('video_data', [])
+    
+    # Avoiding duplicates
+    if video_link in video_data:
+        return {
+            "error": "Video present already",
+            "success": False
+        }
+    
+    # Add the new video in the data array...
+    video_data.append(video_link)
+    
+    # Making the update in the db
+    
+    quizzes_collection.update_one(
+        {"quizid": quiz_id, "questionid": question_id},
+        {"$set": {"video_data": video_data}}
+    )
+    
+    return {
+        "message": "Video Added",
+        "success": True
+    }
 
 
 if __name__ == "__main__":
