@@ -117,6 +117,43 @@ def add_video(quiz_id, question_id, video_link):
         "message": "Video Added",
         "success": True
     }
+    
+    
+def remove_video(quiz_id, question_id, video_to_be_removed):
+    quizzes_collection = db['Quiz Questions']
+    
+    # Fetch the document based on quiz_id and question_id
+    document = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
+    
+    # Error checking
+    if not document:
+        return {
+            "error": "document not found",
+            "success": False
+        }
+        
+    # Getting the video data
+    video_data = document.get('video_data', [])
+    
+    # Return if video is not present in db
+    if video_to_be_removed not in video_data:
+        return {
+            "message": "Video not found",
+            "success": False
+        }
+        
+    # Reconstructing video array without video to delete (removing step)
+    updated_video_data = [link for link in video_data if link != video_to_be_removed]
+    
+    quizzes_collection.update_one(
+        {"quizid": quiz_id, "questionid": question_id},
+        {"$set": {"video_data": video_data}}
+    )
+    
+    return {
+        "message": "video successfully removed",
+        "success": True
+    }
 
 
 if __name__ == "__main__":

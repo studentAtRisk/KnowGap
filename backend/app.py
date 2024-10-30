@@ -12,7 +12,7 @@ from pymongo import MongoClient
 from update_course_students import update_db as update_students_db
 from update_course_quizzes import update_db as update_quizzes_db
 from update_course_context import update_context
-from update_video import update_video_link
+from update_video import update_video_link, add_video, remove_video
 from get_video_reccs import update_course_videos, update_videos_for_filter
 import logging
 import asyncio
@@ -254,11 +254,37 @@ async def get_support_video():
 def add_video():
     data = request.get_json()
     quiz_id = data.get('quiz_id')
+    question_id = data.get('question_id')
+    video_link = data.get('video_link')
+    
+    res = add_video(quiz_id, question_id, video_link)
+    
+    if "error" not in res:
+        return jsonify({
+            "message": "video added",
+            "success": True
+        }), 200
+    
+    return jsonify({
+        "error": "video not added",
+        "success": False
+    })
     
 
 @app.route('remove-video')
 def remove_video():
     data = request.get_json()
+    quiz_id = data.get('quiz_id')
+    question_id = data.get('question_id')
+    video_to_be_removed = data.get('video_to_be_removed')
+    
+    res = remove_video(quiz_id, question_id, video_to_be_removed)
+    
+    if "error" not in res:
+        return jsonify({
+            "message": "video added",
+            "success": True
+        }), 200
 
 if __name__ == "__main__":
     app.run(debug=True)
