@@ -3,7 +3,7 @@
 import os
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
-from utils.youtube_utils import fetch_videos_for_topic
+from utils.youtube_utils import fetch_video_for_topic
 from utils.ai_utils import generate_core_topic
 from config import Config
 
