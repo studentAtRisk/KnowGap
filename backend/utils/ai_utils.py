@@ -1,10 +1,10 @@
 # Import necessary libraries
 import asyncio
-import openai
+from openai import OpenAI
 from config import Config
 
-# Set up OpenAI client with your API key
-openai.api_key = Config.OPENAI_KEY
+# Initialize OpenAI client with your API key
+client = OpenAI(api_key=Config.OPENAI_KEY)
 
 # Define the coroutine for generating core topic with GPT
 async def generate_core_topic(question_text, course_name, course_context=""):
@@ -32,10 +32,10 @@ async def generate_core_topic(question_text, course_name, course_context=""):
 
     # Prepare message for chat model
     messages = [{"role": "user", "content": prompt}]
-    
+
     try:
-        # Make the async call to GPT
-        response = await openai.ChatCompletion.acreate(
+        # Make the async call to GPT using the client
+        response = await client.chat.completions.acreate(
             model="gpt-3.5-turbo",
             messages=messages,
             temperature=0.7,
@@ -44,7 +44,7 @@ async def generate_core_topic(question_text, course_name, course_context=""):
         )
         
         # Extract and clean up the generated topic
-        core_topic = response.choices[0].message['content'].strip().strip('"').strip("'")
+        core_topic = response.choices[0].message.content.strip().strip('"').strip("'")
         return core_topic
 
     except Exception as e:
