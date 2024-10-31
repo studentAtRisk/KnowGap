@@ -238,7 +238,7 @@ async def get_questions_by_course(course_id):
 
     return jsonify({"course_id": course_id, "questions": all_questions}), 200
 
-@app.route('/get-support-video', methods=['GET'])
+@app.route('/get-support-video', methods=['POST'])
 async def get_support_video():
     data = await request.get_json()
     risk_level = data.get('risk')
