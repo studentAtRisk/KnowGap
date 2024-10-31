@@ -6,7 +6,11 @@ from routes.support_routes import init_support_routes
 from routes.course_routes import init_course_routes
 
 app = Quart(__name__)
-cors(app, allow_origin="*", allow_headers = ["content-type", "Authorization"], allow_methods=["GET", "POST", "OPTIONS"] )
+cors(app, 
+     allow_origin="*",
+     allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
+     allow_methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
+     allow_credentials=True)
 
 init_base_routes(app)
 init_course_routes(app)
