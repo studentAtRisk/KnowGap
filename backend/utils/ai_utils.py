@@ -1,16 +1,16 @@
-# utils/ai_utils.py
-
-import os
+# Import necessary libraries
+import asyncio
 import openai
-from dotenv import load_dotenv
 from config import Config
 
+# Set up OpenAI client with your API key
 openai.api_key = Config.OPENAI_KEY
 
+# Define the coroutine for generating core topic with GPT
 async def generate_core_topic(question_text, course_name, course_context=""):
     """
     Generate a concise core topic using GPT for a given question.
-    
+
     Parameters:
     - question_text (str): The text of the question.
     - course_name (str): The name of the course the question belongs to.
@@ -19,29 +19,49 @@ async def generate_core_topic(question_text, course_name, course_context=""):
     Returns:
     - str: A concise topic title relevant to the question and course.
     """
+    # Set up the prompt
     prompt = (
         f"Based on the following question from course {course_name}, "
-        f"generate a concise, specific core topic that is relevant to the subject matter. You can assume the course is college/university level"
+        f"generate a concise, specific core topic that is relevant to the subject matter. "
         f"The topic should be no longer than 4-5 words and should directly relate to the main concepts: {question_text}"
     )
-    
+
+    # Append course context if available
     if course_context:
         prompt += f"\nHere's what the instructor gave us, so use it to generate a more relevant topic in the context of the course itself: {course_context}"
 
+    # Prepare message for chat model
+    messages = [{"role": "user", "content": prompt}]
+    
     try:
+        # Make the async call to GPT
         response = await openai.ChatCompletion.acreate(
-            prompt=prompt,
-            messages=[{"role": "user", "content": prompt}],
-            model="gpt-3.5-turbo-instruct",
+            model="gpt-3.5-turbo",
+            messages=messages,
+            temperature=0.7,
             max_tokens=50,
-            top_p=0.5,
-            temperature=0.7
+            top_p=0.5
         )
-
-        # Extracting and cleaning up the generated topic
-        core_topic =  response.choices[0].message['content'].strip().strip('"').strip("'")
+        
+        # Extract and clean up the generated topic
+        core_topic = response.choices[0].message['content'].strip().strip('"').strip("'")
         return core_topic
 
     except Exception as e:
         print(f"Error generating core topic: {e}")
         return "Error generating topic"
+
+# Main block to test the function
+if __name__ == "__main__":
+    # Define a sample question and course details
+    question_text = "Explain the process of photosynthesis in plants."
+    course_name = "Biology 101"
+    course_context = "Focus on energy conversion in plant cells."
+
+    # Run the test
+    async def test_generate_core_topic():
+        core_topic = await generate_core_topic(question_text, course_name, course_context)
+        print(f"Generated core topic: {core_topic}")
+
+    # Execute the test coroutine
+    asyncio.run(test_generate_core_topic())
