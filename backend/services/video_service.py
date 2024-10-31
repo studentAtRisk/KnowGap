@@ -7,9 +7,6 @@ from utils.youtube_utils import fetch_video_for_topic, extract_video_id, get_vid
 from utils.ai_utils import generate_core_topic
 from config import Config
 
-# Load environment variables
-load_dotenv()
-
 # MongoDB async connection
 mongo_client = AsyncIOMotorClient(Config.DB_CONNECTION_STRING)
 
