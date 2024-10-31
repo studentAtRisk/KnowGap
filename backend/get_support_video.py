@@ -37,29 +37,60 @@ async def get_youtube_videos(query, channel, max_results=5):
 
 youtube_queries = {
     'low': [
-        "productivity tips for students",
-        "how to stay motivated",
-        "study hacks for better focus"
+        "time management tips for students",
+        "how to stay organized in college",
+        "healthy study habits",
+        "boosting productivity for students",
+        "balancing school and personal life"
     ],
     'medium': [
-        "school stress management",
-        "exam stress relief",
-        "how to handle academic pressure"
+        "coping with school stress",
+        "building resilience in college",
+        "mindfulness practices for students",
+        "healthy routines for academic success",
+        "self-care tips for students"
     ],
     'high': [
-        "procrastination",
-        "burnout",
-        "student mental health help",
-        "handling depression in college",
-        "failing classes",
-        "catch up in school"
+        "overcoming procrastination",
+        "avoiding burnout in college",
+        "dealing with anxiety in school",
+        "finding balance between studies and rest",
+        "managing expectations in college",
+        "self-compassion for students"
     ]
 }
 
 mental_health_channels = {
-    'low': ["Thomas Frank", "Ali Abdaal", "Psych2Go"],
-    'medium': ["The School of Life", "Therapy in a Nutshell", "Dr. K"],
-    'high': ['Psych2Go', "Psych Hub", "Dr. K"]
+    'low': [
+        "Thomas Frank",
+        "Ali Abdaal",
+        "Psych2Go",
+        "StudyTee",
+        "Amy Landino",
+        "WellCast",
+        "Lavendaire",
+        "Kati Morton"
+    ],
+    'medium': [
+        "The School of Life",
+        "Therapy in a Nutshell",
+        "MedCircle",
+        "Dr. Tracey Marks",
+        "How to ADHD",
+        "TED-Ed",
+        "Yale Well",
+        "BrainCraft"
+    ],
+    'high': [
+        "Dr. K",
+        "Psych Hub",
+        "Therapy in a Nutshell",
+        "Mindful Muslim Podcast",
+        "Katie Morton",
+        "Mental Health America",
+        "It’s Okay to be Smart",
+        "Dr. Tracey Marks"
+    ]
 }
 
 async def get_videos_for_risk_level(risk_level, max_results=3):
