@@ -41,7 +41,7 @@ async def hello_world():
 
 @app.route('/update-all-videos', methods=['POST'])
 async def update_all_videos():
-    videos = update_videos_for_filter()
+    videos = await update_videos_for_filter()
     return jsonify(videos)
 
 @app.route('/update-course-videos', methods=['POST'])
