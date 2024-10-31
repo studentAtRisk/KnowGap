@@ -21,7 +21,7 @@ async def generate_core_topic(question_text, course_name, course_context=""):
     """
     prompt = (
         f"Based on the following question from course {course_name}, "
-        f"generate a concise, specific core topic that is relevant to the subject matter. "
+        f"generate a concise, specific core topic that is relevant to the subject matter. You can assume the course is college/university level"
         f"The topic should be no longer than 4-5 words and should directly relate to the main concepts: {question_text}"
     )
     
