@@ -53,7 +53,7 @@ async def get_assessment_videos(student_id, course_id):
                 videos_for_question = matching_question.get('video_data', [])
             else:
                 core_topic = get_video_reccs.generate_core_topic(cur_question_text, cur_qid, course_id)
-                videos_for_question = get_video_reccs.fetch_videos_for_topic(core_topic)
+                videos_for_question = await get_video_reccs.fetch_videos_for_topic(core_topic)
 
             unique_videos = []
             for video in videos_for_question:
