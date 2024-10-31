@@ -3,7 +3,7 @@
 from quart import request, jsonify
 from services.video_service import (
     get_assessment_videos, get_course_videos, update_course_videos,
-    update_video_link, add_video, remove_video
+    update_video_link, add_video, remove_video, update_videos_for_filter
 )
 
 def init_video_routes(app):
@@ -73,6 +73,15 @@ def init_video_routes(app):
             return jsonify({"error": "Missing required parameters"}), 400
 
         result = await remove_video(data['quizid'], data['questionid'], data['video_link'])
+        if result["success"]:
+            return jsonify({"message": result["message"]}), 200
+        else:
+            return jsonify({"error": result["message"]}), 404
+        
+    @app.route('/update-all-videos', methods='POST')
+    async def update_all_videos_route():
+        data = await request.get_json()
+        result = await update_videos_for_filter()
         if result["success"]:
             return jsonify({"message": result["message"]}), 200
         else:

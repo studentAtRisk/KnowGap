@@ -92,7 +92,7 @@ async def update_videos_for_filter(filter_criteria=None):
             upsert=True
         )
 
-    return {"message": "Videos updated successfully"}
+    return {"message": "success"}
 
 async def update_course_videos(course_id):
     """Updates videos for all questions within a specific course ID."""
