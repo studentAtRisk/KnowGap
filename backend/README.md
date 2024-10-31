@@ -8,12 +8,6 @@ The KnowGap Backend API is designed to provide educational support for students 
 
 This section will guide developers on setting up the project locally, installing dependencies, and configuring the environment. **(Details to be added)**
 
-### Steps:
-1. Clone the repository.
-2. Install dependencies.
-3. Configure environment variables.
-4. Run the application.
-
 ## Backend Directory Structure
 
 The backend is organized into modular subdirectories, each serving a distinct purpose to keep the codebase maintainable and scalable. Below is an overview of the backend subdirectories and their roles:
