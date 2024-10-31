@@ -29,7 +29,7 @@ async def generate_core_topic(question_text, course_name, course_context=""):
         prompt += f"\nHere's what the instructor gave us, so use it to generate a more relevant topic in the context of the course itself: {course_context}"
 
     try:
-        response = await client.ChatCompletion.acreate(
+        response = await OpenAI.ChatCompletion.acreate(
             prompt=prompt,
             model="gpt-3.5-turbo-instruct",
             max_tokens=50,
