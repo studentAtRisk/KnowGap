@@ -31,6 +31,7 @@ async def generate_core_topic(question_text, course_name, course_context=""):
     try:
         response = await OpenAI.ChatCompletion.acreate(
             prompt=prompt,
+            messages=[{"role": "user", "content": prompt}],
             model="gpt-3.5-turbo-instruct",
             max_tokens=50,
             top_p=0.5,
