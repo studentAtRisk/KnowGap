@@ -78,7 +78,7 @@ def init_video_routes(app):
         else:
             return jsonify({"error": result["message"]}), 404
         
-    @app.route('/update-all-videos', methods='POST')
+    @app.route('/update-all-videos', methods=['POST'])
     async def update_all_videos_route():
         data = await request.get_json()
         result = await update_videos_for_filter()
