@@ -12,7 +12,7 @@ from pymongo import MongoClient
 from update_course_students import update_db as update_students_db
 from update_course_quizzes import update_db as update_quizzes_db
 from update_course_context import update_context
-from update_video import update_video_link
+from update_video import update_video_link, add_video, remove_video
 from get_video_reccs import update_course_videos, update_videos_for_filter
 import logging
 import asyncio
@@ -41,7 +41,7 @@ async def hello_world():
 
 @app.route('/update-all-videos', methods=['POST'])
 async def update_all_videos():
-    videos = update_videos_for_filter()
+    videos = await update_videos_for_filter()
     return jsonify(videos)
 
 @app.route('/update-course-videos', methods=['POST'])
@@ -55,7 +55,7 @@ async def update_course_videos_route():
     return await update_course_videos(course_id)
 
 @app.route('/get_course_videos', methods=['GET'])
-async def get_videos_for_course():
+async def get_course_videos():
     course_id = request.args.get('course_id')
 
     if not course_id:
@@ -63,7 +63,6 @@ async def get_videos_for_course():
     
     # Call the get_course_videos function
     result = await get_curated_videos.get_course_videos(course_id=course_id)
-    
     # Return the result as a JSON response
     return jsonify(result)
 
@@ -215,13 +214,24 @@ async def update_course_context_request():
     new_course_context = data.get('course_context')
 
     if not all([courseid, new_course_context]):
-         return jsonify({'error': 'Missing parameters'}), 400
-    update_result = await update_context(courseid, new_course_context)
+        return jsonify({'error': 'Missing parameters'}), 400
 
+    # Update the course context
+    update_result = await update_context(courseid, new_course_context)  # Ensure `update_context` is async
+
+    # Check for errors in updating the context
     if 'error' in update_result:
         return jsonify({'error': update_result['error']}), 400
-    
-    return jsonify({'message': update_result['message']}), 200
+
+    # Update course videos and capture the result
+    update_videos_result = await update_course_videos(courseid)
+
+    # Return a combined JSON response
+    return jsonify({
+        'context_update_status': 'Success',
+        'video_update_result': update_videos_result
+    }), 200
+
 
 @app.route('/get-questions-by-course/<course_id>', methods=['GET'])
 async def get_questions_by_course(course_id):
@@ -238,7 +248,7 @@ async def get_questions_by_course(course_id):
 
     return jsonify({"course_id": course_id, "questions": all_questions}), 200
 
-@app.route('/get-support-video', methods=['GET'])
+@app.route('/get-support-video', methods=['POST'])
 async def get_support_video():
     data = await request.get_json()
     risk_level = data.get('risk')
@@ -250,15 +260,6 @@ async def get_support_video():
     random_video =  get_random_video(result_videos)
     return jsonify(random_video)
 
-@app.route('/add-video', methods=['POST'])
-def add_video():
-    data = request.get_json()
-    quiz_id = data.get('quiz_id')
-    
-
-@app.route('remove-video')
-def remove_video():
-    data = request.get_json()
 
 if __name__ == "__main__":
     app.run(debug=True)
