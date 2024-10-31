@@ -81,8 +81,9 @@ async def update_videos_for_filter(filter_criteria=None):
         # Fetch context data and core topic
         course_context_data = await contexts_collection.find_one({'courseid': course_id})
         course_context = course_context_data.get('course_context', "") if course_context_data else ""
-        core_topic = await generate_core_topic(question_text, course_name, course_context)
-
+        
+        core_topic_obj = await generate_core_topic(question_text, course_name, course_context)
+        core_topic = core_topic_obj["core_topic"]
         # Fetch or update video data for the topic
         video_data = await fetch_video_for_topic(core_topic)
 
