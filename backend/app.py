@@ -7,7 +7,7 @@ from routes.course_routes import init_course_routes
 
 app = Quart(__name__)
 cors(app, 
-     allow_origin="*",
+     allow_origin="canvas.instructure.com",
      allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
      allow_methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
      allow_credentials=True)
