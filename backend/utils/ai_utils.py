@@ -1,10 +1,9 @@
 # Import necessary libraries
 import asyncio
-from openai import OpenAI
+from openai import AsyncOpenAI
 from config import Config
-
 # Initialize OpenAI client with your API key
-client = OpenAI(api_key=Config.OPENAI_KEY)
+client = AsyncOpenAI(api_key=Config.OPENAI_KEY)
 
 # Define the coroutine for generating core topic with GPT
 async def generate_core_topic(question_text, course_name, course_context=""):
@@ -35,7 +34,7 @@ async def generate_core_topic(question_text, course_name, course_context=""):
 
     try:
         # Make the async call to GPT using the client
-        response = await client.chat.completions.acreate(
+        response = await client.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=messages,
             temperature=0.7,
@@ -45,11 +44,11 @@ async def generate_core_topic(question_text, course_name, course_context=""):
         
         # Extract and clean up the generated topic
         core_topic = response.choices[0].message.content.strip().strip('"').strip("'")
-        return core_topic
+        return {"success": True, "core_topic": core_topic}
 
     except Exception as e:
         print(f"Error generating core topic: {e}")
-        return "Error generating topic"
+        return {"success": False, "error": str(e)}
 
 # Main block to test the function
 if __name__ == "__main__":
@@ -60,8 +59,11 @@ if __name__ == "__main__":
 
     # Run the test
     async def test_generate_core_topic():
-        core_topic = await generate_core_topic(question_text, course_name, course_context)
-        print(f"Generated core topic: {core_topic}")
+        result = await generate_core_topic(question_text, course_name, course_context)
+        if result["success"]:
+            print(f"Generated core topic: {result['core_topic']}")
+        else:
+            print(f"Error: {result['error']}")
 
     # Execute the test coroutine
     asyncio.run(test_generate_core_topic())
