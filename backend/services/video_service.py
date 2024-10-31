@@ -25,8 +25,8 @@ async def get_assessment_videos(student_id, course_id):
         return {"error": "Student not found"}
 
     quizzes = student_record.get(course_id, [])
-    assessment_videos = []
     used_video_links = set()
+    video_data_new = {}
 
     for quiz in quizzes:
         quiz_name = quiz.get('quizname', 'Unknown Quiz')
@@ -41,7 +41,7 @@ async def get_assessment_videos(student_id, course_id):
                 
                 if video_data and video_data['link'] not in used_video_links:
                     used_video_links.add(video_data['link'])
-                    assessment_videos.append({
+                    video_data_new = ({
                         "quiz_name": quiz_name,
                         "question_id": question.get("questionid"),
                         "question_text": question.get("question_text"),
@@ -49,7 +49,7 @@ async def get_assessment_videos(student_id, course_id):
                         "video": video_data  # Store a single video dictionary
                     })
 
-    return assessment_videos
+    return video_data_new
 
 async def get_course_videos(course_id):
     """Fetch all video data associated with a specific course ID."""
