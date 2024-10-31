@@ -3,6 +3,7 @@ from youtubesearchpython import VideosSearch
 import re
 from googleapiclient.discovery import build
 from config import Config
+import logging
 
 async def fetch_video_for_topic(topic):
     """
@@ -17,25 +18,35 @@ async def fetch_video_for_topic(topic):
     """
     try:
         # Search for a single video related to the topic
+        logging.debug(f"Starting search for topic: {topic}")
         search = VideosSearch(topic, limit=1)
-        search_results = search.result().get('result', [])
-
-        if search_results:
-            # Retrieve the first video in the search results
-            video = search_results[0]
+        
+        # Fetch search results
+        search_results = search.result()
+        logging.debug(f"Raw search results for topic '{topic}': {search_results}")
+        
+        # Parse the search results
+        results = search_results.get('result', [])
+        if results:
+            video = results[0]  # Get the first video result
+            logging.debug(f"First video data for topic '{topic}': {video}")
+            
+            # Extract video details
             video_data = {
-                'title': video['title'],
-                'link': video['link'],
-                'channel': video['channel']['name'],
-                'thumbnail': video['thumbnails'][0]['url']
+                'title': video.get('title', 'No Title Found'),
+                'link': video.get('link', 'No Link Found'),
+                'channel': video.get('channel', {}).get('name', 'No Channel Found'),
+                'thumbnail': video.get('thumbnails', [{}])[0].get('url', 'No Thumbnail Found')
             }
+            logging.debug(f"Extracted video data for topic '{topic}': {video_data}")
             return video_data
-
-        # Return an empty dictionary if no results are found
+        
+        # Log when no results are found
+        logging.warning(f"No results found for topic '{topic}'")
         return {}
 
     except Exception as e:
-        print(f"Error fetching videos for topic '{topic}': {e}")
+        logging.error(f"Error fetching videos for topic '{topic}': {e}")
         return {}
 
 def extract_video_id(youtube_url):
