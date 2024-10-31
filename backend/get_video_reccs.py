@@ -38,7 +38,7 @@ async def update_videos_for_filter(filter_criteria=None):
         core_topic = await generate_core_topic(question_text, course_name, course_context)
 
         existing_topic = await quizzes_collection.find_one({'core_topic': core_topic})
-        video_data = existing_topic['video_data'] if existing_topic else await fetch_videos_for_topic(core_topic)
+        video_data = existing_topic['video_data'] if existing_topic else fetch_videos_for_topic(core_topic)
 
         await quizzes_collection.update_one(
             {'questionid': question.get("questionid")},
