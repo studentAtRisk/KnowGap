@@ -203,3 +203,52 @@ body {
 .slide-in {
   animation: slideIn 0.5s ease-in-out;
 }
+
+.support-video-container {
+  padding: 20px;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 15px 0;
+}
+
+.support-video-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border-radius: 8px;
+  background: #f8f9fa;
+  transition: transform 0.2s ease;
+}
+
+.support-video-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.support-video-info {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.support-video-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.support-video-channel {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.support-video-thumbnail {
+  width: 180px;
+  height: 120px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+

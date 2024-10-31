@@ -57,11 +57,16 @@ const calculateRiskIndex = (rps, cgs, gts, currentScore) => {
   return { riskLevel };
 };
 
+const normalizeRiskLevel = (riskLevel) => {
+  const level = riskLevel.replace(' Risk', '').toLowerCase();
+  return level; // Returns "low", "medium", or "high"
+};
+
 const StudentView = () => {
   const [activeTab, setActiveTab] = useState('assignments');
   const [assignments, setAssignments] = useState([]);
   const [recommendedVideos, setRecommendedVideos] = useState([]);
-  const [announcements, setAnnouncements] = useState([]);
+  const [supportVideo, setSupportVideo] = useState(null);
   const [courseId, setCourseId] = useState('');
   const [apiToken, setApiToken] = useState('');
   const [classGrade, setClassGrade] = useState('N/A');
@@ -69,38 +74,6 @@ const StudentView = () => {
   const [tokenStatus, setTokenStatus] = useState('');
 
   const imgs = { youtube };
-  const mockVideos = [
-    {
-      id: 'dQw4w9WgXcQ',
-      title: 'Introduction to React Hooks',
-      channel: 'React Tutorials',
-      viewCount: '1.2M views',
-      duration: '15:30',
-      reason: 'Learn about React Hooks',
-      url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-      thumbnail: 'https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg',
-    },
-    {
-      id: 'rTsz09zRuTU',
-      title: 'JavaScript ES6 Arrow Functions',
-      channel: 'JavaScript Mastery',
-      viewCount: '800K views',
-      duration: '10:15',
-      reason: 'Improve your JavaScript skills',
-      url: 'https://www.youtube.com/watch?v=rTsz09zRuTU',
-      thumbnail: 'https://img.youtube.com/vi/rTsz09zRuTU/mqdefault.jpg',
-    },
-    {
-      id: '8aGhZQkoFbQ',
-      title: 'What the heck is the event loop anyway?',
-      channel: 'JSConf',
-      viewCount: '1.5M views',
-      duration: '26:52',
-      reason: 'Understand JavaScripts edward event loop',
-      url: 'https://www.youtube.com/watch?v=8aGhZQkoFbQ',
-      thumbnail: 'https://img.youtube.com/vi/8aGhZQkoFbQ/mqdefault.jpg',
-    },
-  ];
 
   const getCanvasBaseUrl = () => {
     const url = window.location.href;
@@ -117,39 +90,32 @@ const StudentView = () => {
     return null;
   };
 
-  const fetchAnnouncements = async (courseId) => {
-    const baseUrl = getCanvasBaseUrl();
-    const storedToken = localStorage.getItem('apiToken');
-
-    if (!baseUrl || !storedToken) {
-      console.error('Missing base URL or API token');
-      return [];
-    }
-
-    const myHeaders = new Headers();
-    myHeaders.append('Authorization', `Bearer ${storedToken}`);
-
-    const requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow',
-    };
-
+  const fetchSupportVideos = async (riskLevel) => {
     try {
       const response = await fetch(
-        `${baseUrl}/api/v1/announcements?context_codes[]=course_${courseId}`,
-        requestOptions
+        'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app/get-support-video',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            risk: riskLevel,
+          }),
+        }
       );
-      const announcementsData = await response.json();
-      setAnnouncements(announcementsData);
-    } catch (error) {
-      console.error('Error fetching announcements:', error);
-    }
-  };
 
-  const stripHTML = (html) => {
-    let doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.body.textContent || '';
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching support video:', error);
+      return null;
+    }
   };
 
   const fetchAssignments = async (courseId) => {
@@ -180,11 +146,9 @@ const StudentView = () => {
         requestOptions
       );
       const assignmentsResult = await assignmentsResponse.json();
-      console.log('Assignments:', assignmentsResult);
 
       const formattedAssignments = await Promise.all(
         assignmentsResult.map(async (assignment) => {
-          console.log('Fetching submission for Assignment ID:', assignment.id);
           try {
             const submissionResponse = await fetch(
               `${baseUrl}/api/v1/courses/${courseId}/assignments/${assignment.id}/submissions/self`,
@@ -196,7 +160,6 @@ const StudentView = () => {
               );
             }
             const submissionResult = await submissionResponse.json();
-            console.log('Submission Result:', submissionResult);
 
             return {
               name: assignment.name,
@@ -305,14 +268,9 @@ const StudentView = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log('Video Recommendations:', data);
-      console.log('userid:', userId);
-      console.log('user id type is ' + typeof userId);
-      console.log('courseid:', courseId);
       return data;
     } catch (error) {
       console.error('Error fetching video recommendations:', error);
-      console.log('course id type is ' + typeof courseId);
       return null;
     }
   };
@@ -347,7 +305,6 @@ const StudentView = () => {
       if (currentCourseId && currentCourseId !== courseId) {
         setCourseId(currentCourseId);
         fetchAssignments(currentCourseId);
-        fetchAnnouncements(currentCourseId);
         const overallGrade = await fetchEnrollment(currentCourseId);
         setClassGrade(overallGrade);
         const userId = await fetchUserProfile();
@@ -364,13 +321,18 @@ const StudentView = () => {
             formatVideoRecommendations(videoRecommendations);
           setRecommendedVideos(formattedVideos);
         }
+
+        // Fetch support video based on risk level
+        const { riskLevel } = calculateRisk();
+        const supportVideoData = await fetchSupportVideos(
+          normalizeRiskLevel(riskLevel)
+        );
+        setSupportVideo(supportVideoData);
       }
     };
 
     updateCourseAndData();
-
     const intervalId = setInterval(updateCourseAndData, 5000);
-
     return () => clearInterval(intervalId);
   }, [courseId]);
 
@@ -407,7 +369,7 @@ const StudentView = () => {
     setApiToken('');
     setAssignments([]);
     setClassGrade('N/A');
-    setAnnouncements([]);
+    setSupportVideo(null);
     setTokenStatus('');
   };
 
@@ -443,22 +405,11 @@ const StudentView = () => {
   };
 
   const sendTokenToServer = async (token) => {
-    console.log('sendTokenToServer called with token:', token);
     setTokenStatus('Sending token...');
-    const canvasURL = getCanvasBaseUrl();
     const baseUrl =
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
-    const courseId = fetchCurrentCourseId();
-    console.log('Fetched course ID:', courseId);
     const userId = await fetchUserProfile();
-    console.log('Fetched user ID:', userId);
-    console.log('Calling fetchTeacherCourses');
     const teacherCourses = await fetchTeacherCourses();
-    console.log('Teacher courses:', teacherCourses);
-    console.log(
-      'canvas url type :',
-      typeof getCanvasBaseUrl() + ' ' + getCanvasBaseUrl()
-    );
 
     const data = {
       userid: userId.toString(),
@@ -466,8 +417,6 @@ const StudentView = () => {
       courseids: teacherCourses.length > 0 ? teacherCourses : [],
       link: getCanvasBaseUrl(),
     };
-
-    console.log('Sending data:', data);
 
     try {
       const response = await fetch(`${baseUrl}/add-token`, {
@@ -483,7 +432,6 @@ const StudentView = () => {
       }
 
       const result = await response.json();
-      console.log('Token sent successfully:', result);
       setTokenStatus('Token set successfully!');
       localStorage.setItem('apiToken', token);
     } catch (error) {
@@ -493,13 +441,10 @@ const StudentView = () => {
   };
 
   const testSendToken = async () => {
-    console.log('Test button clicked');
     const storedToken = localStorage.getItem('apiToken');
     if (storedToken) {
-      console.log('Stored token found, calling sendTokenToServer');
       await sendTokenToServer(storedToken);
     } else {
-      console.log('No stored token found');
       setTokenStatus('No token stored. Please save a token first.');
     }
   };
@@ -572,12 +517,10 @@ const StudentView = () => {
           Recommended Videos
         </button>
         <button
-          className={`tab-button ${
-            activeTab === 'announcements' ? 'active' : ''
-          }`}
-          onClick={() => setActiveTab('announcements')}
+          className={`tab-button ${activeTab === 'support' ? 'active' : ''}`}
+          onClick={() => setActiveTab('support')}
         >
-          Announcements
+          Support
         </button>
       </div>
 
@@ -652,24 +595,33 @@ const StudentView = () => {
         </div>
       )}
 
-      {activeTab === 'announcements' && (
+      {activeTab === 'support' && (
         <div className="content-container slide-in">
-          <h2 className="content-title">Recent Announcements</h2>
-          <ul>
-            {announcements.length > 0 ? (
-              announcements.map((announcement, index) => (
-                <li key={index} className="note-item">
-                  <p className="note-text">{stripHTML(announcement.title)}</p>
-                  <p className="note-text">{stripHTML(announcement.message)}</p>
-                  <p className="note-date">
-                    {new Date(announcement.posted_at).toLocaleString()}
+          <h2 className="content-title">Support Resources</h2>
+          {supportVideo && (
+            <div className="support-video-container">
+              <div className="support-video-card">
+                <div className="support-video-info">
+                  <h3 className="support-video-title">{supportVideo.title}</h3>
+                  <p className="support-video-channel">
+                    {supportVideo.channelTitle}
                   </p>
-                </li>
-              ))
-            ) : (
-              <p>No recent announcements.</p>
-            )}
-          </ul>
+                </div>
+                <a
+                  href={supportVideo.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="youtube-link"
+                >
+                  <img
+                    className="support-video-thumbnail"
+                    src={`https://img.youtube.com/vi/${supportVideo.videoId}/mqdefault.jpg`}
+                    alt="Video thumbnail"
+                  />
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </body>
