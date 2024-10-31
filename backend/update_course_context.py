@@ -18,7 +18,7 @@ async def update_context(course_id, course_context):
         course_context_collection = db['Course Contexts']
 
         # Update or insert the course context
-        await course_context_collection.update_one(
+        course_context_collection.update_one(
             {'courseid': course_id},
             {
                 '$set': {
