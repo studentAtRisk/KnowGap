@@ -45,7 +45,6 @@ The following items are pending development or review:
 - [x] Core Topic Generation for Recommending Videos
 
 Pending Items:
-- [ ] Detect final grade drops
 - [ ] Fix CSS scaling for student view
 - [ ] Repurpose the "Notes" section
 - [ ] Start using token-based endpoint instead of cookies
