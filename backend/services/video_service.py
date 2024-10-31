@@ -3,7 +3,7 @@
 import os
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
-from utils.youtube_utils import fetch_video_for_topic
+from utils.youtube_utils import fetch_video_for_topic, extract_video_id, get_video_metadata
 from utils.ai_utils import generate_core_topic
 from config import Config
 
@@ -84,7 +84,7 @@ async def update_videos_for_filter(filter_criteria=None):
         core_topic = await generate_core_topic(question_text, course_name, course_context)
 
         # Fetch or update video data for the topic
-        video_data = await fetch_videos_for_topic(core_topic)
+        video_data = await fetch_video_for_topic(core_topic)
 
         await quizzes_collection.update_one(
             {'questionid': question.get("questionid")},
@@ -98,3 +98,102 @@ async def update_course_videos(course_id):
     """Updates videos for all questions within a specific course ID."""
     filter_criteria = {'courseid': course_id}
     return await update_videos_for_filter(filter_criteria)
+
+
+async def update_video_link(quiz_id, question_id, old_link, new_video_url):
+    """Updates a specific video link within the video's data for a question."""
+
+    # Fetch document
+    document = await quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
+    
+    if not document:
+        return {"message": "Document not found", "success": False}
+
+    # Get existing video data
+    video_data = document.get('video_data', [])
+    
+    # Find the old link and remove it if present
+    video_ids = [extract_video_id(link['link']) for link in video_data if 'link' in link]
+    old_video_id = extract_video_id(old_link)
+
+    if old_video_id not in video_ids:
+        return {"message": "Old video not found", "success": False}
+
+    # Create updated video metadata using new link
+    new_video_metadata = await get_video_metadata(new_video_url)
+    if "error" in new_video_metadata:
+        return {"message": "Failed to fetch metadata for the new video", "success": False}
+
+    # Remove old video and add new video metadata
+    updated_video_data = [video for video in video_data if extract_video_id(video['link']) != old_video_id]
+    updated_video_data.append(new_video_metadata)
+
+    # Update database
+    update_result = await quizzes_collection.update_one(
+        {"quizid": quiz_id, "questionid": question_id},
+        {"$set": {"video_data": updated_video_data}}
+    )
+
+    return {
+        "message": "Video successfully updated" if update_result.modified_count > 0 else "Failed to update video_data",
+        "success": update_result.modified_count > 0
+    }
+
+async def add_video(quiz_id, question_id, video_link):
+    """Adds a new video link and metadata to a question, avoiding duplicates."""
+    
+    document = await quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
+    
+    if not document:
+        return {"message": "Document not found", "success": False}
+
+    video_data = document.get('video_data', [])
+
+    # Check for duplicates by video ID
+    video_ids = [extract_video_id(link['link']) for link in video_data if 'link' in link]
+    new_video_id = extract_video_id(video_link)
+
+    if new_video_id in video_ids:
+        return {"message": "Video already present", "success": False}
+
+    # Add new video metadata
+    new_video_metadata = await get_video_metadata(video_link)
+    if "error" in new_video_metadata:
+        return {"message": "Failed to fetch metadata for the video", "success": False}
+
+    video_data.append(new_video_metadata)
+
+    # Update document
+    await quizzes_collection.update_one(
+        {"quizid": quiz_id, "questionid": question_id},
+        {"$set": {"video_data": video_data}}
+    )
+    
+    return {"message": "Video added successfully", "success": True}
+
+async def remove_video(quiz_id, question_id, video_to_be_removed):
+    """Removes a specific video by link from a question's video data."""
+
+    document = await quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
+    
+    if not document:
+        return {"message": "Document not found", "success": False}
+
+    video_data = document.get('video_data', [])
+    
+    # Check if video exists by ID
+    video_ids = [extract_video_id(link['link']) for link in video_data if 'link' in link]
+    remove_video_id = extract_video_id(video_to_be_removed)
+
+    if remove_video_id not in video_ids:
+        return {"message": "Video not found", "success": False}
+
+    # Remove video and update document
+    updated_video_data = [video for video in video_data if extract_video_id(video['link']) != remove_video_id]
+
+    await quizzes_collection.update_one(
+        {"quizid": quiz_id, "questionid": question_id},
+        {"$set": {"video_data": updated_video_data}}
+    )
+    
+    return {"message": "Video successfully removed", "success": True}
