@@ -59,3 +59,19 @@ init_user_token_management_routes(app)
 
 if __name__ == "__main__":
     app.run(debug=True)
+```
+## Route Conventions
+
+### Error Handling
+Each route validates request data and returns a JSON error response if required fields are missing.
+
+### Response Structure
+Standardized JSON responses with `status` and `message` fields are used to maintain consistency across endpoints.
+
+## Extending Routes
+
+To add new routes, create a new file in the `routes` directory and follow these steps:
+
+1. **Define the required endpoints and their corresponding handler functions.**
+2. **Create an initialization function (`init_<your_route_name>_routes`) to register the routes.**
+3. **Import and call this initialization function in `app.py` to activate the new routes.**
