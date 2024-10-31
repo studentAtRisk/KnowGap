@@ -5,7 +5,6 @@ from googleapiclient.discovery import build
 
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
 async def fetch_video_for_topic(topic):
     """
     Fetch a single video for a given topic from YouTube.
