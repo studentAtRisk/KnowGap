@@ -9,5 +9,6 @@ app = Quart(__name__)
 cors(app)
 
 init_base_routes(app)
+init_course_routes(app)
 init_video_routes(app)
 init_support_routes(app)
