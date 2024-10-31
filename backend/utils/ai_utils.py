@@ -1,11 +1,11 @@
 # utils/ai_utils.py
 
 import os
-from openai import OpenAI
+import openai
 from dotenv import load_dotenv
 from config import Config
 
-client = OpenAI(api_key=Config.OPENAI_KEY)
+openai.api_key = Config.OPENAI_KEY
 
 async def generate_core_topic(question_text, course_name, course_context=""):
     """
@@ -29,7 +29,7 @@ async def generate_core_topic(question_text, course_name, course_context=""):
         prompt += f"\nHere's what the instructor gave us, so use it to generate a more relevant topic in the context of the course itself: {course_context}"
 
     try:
-        response = await OpenAI.ChatCompletion.acreate(
+        response = await openai.ChatCompletion.acreate(
             prompt=prompt,
             messages=[{"role": "user", "content": prompt}],
             model="gpt-3.5-turbo-instruct",
