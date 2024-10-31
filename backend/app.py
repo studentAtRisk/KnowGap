@@ -12,7 +12,7 @@ from pymongo import MongoClient
 from update_course_students import update_db as update_students_db
 from update_course_quizzes import update_db as update_quizzes_db
 from update_course_context import update_context
-from update_video import update_video_link
+from update_video import update_video_link, add_video, remove_video
 from get_video_reccs import update_course_videos, update_videos_for_filter
 import logging
 import asyncio
