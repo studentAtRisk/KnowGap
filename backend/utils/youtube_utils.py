@@ -19,8 +19,10 @@ async def fetch_video_for_topic(topic):
     try:
         # Search for a single video related to the topic
         logging.debug(f"Starting search for topic: {topic}")
-        search = VideosSearch(topic, limit=1)
-        
+        try:
+            search = VideosSearch(topic, limit=1)
+        except:
+            logging.debug("API Video search failed;")
         # Fetch search results
         search_results = search.result()
         logging.debug(f"Raw search results for topic '{topic}': {search_results}")
