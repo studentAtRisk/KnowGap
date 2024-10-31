@@ -16,7 +16,7 @@ mongo_client = AsyncIOMotorClient(Config.DB_CONNECTION_STRING)
 db = mongo_client[Config.DATABASE]
 students_collection = db[Config.STUDENTS_COLLECTION]
 quizzes_collection = db[Config.QUIZZES_COLLECTION]
-contexts_collection = db[Config.COURSES_COLLECTION]  # For course context data
+contexts_collection = db[Config.CONTEXTS_COLLECTION]  # For course context data
 
 async def get_assessment_videos(student_id, course_id):
     """Retrieve incorrect questions and associated video links for assessments."""
