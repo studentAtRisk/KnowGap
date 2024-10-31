@@ -19,6 +19,7 @@ async def fetch_video_for_topic(topic):
     try:
         # Search for a single video related to the topic
         logging.debug(f"Starting search for topic: {topic}")
+        search = ""
         try:
             search = VideosSearch(topic, limit=1)
         except:
