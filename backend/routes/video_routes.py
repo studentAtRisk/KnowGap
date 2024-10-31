@@ -82,7 +82,7 @@ def init_video_routes(app):
     async def update_all_videos_route():
         data = await request.get_json()
         result = await update_videos_for_filter()
-        if result["success"]:
+        if result.get("message") == "success":
             return jsonify({"message": result["message"]}), 200
         else:
             return jsonify({"error": result["message"]}), 404
