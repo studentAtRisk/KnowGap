@@ -55,7 +55,7 @@ async def update_course_videos_route():
     return await update_course_videos(course_id)
 
 @app.route('/get_course_videos', methods=['GET'])
-async def get_videos_for_course():
+async def get_course_videos():
     course_id = request.args.get('course_id')
 
     if not course_id:
@@ -63,7 +63,6 @@ async def get_videos_for_course():
     
     # Call the get_course_videos function
     result = await get_curated_videos.get_course_videos(course_id=course_id)
-    
     # Return the result as a JSON response
     return jsonify(result)
 

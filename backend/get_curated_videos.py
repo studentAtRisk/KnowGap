@@ -74,6 +74,40 @@ async def get_assessment_videos(student_id, course_id):
     print("Assessment videos retrieved successfully")
     return assessment_videos
 
+async def get_course_videos(course_id):
+    try:
+        # Define a query to fetch all quizzes associated with the given course_id
+        query = {'courseid': course_id}
+
+        # Count documents to check if any videos are available
+        total_documents = await quizzes_collection.count_documents(query)
+        if total_documents == 0:
+            print(f"No videos found for course with ID: {course_id}")
+            return {'status': 'Error', 'message': 'No videos found for this course ID'}
+
+        # Initialize a list to collect video data
+        course_videos = []
+
+        # Fetch each quiz question matching the course_id and retrieve its video data
+        async for quiz in quizzes_collection.find(query):
+            video_data = quiz.get('video_data')
+            core_topic = quiz.get('core_topic')
+            question_text = quiz.get('question_text')
+            
+            # Add only entries with valid video data
+            if video_data:
+                course_videos.append({
+                    'core_topic': core_topic,
+                    'question_text': question_text,
+                    'video_data': video_data
+                })
+
+        # Return the list of videos without a status
+        return course_videos
+
+    except Exception as e:
+        return {'status': 'Error', 'message': str(e)}
+
 # Main block to execute the async function
 async def main():
     student_id = "113513458"  # Replace with actual student ID
