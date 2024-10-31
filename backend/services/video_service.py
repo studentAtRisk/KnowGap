@@ -86,6 +86,7 @@ async def update_videos_for_filter(filter_criteria=None):
         # Fetch or update video data for the topic
         video_data = await fetch_video_for_topic(core_topic)
 
+        
         await quizzes_collection.update_one(
             {'questionid': question.get("questionid")},
             {'$set': {'core_topic': core_topic, 'video_data': video_data, 'course_context': course_context}},

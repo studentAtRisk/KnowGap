@@ -28,6 +28,7 @@ async def fetch_video_for_topic(topic):
         # Parse the search results
         results = search_results.get('result', [])
         if results:
+            print("Results = " + str(results))
             video = results[0]  # Get the first video result
             logging.debug(f"First video data for topic '{topic}': {video}")
             
