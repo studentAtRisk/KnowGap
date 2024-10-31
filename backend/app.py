@@ -214,13 +214,24 @@ async def update_course_context_request():
     new_course_context = data.get('course_context')
 
     if not all([courseid, new_course_context]):
-         return jsonify({'error': 'Missing parameters'}), 400
-    update_result = update_context(courseid, new_course_context)
+        return jsonify({'error': 'Missing parameters'}), 400
 
+    # Update the course context
+    update_result = await update_context(courseid, new_course_context)  # Ensure `update_context` is async
+
+    # Check for errors in updating the context
     if 'error' in update_result:
         return jsonify({'error': update_result['error']}), 400
-    
-    return jsonify({'message': update_result['message']}), 200
+
+    # Update course videos and capture the result
+    update_videos_result = await update_course_videos(courseid)
+
+    # Return a combined JSON response
+    return jsonify({
+        'context_update_status': 'Success',
+        'video_update_result': update_videos_result
+    }), 200
+
 
 @app.route('/get-questions-by-course/<course_id>', methods=['GET'])
 async def get_questions_by_course(course_id):
