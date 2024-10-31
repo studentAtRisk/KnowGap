@@ -13,6 +13,7 @@ CORS(app, resources={
         "allow_headers": ["Content-Type", "Authorization"]
     }
 })
+
 init_base_routes(app)
 init_course_routes(app)
 init_video_routes(app)
