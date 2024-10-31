@@ -2,9 +2,10 @@
 from youtubesearchpython import VideosSearch
 import re
 from googleapiclient.discovery import build
-from config import Config
+
 import logging
 
+logging.basicConfig(level=logging.DEBUG)
 async def fetch_video_for_topic(topic):
     """
     Fetch a single video for a given topic from YouTube.
@@ -17,41 +18,39 @@ async def fetch_video_for_topic(topic):
             or an empty dictionary if no video is found.
     """
     try:
-        # Search for a single video related to the topic
+        # Start the search
         logging.debug(f"Starting search for topic: {topic}")
-        search = ""
-        try:
-            search = VideosSearch(topic, limit=1)
-        except:
-            logging.debug("API Video search failed;")
+        search = VideosSearch(topic, limit=1)
+        
         # Fetch search results
         search_results = search.result()
         logging.debug(f"Raw search results for topic '{topic}': {search_results}")
         
         # Parse the search results
         results = search_results.get('result', [])
-        if results:
-            print("Results = " + str(results))
-            video = results[0]  # Get the first video result
-            logging.debug(f"First video data for topic '{topic}': {video}")
-            
-            # Extract video details
-            video_data = {
-                'title': video.get('title', 'No Title Found'),
-                'link': video.get('link', 'No Link Found'),
-                'channel': video.get('channel', {}).get('name', 'No Channel Found'),
-                'thumbnail': video.get('thumbnails', [{}])[0].get('url', 'No Thumbnail Found')
-            }
-            logging.debug(f"Extracted video data for topic '{topic}': {video_data}")
-            return video_data
         
-        # Log when no results are found
-        logging.warning(f"No results found for topic '{topic}'")
-        return {}
+        if not results:
+            logging.warning(f"No results found for topic '{topic}'")
+            return {}
+
+        # Extract video details from the first result
+        video = results[0]  
+        
+        # Ensure video data contains expected keys
+        video_data = {
+            'title': video.get('title', 'No Title Found'),
+            'link': video.get('link', 'No Link Found'),
+            'channel': video.get('channel', {}).get('name', 'No Channel Found'),
+            'thumbnail': video.get('thumbnails', [{}])[0].get('url', 'No Thumbnail Found')
+        }
+        
+        logging.debug(f"Extracted video data for topic '{topic}': {video_data}")
+        return video_data
 
     except Exception as e:
         logging.error(f"Error fetching videos for topic '{topic}': {e}")
         return {}
+
 
 def extract_video_id(youtube_url):
     """Extracts the video ID from a YouTube URL."""
@@ -86,3 +85,4 @@ def get_video_metadata(youtube_url):
         return metadata
     else:
         return {"error": "Video not found"}
+
