@@ -216,7 +216,7 @@ async def update_course_context_request():
 
     if not all([courseid, new_course_context]):
          return jsonify({'error': 'Missing parameters'}), 400
-    update_result = await update_context(courseid, new_course_context)
+    update_result = update_context(courseid, new_course_context)
 
     if 'error' in update_result:
         return jsonify({'error': update_result['error']}), 400

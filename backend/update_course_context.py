@@ -12,7 +12,7 @@ DB_CONNECTION_STRING = os.getenv('DB_CONNECTION_STRING')
 mdb_client = MongoClient(DB_CONNECTION_STRING)
 db = mdb_client['KnowGap']
 
-async def update_context(course_id, course_context):
+def update_context(course_id, course_context):
     try:
         # Connect to MongoDB
         course_context_collection = db['Course Contexts']
