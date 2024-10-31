@@ -250,5 +250,6 @@ async def get_support_video():
     random_video =  get_random_video(result_videos)
     return jsonify(random_video)
 
+
 if __name__ == "__main__":
     app.run(debug=True)

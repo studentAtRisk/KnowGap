@@ -72,7 +72,7 @@ async def generate_core_topic(question_text, course_name, course_context=""):
     print(f"Generated core topic: {core_topic}")  
     return core_topic
 
-def fetch_videos_for_topic(topic):
+async def fetch_videos_for_topic(topic):
     try:
         search = VideosSearch(topic, limit=1)
         search_results = search.result()['result']

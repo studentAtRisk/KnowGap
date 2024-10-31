@@ -18,7 +18,7 @@ quizzes_collection = db['Quiz Questions']  # Collection that stores all possible
 
 
 # Function to get incorrect questions and their video links
-def get_assessment_videos(student_id, course_id):
+async def get_assessment_videos(student_id, course_id):
     core_topic = ""
     print("Getting assessment videos")
     student_record = students_collection.find_one({"_id": student_id})
@@ -93,7 +93,7 @@ def get_cid_from_sid(studentid):
         print("Student not found.")
         
 
-def get_course_videos(course_id):
+async def get_course_videos(course_id):
     core_topic = ""
     print("Getting assessment videos for course:", course_id)
     
