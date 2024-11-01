@@ -34,7 +34,7 @@ async def get_youtube_videos(query, channel, max_results=5):
                 print(f"Error fetching videos: {response.status}")
                 return []
 
-youtube_queries = {
+youtube_queries =  {
     'low': [
         "time management tips for students",
         "how to stay organized in college",
@@ -52,7 +52,6 @@ youtube_queries = {
     'high': [
         "overcoming procrastination",
         "avoiding burnout in college",
-        "dealing with anxiety in school",
         "finding balance between studies and rest",
         "managing expectations in college",
         "self-compassion for students"
@@ -68,29 +67,24 @@ mental_health_channels = {
         "Amy Landino",
         "WellCast",
         "Lavendaire",
-        "Kati Morton",
         "Dr. K"
     ],
     'medium': [
         "The School of Life",
-        "Therapy in a Nutshell",
-        "MedCircle",
-        "Dr. Tracey Marks",
-        "How to ADHD",
         "TED-Ed",
         "Yale Well",
         "BrainCraft",
         "Dr. K"
     ],
     'high': [
-        "Dr. K",
-        "Psych Hub",
-        "Therapy in a Nutshell",
-        "Mindful Muslim Podcast",
-        "Katie Morton",
-        "Mental Health America",
-        "It’s Okay to be Smart",
-        "Dr. Tracey Marks"
+        "It's Okay to be Smart",
+        "Motivation2Study",
+        "Study Vibes",
+        "Success & Motivation",
+        "Evan Carmichael",
+        "Better Ideas",
+        "UnJaded Jade",
+        "Mike and Matty"
     ]
 }
 
