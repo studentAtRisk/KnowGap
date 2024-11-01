@@ -4,7 +4,9 @@ import asyncio
 import aiohttp
 from config import Config
 
-async def get_youtube_videos(query, channel, max_results=5):
+import asyncio
+
+async def get_youtube_videos(query, channel, max_results=5, retries=3):
     search_query = f"{query} {channel}"
     url = Config.YOUTUBE_API_URL
     params = {
@@ -16,23 +18,37 @@ async def get_youtube_videos(query, channel, max_results=5):
         'key': Config.YOUTUBE_API_KEY
     }
     
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url, params=params) as response:
-            if response.status == 200:
-                data = await response.json()
-                videos = [
-                    {
-                        'title': item['snippet']['title'],
-                        'channelTitle': item['snippet']['channelTitle'],
-                        'videoId': item['id']['videoId'],
-                        'url': f"https://www.youtube.com/watch?v={item['id']['videoId']}"
-                    }
-                    for item in data.get('items', [])
-                ]
-                return videos
-            else:
-                print(f"Error fetching videos: {response.status}")
-                return []
+    attempt = 0
+    while attempt < retries:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    videos = [
+                        {
+                            'title': item['snippet']['title'],
+                            'channelTitle': item['snippet']['channelTitle'],
+                            'videoId': item['id']['videoId'],
+                            'url': f"https://www.youtube.com/watch?v={item['id']['videoId']}"
+                        }
+                        for item in data.get('items', [])
+                        if '#shorts' not in item['snippet']['title'].lower()
+                    ]
+                    
+                    if videos:
+                        return videos  # Return if we get valid videos
+                    else:
+                        print("Filtered out all videos (likely Shorts). Retrying...")
+                else:
+                    print(f"Error fetching videos: {response.status}")
+                    
+        attempt += 1
+        await asyncio.sleep(1)  # Wait briefly before retrying
+
+    # If no valid videos are found after retries
+    print("No suitable videos found after retries.")
+    return []
+
 
 youtube_queries =  {
     'low': [
