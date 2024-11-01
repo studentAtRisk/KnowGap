@@ -65,7 +65,7 @@ async def get_course_videos(course_id):
     return course_videos
 
 async def update_videos_for_filter(filter_criteria=None):
-    """Update videos for all questions that match the filter criteria."""
+    """Update videos for all questions that match the filter criteria. Updates all videos in DB if no criteria provided."""
     query = filter_criteria if filter_criteria else {}
     async for question in quizzes_collection.find(query):
         question_text = question.get('question_text')
@@ -87,7 +87,7 @@ async def update_videos_for_filter(filter_criteria=None):
         
         await quizzes_collection.update_one(
             {'questionid': question.get("questionid")},
-            {'$set': {'core_topic': core_topic, 'video_data': video_data, 'course_context': course_context}},
+            {'$set': {'core_topic': core_topic, 'video_data': video_data}},
             upsert=True
         )
 
