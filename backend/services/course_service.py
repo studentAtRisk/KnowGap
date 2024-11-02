@@ -37,10 +37,10 @@ async def update_context(course_id, course_context):
         logger.error("Error updating course context: %s", e)
         return {'status': 'Error', 'message': str(e)}
 
-async def get_incorrect_question_data(courseid, currentquiz, link):
+async def get_incorrect_question_data(courseid, currentquiz, link, access_token):
     """Fetches incorrect answer data for a specific quiz."""
     api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{currentquiz}/statistics'
-    headers = {'Authorization': f'Bearer {Config.CANVAS_API_KEY}'}
+    headers = {'Authorization': f'Bearer {access_token}'}
     no_answer_set = {"multiple_choice_question", "true_false_question", "short_answer_question"}
     answer_set = {"fill_in_multiple_blanks_question", "multiple_dropdowns_question", "matching_question"}
     
@@ -67,12 +67,12 @@ async def get_incorrect_question_data(courseid, currentquiz, link):
         logger.error("Error fetching incorrect question data: %s", e)
         return {'error': f'Failed to grab quiz statistics due to: {str(e)}'}, 500
 
-async def update_student_quiz_data(courseid, link):
+async def update_student_quiz_data(courseid, access_token, link):
     """Updates the database with quiz information and failed questions per student."""
     quizlist, quizname = await get_quizzes(courseid, link)
 
     api_url = f'https://{link}/api/v1/courses/{courseid}/enrollments'
-    headers = {'Authorization': f'Bearer {Config.CANVAS_API_KEY}'}
+    headers = {'Authorization': f'Bearer {access_token}'}
 
     try:
         async with aiohttp.ClientSession() as session:
@@ -86,7 +86,7 @@ async def update_student_quiz_data(courseid, link):
                 studentmap = {}
 
                 for i, quiz_id in enumerate(quizlist):
-                    results = await get_incorrect_question_data(courseid, quiz_id, link)
+                    results = await get_incorrect_question_data(courseid, quiz_id, link, access_token)
                     if isinstance(results, dict) and 'error' in results:
                         return results  # Propagate the error if fetching quiz data fails
                     
@@ -137,13 +137,13 @@ async def update_student_quiz_data(courseid, link):
 
 
 
-async def update_quiz_questions_per_course(courseid, access_token, connectionString, link):
+async def update_quiz_questions_per_course(courseid, access_token, link):
 
     quizlist, quizname = await get_quizzes(courseid,access_token, link)
     print(quizlist)
     api_url = f'https://{link}/api/v1/courses/{courseid}/enrollments'
     headers ={
-        'Authorization': f'Bearer {Config.CANVAS_API_KEY}'
+        'Authorization': f'Bearer {access_token}'
     }
     try:
         async with aiohttp.ClientSession() as session:
@@ -158,7 +158,7 @@ async def update_quiz_questions_per_course(courseid, access_token, connectionStr
                     
                     for x in range(len(quizlist)):
  
-                        questiontext, questionid = await update_quiz_reccs(courseid, access_token, dbname, collection_name, quizlist[x], link)
+                        questiontext, questionid = await update_quiz_reccs(courseid, access_token, quizlist[x], link)
 
                         # Finally, save to the database.
                         for y in range(len(questiontext)):
