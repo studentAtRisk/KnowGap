@@ -1,6 +1,7 @@
 from quart import request, jsonify
-from services.course_service import update_context, update_db
-from services.video_service import update_course_videos  # Assuming this is in video_service
+from services.course_service import update_context, update_db, get_incorrect_question_data
+from services.video_service import update_course_videos
+from utils.course_utils import get_quizzes  # Assuming get_quizzes is in course_utils
 
 def init_course_routes(app):
     @app.route('/update-course-context', methods=['POST'])
