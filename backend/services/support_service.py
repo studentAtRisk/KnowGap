@@ -52,7 +52,7 @@ async def get_youtube_videos(query, channel, max_results=5, retries=3):
 
 youtube_queries =  {
     'low': [
-        "time management tips for students",
+        "finding internships and job opportunities",
         "how to stay organized in college",
         "healthy study habits",
         "boosting productivity for students",
