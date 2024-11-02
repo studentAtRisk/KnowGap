@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from utils.encryption_utils import at_risk_encrypt_token, at_risk_decrypt_token
 
 from services.course_service import update_student_quiz_data
-from services.course_service import update_db as update_quizzes_db #(replace these with whatever the update_db portion is)
+from services.course_service import update_quiz_questions_per_course #(replace these with whatever the update_db portion is)
 
 from routes.base_routes import init_base_routes
 from routes.video_routes import init_video_routes
@@ -56,7 +56,7 @@ async def scheduled_update():
             if all([courseids, access_token, authkey, link]):
                 for course_id in courseids:
                     await update_student_quiz_data(course_id, access_token, authkey, link)
-                    await update_quizzes_db(course_id, access_token, authkey, link)
+                    await update_quiz_questions_per_course(course_id, access_token, authkey, link)
                 logger.info("Processed course IDs: %s", courseids)
     except Exception as e:
         logger.error("Error in scheduled update: %s", e)
