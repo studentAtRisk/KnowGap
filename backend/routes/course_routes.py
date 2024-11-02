@@ -1,7 +1,5 @@
-# routes/course_routes.py
-
 from quart import request, jsonify
-from services.course_service import update_context
+from services.course_service import update_context, update_db
 from services.video_service import update_course_videos  # Assuming this is in video_service
 
 def init_course_routes(app):
@@ -24,7 +22,7 @@ def init_course_routes(app):
         print(f"Context update result: {context_result}")
 
         # Handle context update response based on the status
-        if context_result['status'] == 'Updated' or context_result['status'] == 'Inserted':
+        if context_result['status'] == 'Success':
             # Trigger video updates if context update is successful
             videos_result = await update_course_videos(course_id)
             return jsonify({
@@ -32,15 +30,76 @@ def init_course_routes(app):
                 'videos_update': videos_result
             }), 200
         elif context_result['status'] == 'No changes made':
-            # If no changes were made, return a relevant message
             return jsonify({
                 'status': 'No changes made',
                 'message': context_result['message']
             }), 200
         else:
-            # Handle unexpected cases
             return jsonify({
                 'status': 'Error',
                 'message': 'Unexpected result from update operation',
                 'error': context_result
             }), 500
+
+    @app.route('/update-course-db', methods=['POST'])
+    async def update_course_db_route():
+        """Route to update database with course quiz information and student data."""
+        data = await request.get_json()
+        course_id = data.get('courseid')
+        connection_string = data.get('connection_string')
+        link = data.get('link')
+
+        print(f"Received data for course DB update: {data}")
+
+        # Validate required fields
+        if not course_id or not connection_string or not link:
+            return jsonify({'error': 'Missing course_id, connection_string, or link'}), 400
+
+        # Attempt to update the course database
+        db_result = await update_db(course_id, connection_string, link)
+        print(f"Database update result: {db_result}")
+
+        if db_result['status'] == 'Success':
+            return jsonify({'status': 'Success', 'message': db_result['message']}), 200
+        else:
+            return jsonify({'status': 'Error', 'message': db_result['error']}), 500
+
+    @app.route('/get-course-quizzes', methods=['POST'])
+    async def get_course_quizzes_route():
+        """Route to fetch quizzes for a course."""
+        data = await request.get_json()
+        course_id = data.get('courseid')
+        link = data.get('link')
+
+        # Log the request data for debugging
+        print(f"Received data for fetching course quizzes: {data}")
+
+        if not course_id or not link:
+            return jsonify({'error': 'Missing course_id or link'}), 400
+
+        try:
+            quiz_list, quiz_names = await get_quizzes(course_id, link)
+            return jsonify({'status': 'Success', 'quizzes': quiz_names}), 200
+        except Exception as e:
+            print(f"Error fetching quizzes: {e}")
+            return jsonify({'status': 'Error', 'message': str(e)}), 500
+
+    @app.route('/get-incorrect-questions', methods=['POST'])
+    async def get_incorrect_questions_route():
+        """Route to fetch incorrect question data for a specific quiz."""
+        data = await request.get_json()
+        course_id = data.get('courseid')
+        current_quiz = data.get('quizid')
+        link = data.get('link')
+
+        print(f"Received data for fetching incorrect questions: {data}")
+
+        if not course_id or not current_quiz or not link:
+            return jsonify({'error': 'Missing course_id, quiz_id, or link'}), 400
+
+        try:
+            question_data = await get_incorrect_question_data(course_id, current_quiz, link)
+            return jsonify({'status': 'Success', 'data': question_data}), 200
+        except Exception as e:
+            print(f"Error fetching incorrect questions: {e}")
+            return jsonify({'status': 'Error', 'message': str(e)}), 500

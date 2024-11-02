@@ -15,7 +15,7 @@ class Config:
     # API keys
     OPENAI_KEY = os.getenv("OPENAI_KEY")
     YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
-
+    CANVAS_API_KEY = os.getenv("CANVAS_API_KEY")
     # URLs
     YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/search"
 
