@@ -67,7 +67,7 @@ async def get_incorrect_question_data(courseid, currentquiz, link, access_token)
         logger.error("Error fetching incorrect question data: %s", e)
         return {'error': f'Failed to grab quiz statistics due to: {str(e)}'}, 500
 
-async def update_student_quiz_data(courseid, link, access_token):
+async def update_student_quiz_data(courseid, access_token, link):
     """Updates the database with quiz information and failed questions per student."""
     quizlist, quizname = await get_quizzes(courseid, link)
 
@@ -158,7 +158,7 @@ async def update_quiz_questions_per_course(courseid, access_token, link):
                     
                     for x in range(len(quizlist)):
  
-                        questiontext, questionid = await update_quiz_reccs(courseid, access_token, dbname, collection_name, quizlist[x], link)
+                        questiontext, questionid = await update_quiz_reccs(courseid, access_token, quizlist[x], link)
 
                         # Finally, save to the database.
                         for y in range(len(questiontext)):
