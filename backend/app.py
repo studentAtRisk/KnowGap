@@ -55,8 +55,8 @@ async def scheduled_update():
 
             if all([courseids, access_token, authkey, link]):
                 for course_id in courseids:
-                    await update_student_quiz_data(course_id, access_token, authkey, link)
-                    await update_quiz_questions_per_course(course_id, access_token, authkey, link)
+                    await update_student_quiz_data(course_id, access_token, link)
+                    await update_quiz_questions_per_course(course_id, access_token, link)
                 logger.info("Processed course IDs: %s", courseids)
     except Exception as e:
         logger.error("Error in scheduled update: %s", e)
