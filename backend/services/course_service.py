@@ -69,7 +69,7 @@ async def get_incorrect_question_data(courseid, currentquiz, link, access_token)
 
 async def update_student_quiz_data(courseid, access_token, link):
     """Updates the database with quiz information and failed questions per student."""
-    quizlist, quizname = await get_quizzes(courseid, link)
+    quizlist, quizname = await get_quizzes(courseid, access_token, link)
 
     api_url = f'https://{link}/api/v1/courses/{courseid}/enrollments'
     headers = {'Authorization': f'Bearer {access_token}'}
