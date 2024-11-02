@@ -1,7 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from config import Config
 from utils.course_utils import (
-    parse_date, clean_text, get_incorrect_user_ids, get_quizzes
+    get_course_name, clean_text, get_incorrect_user_ids, get_quizzes
 )
 import aiohttp
 from bs4 import BeautifulSoup
@@ -16,6 +16,7 @@ client = AsyncIOMotorClient(Config.DB_CONNECTION_STRING)
 db = client[Config.DATABASE]
 course_contexts_collection = db[Config.CONTEXTS_COLLECTION]
 students_collection = db[Config.STUDENTS_COLLECTION]
+quizzes_collection = db[Config.QUIZZES_COLLECTION]
 
 async def update_context(course_id, course_context):
     """Updates or inserts the course context for a specific course."""
@@ -66,10 +67,8 @@ async def get_incorrect_question_data(courseid, currentquiz, link):
         logger.error("Error fetching incorrect question data: %s", e)
         return {'error': f'Failed to grab quiz statistics due to: {str(e)}'}, 500
 
-async def update_db(courseid, connection_string, link):
+async def update_student_quiz_data(courseid, link):
     """Updates the database with quiz information and failed questions per student."""
-    dbname = AsyncIOMotorClient(connection_string)[Config.DATABASE]
-    collection_name = dbname["Students"]
     quizlist, quizname = await get_quizzes(courseid, link)
 
     api_url = f'https://{link}/api/v1/courses/{courseid}/enrollments'
@@ -124,7 +123,7 @@ async def update_db(courseid, connection_string, link):
                 # Save to database
                 for student_id, quizzes in studentmap.items():
                     try:
-                        collection_name.update_one(
+                        students_collection.update_one(
                             {'_id': str(student_id)},
                             {"$set": {str(courseid): quizzes}},
                             upsert=True
@@ -135,3 +134,81 @@ async def update_db(courseid, connection_string, link):
         logger.error("Error in update_db: %s", e)
         return {'error': str(e)}, 500
     return {'status': 'Success', 'message': 'Database update completed successfully'}
+
+
+
+async def update_quiz_questions_per_course(courseid, access_token, connectionString, link):
+
+    quizlist, quizname = await get_quizzes(courseid,access_token, link)
+    print(quizlist)
+    api_url = f'https://{link}/api/v1/courses/{courseid}/enrollments'
+    headers ={
+        'Authorization': f'Bearer {Config.CANVAS_API_KEY}'
+    }
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(api_url, headers=headers) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    studentmap = {}
+
+
+                    course_name = await get_course_name(courseid, access_token, link)
+                    
+                    
+                    for x in range(len(quizlist)):
+ 
+                        questiontext, questionid = await update_quiz_reccs(courseid, access_token, dbname, collection_name, quizlist[x], link)
+
+                        # Finally, save to the database.
+                        for y in range(len(questiontext)):
+                            try:
+                                print(quizlist[x])
+                                print(questionid[y])
+                                quizzes_collection.update_one({'quizid': quizlist[x],  'courseid': str(courseid), "course_name": course_name, "questionid": str(questionid[y])}, {"$set": {"question_text": questiontext[y]}},upsert=True)
+                            except Exception as e:
+                                print("Error:", e)
+    except Exception as e:
+        print("Error:", e)
+    return 1
+
+async def update_quiz_reccs(courseid, access_token, dbname, collection_name, current_quiz, link):
+    """Fetches quiz statistics to identify questions students answered incorrectly, potentially for recommendations."""
+    api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{current_quiz}/statistics'
+    headers = {'Authorization': f'Bearer {access_token}'}
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(api_url, headers=headers) as response:
+                if response.status != 200:
+                    error_text = await response.text()
+                    return {'error': f'Failed to fetch data from API: {error_text}'}, response.status
+
+                data = await response.json()
+                question_texts, question_ids, selectors = [], [], [[]]
+                
+                noanswerset = {"multiple_choice_question", "true_false_question", "short_answer_question"}
+                answerset = {"fill_in_multiple_blanks_question", "multiple_dropdowns_question", "matching_question"}
+
+                for question_stat in data["quiz_statistics"][0]["question_statistics"]:
+                    question_text = BeautifulSoup(question_stat["question_text"], features="html.parser").get_text()
+                    question_texts.append(clean_text(question_text))
+                    question_ids.append(question_stat["id"])
+                    selectors.append([])
+
+                    question_type = question_stat["question_type"]
+                    if question_type in noanswerset:
+                        for answer in question_stat["answers"]:
+                            if not answer["correct"]:
+                                selectors[-1] += answer.get("user_ids", [-1])
+                    elif question_type in answerset:
+                        for answer_set in question_stat["answer_sets"]:
+                            for answer in answer_set["answers"]:
+                                if not answer["correct"]:
+                                    selectors[-1] += answer.get("user_ids", [-1])
+
+                return question_texts, selectors, question_ids
+
+    except Exception as e:
+        logger.error("Failed to grab quiz statistics due to: %s", str(e))
+        return {'error': f'Failed to grab quiz statistics due to: {str(e)}'}, 500

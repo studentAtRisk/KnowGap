@@ -5,6 +5,24 @@ from datetime import datetime, timezone
 from bs4 import BeautifulSoup
 from config import Config
 
+async def get_course_name(courseid, link):
+    api_url = f'https://{link}/api/v1/courses/{courseid}'
+    headers = {'Authorization': f'Bearer {Config.CANVAS_API_KEY}'}
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(api_url, headers=headers) as response:
+                if response.status == 200:
+                    course_details = await response.json()
+                    course_name = course_details.get("name", "Course name not found")
+                    return course_name
+                else:
+                    print(f"Failed to retrieve course. Status code: {response.status}")
+    except Exception as e:
+        return {'error': str(e)}, 500
+
+
+
 def parse_date(date_str):
     """Parses a date string to UTC datetime."""
     if date_str:

@@ -1,5 +1,5 @@
 from quart import request, jsonify
-from services.course_service import update_context, update_db, get_incorrect_question_data
+from services.course_service import update_context, update_student_quiz_data, get_incorrect_question_data
 from services.video_service import update_course_videos
 from utils.course_utils import get_quizzes  # Assuming get_quizzes is in course_utils
 
@@ -57,7 +57,7 @@ def init_course_routes(app):
             return jsonify({'error': 'Missing course_id, connection_string, or link'}), 400
 
         # Attempt to update the course database
-        db_result = await update_db(course_id, connection_string, link)
+        db_result = await update_student_quiz_data(course_id, connection_string, link)
         print(f"Database update result: {db_result}")
 
         if db_result['status'] == 'Success':
