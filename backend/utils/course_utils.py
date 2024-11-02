@@ -1,14 +1,11 @@
-# Import necessary libraries
 import asyncio
 import aiohttp
 from datetime import datetime, timezone
 from bs4 import BeautifulSoup
 from config import Config
-
-async def get_course_name(courseid, link):
+async def get_course_name(courseid, link, access_token):
     api_url = f'https://{link}/api/v1/courses/{courseid}'
-    headers = {'Authorization': f'Bearer {Config.CANVAS_API_KEY}'}
-
+    headers = {'Authorization': f'Bearer {access_token}'}
     try:
         async with aiohttp.ClientSession() as session:
             async with session.get(api_url, headers=headers) as response:
@@ -20,21 +17,15 @@ async def get_course_name(courseid, link):
                     print(f"Failed to retrieve course. Status code: {response.status}")
     except Exception as e:
         return {'error': str(e)}, 500
-
-
-
 def parse_date(date_str):
     """Parses a date string to UTC datetime."""
     if date_str:
         dt = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S%z")
         return dt.astimezone(timezone.utc)  # Normalize to UTC
     return None
-
 def clean_text(text):
     """Normalizes text and filters to keep only ASCII characters."""
     return ''.join(char for char in text if ord(char) < 128)
-
-
 def get_incorrect_user_ids(question, no_answer_set, answer_set):
     """Extracts user IDs for incorrect answers based on question type."""
     incorrect_user_ids = []
@@ -43,12 +34,10 @@ def get_incorrect_user_ids(question, no_answer_set, answer_set):
     elif question["question_type"] in answer_set:
         incorrect_user_ids = extract_answer_set_user_ids(question["answer_sets"])
     return incorrect_user_ids if incorrect_user_ids else [-1]
-
 def extract_no_answer_user_ids(answers):
     """Helper to gather user IDs from questions without answer sets."""
     return [user_id for answer in answers if not answer["correct"]
             for user_id in (answer.get("user_ids") or [-1])]
-
 def extract_answer_set_user_ids(answer_sets):
     """Helper to gather user IDs from questions with answer sets."""
     user_ids = []
@@ -56,15 +45,14 @@ def extract_answer_set_user_ids(answer_sets):
         user_ids.extend(user_id for answer in answer_set["answers"] if not answer["correct"]
                         for user_id in (answer.get("user_ids") or [-1]))
     return user_ids
-
-async def get_quizzes(courseid, link, max_quizzes=10):
+async def get_quizzes(courseid, link, access_token, max_quizzes=10):
     """
     Fetches a list of quizzes for a course, filtered by published status and unlock date.
     Returns a sorted list of quiz IDs and quiz titles in descending order by unlock date.
     """
     api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes?per_page=100'
     headers = {
-        'Authorization': f'Bearer {Config.CANVAS_API_KEY}'
+        'Authorization': f'Bearer {access_token}'
     }
     
     try:
@@ -103,11 +91,10 @@ async def get_quizzes(courseid, link, max_quizzes=10):
     except Exception as e:
         print("Exception occurred:", str(e))
         return {'error': str(e)}, 500
-
-async def get_question_data(courseid, quiz_id, link):
+async def get_question_data(courseid, quiz_id, link, access_token):
     """Fetches question data for a specific quiz, including question text and IDs."""
     api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{quiz_id}/questions'
-    headers = {'Authorization': f'Bearer {Config.CANVAS_API_KEY}'}
+    headers = {'Authorization': f'Bearer {access_token}'}
     
     try:
         async with aiohttp.ClientSession() as session:
@@ -122,4 +109,3 @@ async def get_question_data(courseid, quiz_id, link):
                     return {'error': f'Failed to fetch questions: {error_text}'}, response.status
     except Exception as e:
         return {'error': str(e)}, 500
-
