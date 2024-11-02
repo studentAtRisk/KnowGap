@@ -47,17 +47,17 @@ def init_course_routes(app):
         """Route to update database with course quiz information and student data."""
         data = await request.get_json()
         course_id = data.get('courseid')
-        connection_string = data.get('connection_string')
+        access_token = data.get('access_token')
         link = data.get('link')
-        
+
         print(f"Received data for course DB update: {data}")
 
         # Validate required fields
-        if not course_id or not connection_string or not link:
-            return jsonify({'error': 'Missing course_id, connection_string, or link'}), 400
+        if not course_id or not access_token or not link:
+            return jsonify({'error': 'Missing course_id, access_token, or link'}), 400
 
         # Attempt to update the course database
-        db_result = await update_student_quiz_data(course_id, connection_string, link)
+        db_result = await update_student_quiz_data(course_id, access_token, link)
         print(f"Database update result: {db_result}")
 
         if db_result['status'] == 'Success':
@@ -71,7 +71,7 @@ def init_course_routes(app):
         data = await request.get_json()
         course_id = data.get('courseid')
         link = data.get('link')
-        access_token = data.get('access_token')
+
         # Log the request data for debugging
         print(f"Received data for fetching course quizzes: {data}")
 
@@ -79,7 +79,7 @@ def init_course_routes(app):
             return jsonify({'error': 'Missing course_id or link'}), 400
 
         try:
-            quiz_list, quiz_names = await get_quizzes(course_id, link,access_token)
+            quiz_list, quiz_names = await get_quizzes(course_id, link)
             return jsonify({'status': 'Success', 'quizzes': quiz_names}), 200
         except Exception as e:
             print(f"Error fetching quizzes: {e}")
