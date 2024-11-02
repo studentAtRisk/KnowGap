@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
+    SET_TIMER = 600
     # Database connection string
     DB_CONNECTION_STRING = os.getenv("DB_CONNECTION_STRING")
     
@@ -15,7 +16,6 @@ class Config:
     # API keys
     OPENAI_KEY = os.getenv("OPENAI_KEY")
     YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
-    CANVAS_API_KEY = os.getenv("CANVAS_API_KEY")
     # URLs
     YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/search"
 

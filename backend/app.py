@@ -6,14 +6,16 @@ from quart_cors import cors
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 from utils.encryption_utils import at_risk_encrypt_token, at_risk_decrypt_token
-from course_service.update_course_students import update_student_quiz
-from course_service.update_course_quizzes import update_db as update_quizzes_db #(replace these with whatever the update_db portion is)
+
+from services.course_service import update_student_quiz_data
+from services.course_service import update_db as update_quizzes_db #(replace these with whatever the update_db portion is)
+
 from routes.base_routes import init_base_routes
 from routes.video_routes import init_video_routes
 from routes.support_routes import init_support_routes
 from routes.course_routes import init_course_routes
+
 from config import Config
-SET_TIMER = 600 #feel free to move this to Config if youd like. This sets timer in seconds for updating DB
 
 # Set up logging
 load_dotenv()
@@ -53,7 +55,7 @@ async def scheduled_update():
 
             if all([courseids, access_token, authkey, link]):
                 for course_id in courseids:
-                    await update_student_quiz(course_id, access_token, authkey, link)
+                    await update_student_quiz_data(course_id, access_token, authkey, link)
                     await update_quizzes_db(course_id, access_token, authkey, link)
                 logger.info("Processed course IDs: %s", courseids)
     except Exception as e:
@@ -62,16 +64,13 @@ async def scheduled_update():
 async def schedule_updates():
     while True:
         await scheduled_update()
-        await asyncio.sleep(SET_TIMER)  # Wait for 10 minutes
+        await asyncio.sleep(Config.SET_TIMER)  # Wait for 10 minutes
 
 @app.before_serving
 async def startup():
     logger.info("Starting scheduled updates...")
     asyncio.create_task(schedule_updates())  # Start the update loop
 
-@app.route('/')
-async def index():
-    return "Hello, World!"
 
 if __name__ == "__main__":
     app.run(debug=True)
