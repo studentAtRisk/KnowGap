@@ -32,7 +32,7 @@ class Config:
         """Method to ensure all necessary config variables are set."""
         missing = [
             var for var in [
-                "DATABASE", "DB_CONNECTION_STRING", "HEX_ENCRYPTION_KEY", 
+                "DB_CONNECTION_STRING", "HEX_ENCRYPTION_KEY", 
                 "OPENAI_KEY", "YOUTUBE_API_KEY"
             ]
             if not getattr(cls, var)

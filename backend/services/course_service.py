@@ -49,23 +49,34 @@ async def get_incorrect_question_data(courseid, currentquiz, link, access_token)
             async with session.get(api_url, headers=headers) as response:
                 if response.status != 200:
                     error_text = await response.text()
-                    logger.error("Failed to fetch quiz statistics: %s", error_text)
+                    logger.error("Failed to fetch quiz statistics: Status %s, Response: %s", response.status, error_text)
                     return {'error': f'Failed to fetch data from API: {error_text}'}, response.status
                 
-                data = await response.json()
+                # Attempt to parse JSON response
+                try:
+                    data = await response.json()
+                except Exception as e:
+                    logger.error("Failed to parse JSON from API response: %s", e)
+                    return {'error': f'Failed to parse JSON: {str(e)}'}, 500
+                
                 question_data = data.get("quiz_statistics", [{}])[0].get("question_statistics", [])
                 question_texts, question_ids, selectors = [], [], []
                 
+                # Process each question in the statistics
                 for question in question_data:
-                    cleaned_text = BeautifulSoup(question["question_text"], "html.parser").get_text()
-                    question_texts.append(clean_text(cleaned_text))
-                    question_ids.append(question["id"])
-                    selectors.append(get_incorrect_user_ids(question, no_answer_set, answer_set))
+                    if "question_text" in question and "id" in question:
+                        cleaned_text = BeautifulSoup(question["question_text"], "html.parser").get_text()
+                        question_texts.append(clean_text(cleaned_text))
+                        question_ids.append(question["id"])
+                        selectors.append(get_incorrect_user_ids(question, no_answer_set, answer_set))
+                    else:
+                        logger.warning("Question data missing required fields: %s", question)
                 
                 return [question_texts, selectors, question_ids]
     except Exception as e:
         logger.error("Error fetching incorrect question data: %s", e)
-        return {'error': f'Failed to grab quiz statistics due to: {str(e)}'}, 500
+        return {'error': f'Exception occurred: {str(e)}'}, 500
+
 
 async def update_student_quiz_data(courseid, access_token, link):
     """Updates the database with quiz information and failed questions per student."""
