@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 # Initialize Quart app
 app = Quart(__name__)
 cors(app, 
-     allow_origin="canvas.instructure.com",
+     allow_origin="https://canvas.instructure.com",
      allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
      allow_methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
      allow_credentials=True)
