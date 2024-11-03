@@ -36,6 +36,15 @@ init_course_routes(app)
 init_video_routes(app)
 init_support_routes(app)
 
+@app.after_request
+async def apply_cors(response):
+    # Ensure CORS headers are included in every response
+    response.headers["Access-Control-Allow-Origin"] = "https://canvas.instructure.com"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response
+
 # MongoDB setup
 HEX_ENCRYPTION_KEY = Config.HEX_ENCRYPTION_KEY
 encryption_key = bytes.fromhex(HEX_ENCRYPTION_KEY)
@@ -48,7 +57,7 @@ async def scheduled_update():
     try:
         async for token in token_collection.find():
             courseids = token.get('courseids')
-            authkey = os.getenv('DB_CONNECTION_STRING')
+            authkey = Config.DB_CONNECTION_STRING
             access_token = at_risk_decrypt_token(encryption_key, token.get('auth'))
             link = token.get('link').replace("https://", "").replace("http://", "")
             logger.info("Processing token...")
