@@ -29,7 +29,7 @@ app = Quart(__name__)
 #      allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
 #      allow_methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
 #      allow_credentials=True)
- cors(app, allow_origin="*")
+cors(app, allow_origin="*")
 # Initialize routes
 init_base_routes(app)
 init_course_routes(app)
