@@ -30,20 +30,14 @@ app = Quart(__name__)
 #      allow_methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
 #      allow_credentials=True)
 cors(app, allow_origin="*")
+app = Quart(__name__)
 # Initialize routes
 init_base_routes(app)
 init_course_routes(app)
 init_video_routes(app)
 init_support_routes(app)
 
-@app.after_request
-async def apply_cors(response):
-    # Ensure CORS headers are included in every response
-    response.headers["Access-Control-Allow-Origin"] = "https://canvas.instructure.com"
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, PUT, DELETE"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
-    response.headers["Access-Control-Allow-Credentials"] = "true"
-    return response
+app = cors(app, allow_origin="https://canvas.instructure.com", allow_headers=["Content-Type", "Authorization"])
 
 # MongoDB setup
 HEX_ENCRYPTION_KEY = Config.HEX_ENCRYPTION_KEY
@@ -51,6 +45,8 @@ encryption_key = bytes.fromhex(HEX_ENCRYPTION_KEY)
 client = AsyncIOMotorClient(Config.DB_CONNECTION_STRING)
 db = client[Config.DATABASE]
 token_collection = db[Config.TOKENS_COLLECTION]
+
+
 
 async def scheduled_update():
     logger.info("Scheduled update started")
