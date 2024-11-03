@@ -104,3 +104,9 @@ def init_course_routes(app):
         except Exception as e:
             print(f"Error fetching incorrect questions: {e}")
             return jsonify({'status': 'Error', 'message': str(e)}), 500
+
+
+    @app.route('/get-questions-by-course/<course_id>', methods=['GET', 'OPTIONS'])
+    async def get_questions_by_course(course_id):
+        # Placeholder response
+        return jsonify({"message": f"Questions for course {course_id} not implemented yet."})
