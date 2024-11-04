@@ -290,15 +290,15 @@ const StudentView = () => {
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
 
     try {
-      const response = await fetch(`${baseUrl}/get-video-rec`, {
+      const response = await fetch(`${baseUrl}/get-assessment-videos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          userid: userId.toString(),
-          courseid: courseId.toString(),
+          student_id: userId.toString(),
+          course_id: courseId.toString(),
         }),
       });
       if (!response.ok) {
