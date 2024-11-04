@@ -10,6 +10,7 @@ function injectSidebar() {
     const sidebarContainer = document.createElement('div');
     sidebarContainer.id = 'custom-sidebar-container';
     sidebarContainer.style.display = 'block';
+    sidebarContainer.style.backgroundColor = 'transparent'; // Add this line
 
     const root = ReactDOM.createRoot(sidebarContainer);
     root.render(<Popup />);
