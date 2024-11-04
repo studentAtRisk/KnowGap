@@ -30,8 +30,7 @@ init_video_routes(app)
 init_support_routes(app)
 
 # Apply CORS after routes are initialized
-app = cors(app, allow_origin="https://canvas.instructure.com", allow_headers=["Content-Type", "Authorization"])
-
+app = cors(app, allow_origin="https://canvas.instructure.com", allow_headers=["Content-Type", "Authorization"], allow_methods=["GET", "POST", "OPTIONS"])
 # MongoDB setup
 HEX_ENCRYPTION_KEY = Config.HEX_ENCRYPTION_KEY
 encryption_key = bytes.fromhex(HEX_ENCRYPTION_KEY)
