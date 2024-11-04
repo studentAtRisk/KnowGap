@@ -3,7 +3,7 @@ import aiohttp
 from datetime import datetime, timezone
 from bs4 import BeautifulSoup
 from config import Config
-async def get_course_name(courseid, link, access_token):
+async def get_course_name(courseid, access_token, link):
     api_url = f'https://{link}/api/v1/courses/{courseid}'
     headers = {'Authorization': f'Bearer {access_token}'}
     try:
@@ -45,7 +45,7 @@ def extract_answer_set_user_ids(answer_sets):
         user_ids.extend(user_id for answer in answer_set["answers"] if not answer["correct"]
                         for user_id in (answer.get("user_ids") or [-1]))
     return user_ids
-async def get_quizzes(courseid, link, access_token, max_quizzes=10):
+async def get_quizzes(courseid, access_token, link, max_quizzes=10):
     """
     Fetches a list of quizzes for a course, filtered by published status and unlock date.
     Returns a sorted list of quiz IDs and quiz titles in descending order by unlock date.
@@ -80,6 +80,7 @@ async def get_quizzes(courseid, link, access_token, max_quizzes=10):
                     quiz_names = [quiz["title"] for quiz in sorted_data[:max_quizzes]]
                     
                     # Debug prints to check output
+                    print("this happens twice? what?")
                     print("Quiz Names:", quiz_names)
                     return quiz_list, quiz_names
                 
@@ -91,7 +92,8 @@ async def get_quizzes(courseid, link, access_token, max_quizzes=10):
     except Exception as e:
         print("Exception occurred:", str(e))
         return {'error': str(e)}, 500
-async def get_question_data(courseid, quiz_id, link, access_token):
+async def get_question_data(courseid, quiz_id, access_token, link):
+
     """Fetches question data for a specific quiz, including question text and IDs."""
     api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{quiz_id}/questions'
     headers = {'Authorization': f'Bearer {access_token}'}
