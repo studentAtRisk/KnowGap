@@ -110,7 +110,7 @@ async def update_student_quiz_data(courseid, access_token, link):
                     for j, user_ids in enumerate(selectors):
                         for student_id in user_ids:
                             if student_id != -1:
-                                question_info = {"question": question_texts[i], "questionid": question_ids[i]}
+                                question_info = {"question": question_texts[j], "questionid": question_ids[j]}
                                 if student_id in studentmap:
                                     quiz_found = False
                                     for quiz in studentmap[student_id]:
@@ -202,7 +202,7 @@ async def update_quiz_reccs(courseid, current_quiz, access_token, link):
                     return {'error': f'Failed to fetch data from API: {error_text}'}, response.status
 
                 data = await response.json()
-                question_texts, question_ids, selectors = [], [], [[]]
+                question_texts, question_ids, selectors = [], [], []
                 
                 noanswerset = {"multiple_choice_question", "true_false_question", "short_answer_question"}
                 answerset = {"fill_in_multiple_blanks_question", "multiple_dropdowns_question", "matching_question"}
@@ -234,3 +234,17 @@ async def update_quiz_reccs(courseid, current_quiz, access_token, link):
         print("IS IT THIS")
         logger.error("Failed to grab quiz statistics due to: %s", str(e))
         return {'error': f'Failed to grab quiz statistics due to: {str(e)}'}, 500
+
+async def get_questions_by_course(course_id):
+    results = quizzes_collection.find({"courseid": course_id})
+
+    all_questions = []
+    
+    for result in results:
+        result["_id"] = str(result["_id"])
+        all_questions.append(result)
+
+    if not all_questions:
+        return ({"message": "No questions found for the given course ID"}), 404
+
+    return ({"course_id": course_id, "questions": all_questions}), 200
