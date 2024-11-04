@@ -71,15 +71,16 @@ def init_course_routes(app):
         data = await request.get_json()
         course_id = data.get('courseid')
         link = data.get('link')
+        access_token = data.get('access_token')
 
         # Log the request data for debugging
         print(f"Received data for fetching course quizzes: {data}")
 
-        if not course_id or not link:
+        if not course_id or not link or not access_token:
             return jsonify({'error': 'Missing course_id or link'}), 400
 
         try:
-            quiz_list, quiz_names = await get_quizzes(course_id, link)
+            quiz_list, quiz_names = await get_quizzes(course_id, access_token, link)
             return jsonify({'status': 'Success', 'quizzes': quiz_names}), 200
         except Exception as e:
             print(f"Error fetching quizzes: {e}")
