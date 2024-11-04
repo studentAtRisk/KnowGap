@@ -85,29 +85,6 @@ const Popup = () => {
 
   return (
     <div className="container">
-      {localStorage.getItem('apiToken') ? (
-        <div className="api-token-input">
-          <p>API Token is set</p>
-          <button onClick={removeToken}>Remove Token</button>
-        </div>
-      ) : (
-        <div className="api-token-input">
-          <input
-            type="password"
-            placeholder="Enter your API token"
-            value={apiToken}
-            onChange={(e) => setApiToken(e.target.value)}
-          />
-          <button
-            onClick={() => {
-              localStorage.setItem('apiToken', apiToken);
-              window.location.reload();
-            }}
-          >
-            Save Token
-          </button>
-        </div>
-      )}
       {userRole === 'TeacherEnrollment' ? (
         <InstructorView students={students} />
       ) : userRole === 'StudentEnrollment' ? (
