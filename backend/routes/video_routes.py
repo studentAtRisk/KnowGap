@@ -34,7 +34,7 @@ def init_video_routes(app):
     @app.route('/update-course-videos', methods=['POST'])
     async def update_course_videos_route():
         data = await request.get_json()
-        course_id = data.get('courseid')
+        course_id = data.get('course_id')
         
         if not course_id:
             return jsonify({'error': 'Missing Course ID'}), 400
@@ -45,10 +45,10 @@ def init_video_routes(app):
     @app.route('/update-video-link', methods=['POST'])
     async def update_video_link_route():
         data = await request.get_json()
-        if not all(k in data for k in ("quizid", "questionid", "old_link", "new_link")):
+        if not all(k in data for k in ("quiz_id", "question_id", "old_link", "new_link")):
             return jsonify({"error": "Missing required parameters"}), 400
 
-        result = await update_video_link(data['quizid'], data['questionid'], data['old_link'], data['new_link'])
+        result = await update_video_link(data['quiz_id'], data['question_id'], data['old_link'], data['new_link'])
         if result["success"]:
             return jsonify({"message": result["message"]}), 200
         else:
@@ -57,10 +57,10 @@ def init_video_routes(app):
     @app.route('/add-video', methods=['POST'])
     async def add_video_route():
         data = await request.get_json()
-        if not all(k in data for k in ("quizid", "questionid", "video_link")):
+        if not all(k in data for k in ("quiz_id", "question_id", "video_link")):
             return jsonify({"error": "Missing required parameters"}), 400
 
-        result = await add_video(data['quizid'], data['questionid'], data['video_link'])
+        result = await add_video(data['quiz_id'], data['question_id'], data['video_link'])
         if result["success"]:
             return jsonify({"message": result["message"]}), 201
         else:
@@ -69,10 +69,10 @@ def init_video_routes(app):
     @app.route('/remove-video', methods=['POST'])
     async def remove_video_route():
         data = await request.get_json()
-        if not all(k in data for k in ("quizid", "questionid", "video_link")):
+        if not all(k in data for k in ("quiz_id", "question_id", "video_link")):
             return jsonify({"error": "Missing required parameters"}), 400
 
-        result = await remove_video(data['quizid'], data['questionid'], data['video_link'])
+        result = await remove_video(data['quiz_id'], data['question_id'], data['video_link'])
         if result["success"]:
             return jsonify({"message": result["message"]}), 200
         else:
