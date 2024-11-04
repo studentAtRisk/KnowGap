@@ -1,68 +1,106 @@
-from googleapiclient.discovery import build
 import os
 import random
+import asyncio
+import aiohttp
 
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
-def get_youtube_videos(query, channel, max_results=5):
-    youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+async def get_youtube_videos(query, channel, max_results=5):
     search_query = f"{query} {channel}"
-    request = youtube.search().list(
-        part='snippet',
-        q=search_query,
-        maxResults=max_results,
-        safeSearch='strict',
-        type='video'
-    )
-    response = request.execute()
+    url = "https://www.googleapis.com/youtube/v3/search"
+    params = {
+        'part': 'snippet',
+        'q': search_query,
+        'maxResults': max_results,
+        'safeSearch': 'strict',
+        'type': 'video',
+        'key': YOUTUBE_API_KEY
+    }
     
-    videos = []
-    for item in response['items']:
-        video_data = {
-            'title': item['snippet']['title'],
-            'channelTitle': item['snippet']['channelTitle'],
-            'videoId': item['id']['videoId'],
-            'url': f"https://www.youtube.com/watch?v={item['id']['videoId']}"
-        }
-        videos.append(video_data)
-    
-    return videos
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, params=params) as response:
+            if response.status == 200:
+                data = await response.json()
+                videos = [
+                    {
+                        'title': item['snippet']['title'],
+                        'channelTitle': item['snippet']['channelTitle'],
+                        'videoId': item['id']['videoId'],
+                        'url': f"https://www.youtube.com/watch?v={item['id']['videoId']}"
+                    }
+                    for item in data.get('items', [])
+                ]
+                return videos
+            else:
+                print(f"Error fetching videos: {response.status}")
+                return []
 
 youtube_queries = {
     'low': [
-        "productivity tips for students",
-        "how to stay motivated",
-        "study hacks for better focus"
+        "time management tips for students",
+        "how to stay organized in college",
+        "healthy study habits",
+        "boosting productivity for students",
+        "balancing school and personal life"
     ],
     'medium': [
-        "school stress management",
-        "exam stress relief",
-        "how to handle academic pressure"
+        "coping with school stress",
+        "building resilience in college",
+        "mindfulness practices for students",
+        "healthy routines for academic success",
+        "self-care tips for students"
     ],
     'high': [
-        "procrastination",
-        "burnout",
-        "student mental health help",
-        "handling depression in college",
-        "failing classes",
-        "catch up in school"
+        "overcoming procrastination",
+        "avoiding burnout in college",
+        "dealing with anxiety in school",
+        "finding balance between studies and rest",
+        "managing expectations in college",
+        "self-compassion for students"
     ]
 }
 
 mental_health_channels = {
-    'low': ["Thomas Frank", "Ali Abdaal", "Psych2Go"],
-    'medium': ["The School of Life", "Therapy in a Nutshell", "Dr. K"],
-    'high': ['Psych2Go', "Psych Hub", "Dr. K"]
+    'low': [
+        "Thomas Frank",
+        "Ali Abdaal",
+        "Psych2Go",
+        "StudyTee",
+        "Amy Landino",
+        "WellCast",
+        "Lavendaire",
+        "Kati Morton"
+    ],
+    'medium': [
+        "The School of Life",
+        "Therapy in a Nutshell",
+        "MedCircle",
+        "Dr. Tracey Marks",
+        "How to ADHD",
+        "TED-Ed",
+        "Yale Well",
+        "BrainCraft"
+    ],
+    'high': [
+        "Dr. K",
+        "Psych Hub",
+        "Therapy in a Nutshell",
+        "Mindful Muslim Podcast",
+        "Katie Morton",
+        "Mental Health America",
+        "It’s Okay to be Smart",
+        "Dr. Tracey Marks"
+    ]
 }
 
-def get_videos_for_risk_level(risk_level, max_results=3):
+async def get_videos_for_risk_level(risk_level, max_results=3):
     query_list = youtube_queries.get(risk_level, [])
     channel_list = mental_health_channels.get(risk_level, [])
     
     if query_list and channel_list:
         query = random.choice(query_list)
         channel = random.choice(channel_list)
-        videos = get_youtube_videos(query, channel, max_results)
+        videos = await get_youtube_videos(query, channel, max_results)
         return videos
     else:
         return []
@@ -74,12 +112,14 @@ def get_random_video(videos):
         return None
 
 if __name__ == '__main__':
-    risk_level = 'high'
-    result_videos = get_videos_for_risk_level(risk_level)
+    async def main():
+        risk_level = 'high'
+        result_videos = await get_videos_for_risk_level(risk_level)
+        random_video = get_random_video(result_videos)
+        
+        if random_video:
+            print(f"Random Video Selected: Title: {random_video['title']}, Channel: {random_video['channelTitle']}, URL: {random_video['url']}")
+        else:
+            print("No videos found.")
 
-    random_video = get_random_video(result_videos)
-    
-    if random_video:
-        print(f"Random Video Selected: Title: {random_video['title']}, Channel: {random_video['channelTitle']}, URL: {random_video['url']}")
-    else:
-        print("No videos found.")
+    asyncio.run(main())

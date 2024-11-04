@@ -183,11 +183,5 @@ def clean_text(text):
     return ''.join(char for char in text if ord(char) < 128)
 
 
-courseid = "10496683"  # Example course ID
-access_token = "7~WvADyKw8mGWm4DUk4rWvWPVw2Kr3BXwtH4GNffABcxMHRR2KTraCfc2FB2Qf6zFw"  # Example API token
-connectionString = "mongodb+srv://jordan917222:PPJjEItclZaEECv7@studentsatrisk.ptqdmcu.mongodb.net/" # MongoDB connection string
-link = "canvas.instructure.com" # Mock URL to Canvas API
 
-# Run the main async function
-asyncio.run(update_db(courseid, access_token, connectionString, link))
 

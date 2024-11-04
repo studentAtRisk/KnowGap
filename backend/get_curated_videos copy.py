@@ -26,7 +26,7 @@ async def get_assessment_videos(student_id, course_id):
         return {"error": "Student not found"}
     
     quizzes = student_record.get(course_id, [])
-    assessment_videos = {}
+    assessment_videos = []
     used_video_links = set()
 
     for quiz in quizzes:
@@ -37,7 +37,6 @@ async def get_assessment_videos(student_id, course_id):
         if not quiz_id:
             continue
 
-        quiz_videos = []
         for question in incorrect_questions:
             cur_qid = question.get("questionid")
             cur_question_text = question.get('question_text')
@@ -47,29 +46,26 @@ async def get_assessment_videos(student_id, course_id):
 
             if matching_question:
                 core_topic = matching_question.get("core_topic", "No topic found")
-                videos_for_question = matching_question.get('video_data', [])
+                video_data = matching_question.get('video_data')  # Expecting a single video dictionary, not a list
             else:
                 # Await both core topic generation and video fetching
                 print(f"Generating core topic for question: {cur_question_text}")
-                core_topic = await get_video_reccs.generate_core_topic(cur_question_text, cur_qid, course_id)
+                core_topic = await get_video_reccs.generate_core_topic(cur_question_text, quiz_name, course_id)
                 
                 print(f"Fetching videos for topic: {core_topic}")
-                videos_for_question = await get_video_reccs.fetch_videos_for_topic(core_topic)
-                print(f"Fetched videos: {videos_for_question}")
+                video_data = await get_video_reccs.fetch_videos_for_topic(core_topic)
+                print(f"Fetched video: {video_data}")
 
-            # Ensure videos are JSON-serializable and unique
-            unique_videos = [video for video in videos_for_question if video['link'] not in used_video_links]
-            used_video_links.update(video['link'] for video in unique_videos)
-            
-            if unique_videos:
-                quiz_videos.append({
-                    "questionid": cur_qid,
+            # Ensure video data is JSON-serializable and unique by link
+            if video_data and video_data['link'] not in used_video_links:
+                used_video_links.add(video_data['link'])
+                assessment_videos.append({
+                    "quiz_name": quiz_name,
+                    "question_id": cur_qid,
+                    "question_text": cur_question_text,
                     "topic": core_topic,
-                    "videos": unique_videos
+                    "video": video_data  # Store a single video dictionary
                 })
-
-        if quiz_videos:
-            assessment_videos[quiz_name] = quiz_videos
 
     print("Assessment videos retrieved successfully")
     return assessment_videos

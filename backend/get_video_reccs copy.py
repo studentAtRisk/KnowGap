@@ -38,7 +38,7 @@ async def update_videos_for_filter(filter_criteria=None):
         core_topic = await generate_core_topic(question_text, course_name, course_context)
 
         existing_topic = await quizzes_collection.find_one({'core_topic': core_topic})
-        video_data = existing_topic['video_data'] if existing_topic else fetch_videos_for_topic(core_topic)
+        video_data = existing_topic['video_data'] if existing_topic else await fetch_videos_for_topic(core_topic)
 
         await quizzes_collection.update_one(
             {'questionid': question.get("questionid")},
@@ -48,6 +48,29 @@ async def update_videos_for_filter(filter_criteria=None):
         videos[core_topic] = video_data
 
     return videos
+
+async def fetch_videos_for_topic(topic):
+    try:
+        search = VideosSearch(topic, limit=1)
+        search_results = search.result()['result']
+        
+        # Check if there's a result and grab the first video
+        if search_results:
+            video = search_results[0]
+            video_data = {
+                'link': video['link'],
+                'title': video['title'],
+                'channel': video['channel']['name'],
+                'thumbnail': video['thumbnails'][0]['url']
+            }
+            return video_data
+        else:
+            return {}
+
+    except Exception as e:
+        print(f"Error fetching videos for topic '{topic}': {e}")
+        return {}
+
 
 async def update_course_videos(course_id=None):
     filter_criteria = {'courseid': course_id} if course_id else None
@@ -71,23 +94,3 @@ async def generate_core_topic(question_text, course_name, course_context=""):
     core_topic = response.choices[0].text.strip().strip('"').strip("'")
     print(f"Generated core topic: {core_topic}")  
     return core_topic
-
-async def fetch_videos_for_topic(topic):
-    try:
-        search = VideosSearch(topic, limit=1)
-        search_results = search.result()['result']
-        video_data = []
-
-        for video in search_results:
-            video_info = {
-                'link': video['link'],
-                'title': video['title'],
-                'channel': video['channel']['name'],
-                'thumbnail': video['thumbnails'][0]['url']
-            }
-            video_data.append(video_info)
-
-        return video_data
-    except Exception as e:
-        print(f"Error fetching videos for topic '{topic}': {e}")
-        return []

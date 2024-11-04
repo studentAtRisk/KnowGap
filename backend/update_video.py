@@ -78,8 +78,82 @@ def update_video_link(quiz_id, question_id, old_link, new_video):
 
     if update_result.modified_count == 0:
         return {"message": "Failed to update video_data", "success": False}
-
     return {"message": "Video successfully updated", "success": True}
+
+def add_video(quiz_id, question_id, video_link):
+    quizzes_collection = db['Quiz Questions']
+    
+    # Fetch the document based on quiz_id and question_id
+    document = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
+    
+    # Error checking
+    if not document:
+        return {
+            "error": "document not found",
+            "success": False
+        }
+        
+    # Getting the video data
+    video_data = document.get('video_data', [])
+    
+    # Avoiding duplicates
+    if video_link in video_data:
+        return {
+            "error": "Video present already",
+            "success": False
+        }
+    
+    # Add the new video in the data array...
+    video_data.append(video_link)
+    
+    # Making the update in the db
+    
+    quizzes_collection.update_one(
+        {"quizid": quiz_id, "questionid": question_id},
+        {"$set": {"video_data": video_data}}
+    )
+    
+    return {
+        "message": "Video Added",
+        "success": True
+    }
+    
+    
+def remove_video(quiz_id, question_id, video_to_be_removed):
+    quizzes_collection = db['Quiz Questions']
+    
+    # Fetch the document based on quiz_id and question_id
+    document = quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})
+    
+    # Error checking
+    if not document:
+        return {
+            "error": "document not found",
+            "success": False
+        }
+        
+    # Getting the video data
+    video_data = document.get('video_data', [])
+    
+    # Return if video is not present in db
+    if video_to_be_removed not in video_data:
+        return {
+            "message": "Video not found",
+            "success": False
+        }
+        
+    # Reconstructing video array without video to delete (removing step)
+    updated_video_data = [link for link in video_data if link != video_to_be_removed]
+    
+    quizzes_collection.update_one(
+        {"quizid": quiz_id, "questionid": question_id},
+        {"$set": {"video_data": video_data}}
+    )
+    
+    return {
+        "message": "video successfully removed",
+        "success": True
+    }
 
 
 if __name__ == "__main__":
