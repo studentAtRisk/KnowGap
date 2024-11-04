@@ -267,7 +267,7 @@ const InstructorView = () => {
     const baseUrl =
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
     try {
-      const response = await fetch(`${baseUrl}/update-course-context`, {
+      const response = await fetch(`${baseUrl}/update_course_context`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -281,10 +281,8 @@ const InstructorView = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       sendNotification('Course context updated successfully');
-      console.log('Course context updated successfully', courseContext);
     } catch (error) {
       console.error('Error updating course context:', error);
-      console.error('Error message:', error.message);
       sendNotification('Failed to update course context');
     }
   };

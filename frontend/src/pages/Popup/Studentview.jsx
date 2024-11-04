@@ -269,6 +269,7 @@ const StudentView = () => {
       }
       const data = await response.json();
       console.log('Fetched video recommendations:', data);
+      console.log('fetching user id', userId);
 
       return data;
     } catch (error) {
