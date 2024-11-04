@@ -1,8 +1,9 @@
 from quart import request, jsonify
-from services.course_service import update_context, update_student_quiz_data, get_incorrect_question_data
+from services.course_service import update_context, update_student_quiz_data, get_incorrect_question_data, get_questions_by_course
 from services.video_service import update_course_videos
 from utils.course_utils import get_quizzes  # Assuming get_quizzes is in course_utils
 from quart_cors import cors
+
 def init_course_routes(app):
     @app.route('/update-course-context', methods=['POST'])
     async def update_course_context_route():
@@ -107,6 +108,6 @@ def init_course_routes(app):
 
 
     @app.route('/get-questions-by-course/<course_id>', methods=['GET', 'OPTIONS'])
-    async def get_questions_by_course(course_id):
-        # Placeholder response
-        return jsonify({"message": f"Questions for course {course_id} not implemented yet."})
+    async def get_questions_by_course_route(course_id):
+        return jsonify(get_questions_by_course(course_id))
+       

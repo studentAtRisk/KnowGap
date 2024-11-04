@@ -223,3 +223,17 @@ async def update_quiz_reccs(courseid, access_token, dbname, collection_name, cur
     except Exception as e:
         logger.error("Failed to grab quiz statistics due to: %s", str(e))
         return {'error': f'Failed to grab quiz statistics due to: {str(e)}'}, 500
+
+async def get_questions_by_course(course_id):
+    results = quizzes_collection.find({"courseid": course_id})
+
+    all_questions = []
+    
+    for result in results:
+        result["_id"] = str(result["_id"])
+        all_questions.append(result)
+
+    if not all_questions:
+        return ({"message": "No questions found for the given course ID"}), 404
+
+    return ({"course_id": course_id, "questions": all_questions}), 200
