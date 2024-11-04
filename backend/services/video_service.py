@@ -25,6 +25,8 @@ async def get_assessment_videos(student_id, course_id):
     used_video_links = set()
     video_data_new = {}
 
+    res = []
+
     for quiz in quizzes:
         quiz_name = quiz.get('quizname', 'Unknown Quiz')
         quiz_id = quiz.get('quizid')
@@ -35,10 +37,14 @@ async def get_assessment_videos(student_id, course_id):
             if question_data:
                 core_topic = question_data.get("core_topic", "No topic found")
                 video_data = question_data.get('video_data')  # Expecting a single video dictionary, not a list
-                print(video_data)
+
+                if isinstance(video_data, list) and len(video_data) > 0:
+                    video_data = video_data[0]  # Extract the first video dictionary from the list
+            
+
                 if video_data and video_data['link'] not in used_video_links:
                     used_video_links.add(video_data['link'])
-                    video_data_new = ({
+                    res.append({
                         "quiz_name": quiz_name,
                         "question_id": question.get("questionid"),
                         "question_text": question.get("question_text"),
@@ -46,7 +52,7 @@ async def get_assessment_videos(student_id, course_id):
                         "video": video_data  # Store a single video dictionary
                     })
 
-    return video_data_new
+    return res
 
 async def get_course_videos(course_id):
     """Fetch all video data associated with a specific course ID."""
