@@ -35,7 +35,7 @@ async def get_assessment_videos(student_id, course_id):
             if question_data:
                 core_topic = question_data.get("core_topic", "No topic found")
                 video_data = question_data.get('video_data')  # Expecting a single video dictionary, not a list
-                
+                print(video_data)
                 if video_data and video_data['link'] not in used_video_links:
                     used_video_links.add(video_data['link'])
                     video_data_new = ({
