@@ -108,7 +108,7 @@ def init_course_routes(app):
             return jsonify({'status': 'Error', 'message': str(e)}), 500
 
 
-    @app.route('/get-questions-by-course/<course_id>', methods=['GET', 'OPTIONS'])
+    @app.route('/get-questions-by-course/<course_id>', methods=['POST'])
     async def get_questions_by_course_route(course_id):
         """Route to fetch questions for a specific course."""
         try:
