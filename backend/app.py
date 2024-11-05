@@ -9,7 +9,9 @@ from utils.encryption_utils import at_risk_encrypt_token, at_risk_decrypt_token
 
 from services.course_service import update_student_quiz_data, update_quiz_questions_per_course
 from services.video_service import update_course_videos
+
 from routes.base_routes import init_base_routes
+from routes.user_routes import init_user_routes
 from routes.video_routes import init_video_routes
 from routes.support_routes import init_support_routes
 from routes.course_routes import init_course_routes
@@ -34,6 +36,7 @@ async def log_request():
 
 # Initialize routes first
 init_base_routes(app)
+init_user_routes(app)
 init_course_routes(app)
 init_video_routes(app)
 init_support_routes(app)
