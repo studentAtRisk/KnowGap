@@ -3,6 +3,8 @@ from youtubesearchpython import VideosSearch
 import re
 from googleapiclient.discovery import build
 from config import Config
+import aiohttp
+import asyncio
 
 import logging
 
@@ -61,28 +63,30 @@ def extract_video_id(youtube_url):
         video_id = match.group(1)
     return video_id
 
-def get_video_metadata(youtube_url):
-    """Retrieves metadata for a YouTube video by URL."""
+
+async def get_video_metadata(youtube_url):
+    """Retrieves metadata for a YouTube video by URL asynchronously."""
     video_id = extract_video_id(youtube_url)
     if not video_id:
         return {"error": "Invalid YouTube URL"}
 
-    youtube = build('youtube', 'v3', developerKey=Config.YOUTUBE_API_KEY)
+    # YouTube API URL for getting video details
+    api_url = f"https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_id}&key={Config.YOUTUBE_API_KEY}"
 
-    request = youtube.videos().list(
-        part="snippet",
-        id=video_id
-    )
-    response = request.execute()
+    async with aiohttp.ClientSession() as session:
+        async with session.get(api_url) as response:
+            if response.status == 200:
+                response_data = await response.json()
 
-    if "items" in response and len(response["items"]) > 0:
-        video = response["items"][0]["snippet"]
-        metadata = {
-            "title": video["title"],
-            "channel": video["channelTitle"],
-            "thumbnail": video["thumbnails"]["high"]["url"],
-        }
-        return metadata
-    else:
-        return {"error": "Video not found"}
-
+                if "items" in response_data and len(response_data["items"]) > 0:
+                    video = response_data["items"][0]["snippet"]
+                    metadata = {
+                        "title": video["title"],
+                        "channel": video["channelTitle"],
+                        "thumbnail": video["thumbnails"]["high"]["url"],
+                    }
+                    return metadata
+                else:
+                    return {"error": "Video not found"}
+            else:
+                return {"error": f"Failed to fetch metadata, status code: {response.status}"}
