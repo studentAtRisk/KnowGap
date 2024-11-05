@@ -1,7 +1,7 @@
 # routes/user_token_management.py
 
 from quart import request, jsonify
-from services.user_service import add_or_update_user_token, get_user_token
+from services.user_service import add_user_token, get_user_token
 
 def init_user_routes(app):
     @app.route('/add-token', methods=['POST'])
@@ -16,7 +16,7 @@ def init_user_routes(app):
             return jsonify({'error': 'Missing required fields'}), 400
 
         # Await the asynchronous service function
-        updated_user = await add_or_update_user_token(user_id, access_token, course_ids, link)
+        updated_user = await add_user_token(user_id, access_token, course_ids, link)
         if updated_user:
             return jsonify({'status': 'Complete'}), 200
         else:
