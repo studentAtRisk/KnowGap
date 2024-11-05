@@ -46,8 +46,8 @@ async def get_assessment_videos(student_id, course_id):
                     used_video_links.add(video_data['link'])
                     res.append({
                         "quiz_name": quiz_name,
-                        "question_id": question.get("questionid"),
-                        "question_text": question.get("question_text"),
+                        "question_id": question_data.get("questionid"),
+                        "question_text": question_data.get("question_text"),
                         "topic": core_topic,
                         "video": video_data  # Store a single video dictionary
                     })
