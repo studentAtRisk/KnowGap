@@ -110,5 +110,14 @@ def init_course_routes(app):
 
     @app.route('/get-questions-by-course/<course_id>', methods=['GET', 'OPTIONS'])
     async def get_questions_by_course_route(course_id):
-        return jsonify(get_questions_by_course(course_id))
-       
+        """Route to fetch questions for a specific course."""
+        try:
+            question_data = await get_questions_by_course(course_id)
+            
+            if "error" in question_data:
+                return jsonify(question_data), 404
+
+            return jsonify({"status": "Success", "data": question_data}), 200
+        except Exception as e:
+            print(f"Error fetching questions for course {course_id}: {e}")
+            return jsonify({"status": "Error", "message": str(e)}), 500
