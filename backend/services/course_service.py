@@ -79,32 +79,32 @@ async def get_incorrect_question_data(courseid, currentquiz, access_token, link)
 
 
 async def update_student_quiz_data(courseid, access_token, link):
-
     """Updates the database with quiz information and failed questions per student."""
-    quizlist, quizname = await get_quizzes(courseid, access_token, link)
-
-
-    api_url = f'https://{link}/api/v1/courses/{courseid}/enrollments'
-    headers = {'Authorization': f'Bearer {access_token}'}
-
     try:
+        # Fetch quiz list and quiz names
+        quizlist, quizname = await get_quizzes(courseid, access_token, link)
+
+        api_url = f'https://{link}/api/v1/courses/{courseid}/enrollments'
+        headers = {'Authorization': f'Bearer {access_token}'}
+
+        # Fetch student enrollments
         async with aiohttp.ClientSession() as session:
             async with session.get(api_url, headers=headers) as response:
                 if response.status != 200:
                     error_text = await response.text()
                     logger.error("Failed to fetch enrollments: %s", error_text)
-                    return {'error': f'Failed to fetch enrollments: {error_text}'}, response.status
+                    return {'status': 'Error', 'error': f'Failed to fetch enrollments: {error_text}'}
 
                 data = await response.json()
                 studentmap = {}
 
+                # Iterate over quizzes and update recommendations
                 for i, quiz_id in enumerate(quizlist):
-
                     results = await update_quiz_reccs(courseid, quiz_id, access_token, link)
 
                     if isinstance(results, dict) and 'error' in results:
-                        return results  # Propagate the error if fetching quiz data fails
-                    
+                        return {'status': 'Error', 'error': results['error']}  # Consistent error format
+
                     question_texts, selectors, question_ids = results
 
                     for j, user_ids in enumerate(selectors):
@@ -134,7 +134,7 @@ async def update_student_quiz_data(courseid, access_token, link):
                                         "questions": [question_info],
                                         "used": False
                                     }]
-                
+
                 # Save to database
                 for student_id, quizzes in studentmap.items():
                     try:
@@ -145,10 +145,14 @@ async def update_student_quiz_data(courseid, access_token, link):
                         )
                     except Exception as e:
                         logger.error("Error updating database for student %s: %s", student_id, e)
+                        return {'status': 'Error', 'error': f'Error updating database for student {student_id}: {str(e)}'}
+
     except Exception as e:
         logger.error("Error in update_student_quiz_data: %s", e)
-        return {'error': str(e)}, 500
+        return {'status': 'Error', 'error': str(e)}
+
     return {'status': 'Success', 'message': 'Database update completed successfully'}
+
 
 
 
