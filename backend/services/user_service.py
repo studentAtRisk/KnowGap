@@ -1,6 +1,6 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from config import Config
-from backend.utils.encryption_utils import encrypt_token, decrypt_token
+from utils.encryption_utils import encrypt_token, decrypt_token
 
 # Async MongoDB connection
 client = AsyncIOMotorClient(Config.DB_CONNECTION_STRING)
