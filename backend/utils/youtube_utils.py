@@ -82,6 +82,7 @@ async def get_video_metadata(youtube_url):
                     video = response_data["items"][0]["snippet"]
                     metadata = {
                         "title": video["title"],
+                        "link" : youtube_url,
                         "channel": video["channelTitle"],
                         "thumbnail": video["thumbnails"]["high"]["url"],
                     }
