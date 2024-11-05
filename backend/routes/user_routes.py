@@ -1,7 +1,7 @@
 # routes/user_token_management.py
 
 from quart import request, jsonify
-from services.user_service import add_user_token, get_user_token
+from services.user_service import add_user, get_user
 
 def init_user_routes(app):
     @app.route('/add-token', methods=['POST'])
@@ -22,7 +22,7 @@ def init_user_routes(app):
         else:
             return jsonify({'status': 'Error', 'message': 'Failed to update user'}), 500
 
-    @app.route('/get-user', methods=['GET'])
+    @app.route('/get-user', methods=['POST'])
     async def get_user():
         data = await request.get_json()
         user_id = data.get('userid')
@@ -31,7 +31,7 @@ def init_user_routes(app):
             return jsonify({'error': 'Missing User ID'}), 400
 
         # Await the asynchronous service function
-        user_data = await get_user_token(user_id)
+        user_data = await get_user(user_id)
         if user_data:
             return jsonify({'status': 'Success', 'user_details': user_data}), 200
         else:

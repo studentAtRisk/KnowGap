@@ -21,7 +21,7 @@ async def get_user(user_id):
         "link": user["link"]
     }
 
-async def add_user_token(user_id, access_token, course_ids, link):
+async def add_user(user_id, access_token, course_ids, link):
     """Add or update a user token in the database."""
     encrypted_token = encrypt_token(Config.HEX_ENCRYPTION_KEY, access_token)
 
