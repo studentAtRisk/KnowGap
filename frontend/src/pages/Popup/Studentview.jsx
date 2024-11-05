@@ -319,24 +319,21 @@ const StudentView = () => {
 
   const formatVideoRecommendations = (data) => {
     const formattedVideos = [];
-    if (data && typeof data === 'object') {
-      for (const quizName in data) {
-        const quizData = data[quizName] || {};
-        Object.values(quizData).forEach((topicData) => {
-          if (topicData && Array.isArray(topicData.videos)) {
-            formattedVideos.push(
-              ...topicData.videos.map((video) => ({
-                ...video,
-                reason: `Learn about ${topicData.topic || 'this topic'}`,
-                id: video?.link?.split('v=')[1] || '',
-                url: video?.link || '',
-                viewCount: 'N/A',
-                duration: 'N/A',
-              }))
-            );
-          }
-        });
-      }
+    if (data && data.assessment_videos) {
+      data.assessment_videos.forEach((questionData) => {
+        if (questionData.video) {
+          formattedVideos.push({
+            id: questionData.video.link?.split('v=')[1] || '',
+            title: questionData.video.title,
+            channel: questionData.video.channel,
+            url: questionData.video.link,
+            thumbnail: questionData.video.thumbnail,
+            reason: `Learn about ${questionData.topic || 'this topic'}`,
+            viewCount: 'N/A',
+            duration: 'N/A',
+          });
+        }
+      });
     }
     return formattedVideos;
   };
@@ -362,6 +359,7 @@ const StudentView = () => {
         if (videoRecommendations) {
           const formattedVideos =
             formatVideoRecommendations(videoRecommendations);
+          console.log('Formatted Videos:', formattedVideos);
           setRecommendedVideos(formattedVideos);
         }
       }
