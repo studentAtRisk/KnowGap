@@ -267,7 +267,7 @@ const InstructorView = () => {
     const baseUrl =
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
     try {
-      const response = await fetch(`${baseUrl}/update_course_context`, {
+      const response = await fetch(`${baseUrl}/update-course-context`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
