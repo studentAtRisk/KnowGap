@@ -296,7 +296,6 @@ body {
   display: inline-flex;
   align-items: center;
   padding: 8px 16px;
-  background: #ff0000;
   color: white;
   border-radius: 20px;
   text-decoration: none;
@@ -305,7 +304,8 @@ body {
 }
 
 .youtube-link:hover {
-  background: #cc0000;
 }
+
+
 
 }

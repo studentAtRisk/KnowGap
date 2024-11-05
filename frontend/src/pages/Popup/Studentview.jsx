@@ -603,6 +603,7 @@ const StudentView = () => {
       {activeTab === 'support' && (
         <div className="content-container slide-in">
           <h2 className="content-title">Support Resources</h2>
+
           {supportVideo && (
             <div className="support-video-container">
               <div className="support-video-card">
