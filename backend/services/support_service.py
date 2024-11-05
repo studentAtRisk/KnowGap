@@ -3,6 +3,7 @@ import random
 import asyncio
 import aiohttp
 from config import Config
+from utils.youtube_utils import clean_metadata_text
 
 import asyncio
 
@@ -26,7 +27,7 @@ async def get_youtube_videos(query, channel, max_results=5, retries=3):
                     data = await response.json()
                     videos = [
                         {
-                            'title': item['snippet']['title'],
+                            'title': clean_metadata_text(item['snippet']['title']),
                             'channelTitle': item['snippet']['channelTitle'],
                             'videoId': item['id']['videoId'],
                             'url': f"https://www.youtube.com/watch?v={item['id']['videoId']}"

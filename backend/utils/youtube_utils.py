@@ -5,8 +5,20 @@ from googleapiclient.discovery import build
 from config import Config
 import aiohttp
 import asyncio
-
+import html
 import logging
+
+def clean_metadata_text(text: str) -> str:
+    """
+    Cleans up HTML-encoded characters in any metadata text, converting them to their intended form.
+    
+    Args:
+        text (str): The text string potentially containing HTML entities.
+    
+    Returns:
+        str: A cleaned-up version of the text.
+    """
+    return html.unescape(text)
 
 async def fetch_video_for_topic(topic):
     """
@@ -40,7 +52,7 @@ async def fetch_video_for_topic(topic):
         
         # Ensure video data contains expected keys
         video_data = {
-            'title': video.get('title', 'No Title Found'),
+            'title': clean_metadata_text(video.get('title', 'No Title Found')),
             'link': video.get('link', 'No Link Found'),
             'channel': video.get('channel', {}).get('name', 'No Channel Found'),
             'thumbnail': video.get('thumbnails', [{}])[0].get('url', 'No Thumbnail Found')
@@ -52,6 +64,11 @@ async def fetch_video_for_topic(topic):
     except Exception as e:
         logging.error(f"Error fetching videos for topic '{topic}': {e}")
         return {}
+    
+
+
+
+
 
 
 def extract_video_id(youtube_url):
@@ -81,7 +98,7 @@ async def get_video_metadata(youtube_url):
                 if "items" in response_data and len(response_data["items"]) > 0:
                     video = response_data["items"][0]["snippet"]
                     metadata = {
-                        "title": video["title"],
+                        "title": clean_metadata_text(video["title"]),
                         "link" : youtube_url,
                         "channel": video["channelTitle"],
                         "thumbnail": video["thumbnails"]["high"]["url"],

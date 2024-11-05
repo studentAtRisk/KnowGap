@@ -124,6 +124,7 @@ const StudentView = () => {
       console.error('Unable to determine Canvas base URL');
       return;
     }
+    
 
     const storedToken = localStorage.getItem('apiToken');
     if (!storedToken) {
