@@ -208,15 +208,19 @@ const InstructorView = () => {
           },
         }
       );
+  
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+  
       const data = await response.json();
+      console.log('Response data from quiz questions from course:', data); // Log the response data here
       setCourseQuestions(data.questions || []);
     } catch (error) {
       console.error('Error fetching course videos:', error);
     }
   };
+  
 
   const addVideoToQuestion = (questionId, video) => {
     setCourseQuestions((prevQuestions) =>
