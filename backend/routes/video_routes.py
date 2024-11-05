@@ -62,9 +62,9 @@ def init_video_routes(app):
 
         result = await add_video(data['quiz_id'], data['question_id'], data['video_link'])
         if result["success"]:
-            return jsonify({"message": result["message"]}), 201
+            return jsonify({"message": result["message"]}), 200
         else:
-            return jsonify({"error": result["error"]}), 409
+            return jsonify({"error": result["message"]}), 409
 
     @app.route('/remove-video', methods=['POST'])
     async def remove_video_route():
