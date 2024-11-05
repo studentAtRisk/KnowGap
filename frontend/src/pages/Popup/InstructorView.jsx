@@ -201,7 +201,7 @@ const InstructorView = () => {
       const response = await fetch(
         `${baseUrl}/get-questions-by-course/${courseId}`,
         {
-          method: 'GET',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
