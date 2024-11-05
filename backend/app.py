@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from utils.encryption_utils import at_risk_encrypt_token, at_risk_decrypt_token
 
 from services.course_service import update_student_quiz_data, update_quiz_questions_per_course
+from services.video_service import update_course_videos
 from routes.base_routes import init_base_routes
 from routes.video_routes import init_video_routes
 from routes.support_routes import init_support_routes
@@ -61,6 +62,7 @@ async def scheduled_update():
                     try:
                         await update_student_quiz_data(course_id, access_token, link)
                         await update_quiz_questions_per_course(course_id, access_token, link)
+                        await update_course_videos(course_id)
                         logger.info("Processed course ID: %s", course_id)
                     except Exception as course_error:
                         logger.error("Error processing course ID %s: %s", course_id, course_error)
