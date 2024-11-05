@@ -37,7 +37,7 @@ async def update_context(course_id, course_context):
         logger.error("Error updating course context: %s", e)
         return {'status': 'Error', 'message': str(e)}
 
-async def get_incorrect_question_data(courseid, currentquiz, link, access_token):
+async def get_incorrect_question_data(courseid, currentquiz, access_token, link):
     """Fetches incorrect answer data for a specific quiz."""
     api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{currentquiz}/statistics'
     headers = {'Authorization': f'Bearer {access_token}'}
@@ -72,15 +72,17 @@ async def get_incorrect_question_data(courseid, currentquiz, link, access_token)
                     else:
                         logger.warning("Question data missing required fields: %s", question)
                 
-                return [question_texts, selectors, question_ids]
+                return [question_texts, question_ids]
     except Exception as e:
         logger.error("Error fetching incorrect question data: %s", e)
         return {'error': f'Exception occurred: {str(e)}'}, 500
 
 
 async def update_student_quiz_data(courseid, access_token, link):
+
     """Updates the database with quiz information and failed questions per student."""
     quizlist, quizname = await get_quizzes(courseid, access_token, link)
+
 
     api_url = f'https://{link}/api/v1/courses/{courseid}/enrollments'
     headers = {'Authorization': f'Bearer {access_token}'}
@@ -97,7 +99,9 @@ async def update_student_quiz_data(courseid, access_token, link):
                 studentmap = {}
 
                 for i, quiz_id in enumerate(quizlist):
-                    results = await get_incorrect_question_data(courseid, quiz_id, link, access_token)
+
+                    results = await update_quiz_reccs(courseid, quiz_id, access_token, link)
+
                     if isinstance(results, dict) and 'error' in results:
                         return results  # Propagate the error if fetching quiz data fails
                     
@@ -142,7 +146,7 @@ async def update_student_quiz_data(courseid, access_token, link):
                     except Exception as e:
                         logger.error("Error updating database for student %s: %s", student_id, e)
     except Exception as e:
-        logger.error("Error in update_db: %s", e)
+        logger.error("Error in update_student_quiz_data: %s", e)
         return {'error': str(e)}, 500
     return {'status': 'Success', 'message': 'Database update completed successfully'}
 
@@ -151,7 +155,7 @@ async def update_student_quiz_data(courseid, access_token, link):
 async def update_quiz_questions_per_course(courseid, access_token, link):
 
     quizlist, quizname = await get_quizzes(courseid,access_token, link)
-    print(quizlist)
+
     api_url = f'https://{link}/api/v1/courses/{courseid}/enrollments'
     headers ={
         'Authorization': f'Bearer {access_token}'
@@ -165,25 +169,27 @@ async def update_quiz_questions_per_course(courseid, access_token, link):
 
 
                     course_name = await get_course_name(courseid, access_token, link)
-                    
+
                     
                     for x in range(len(quizlist)):
  
-                        questiontext, questionid = await update_quiz_reccs(courseid, access_token, quizlist[x], link)
-
+                        questiontext, questionid = await get_incorrect_question_data(courseid, quizlist[x], access_token, link)
                         # Finally, save to the database.
                         for y in range(len(questiontext)):
                             try:
-                                print(quizlist[x])
-                                print(questionid[y])
+                                #print(quizlist[x])
+                                #print(questionid[y])
                                 quizzes_collection.update_one({'quizid': quizlist[x],  'courseid': str(courseid), "course_name": course_name, "questionid": str(questionid[y])}, {"$set": {"question_text": questiontext[y]}},upsert=True)
                             except Exception as e:
                                 print("Error:", e)
     except Exception as e:
+
         print("Error:", e)
     return 1
 
-async def update_quiz_reccs(courseid, access_token, dbname, collection_name, current_quiz, link):
+async def update_quiz_reccs(courseid, current_quiz, access_token, link):
+
+
     """Fetches quiz statistics to identify questions students answered incorrectly, potentially for recommendations."""
     api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{current_quiz}/statistics'
     headers = {'Authorization': f'Bearer {access_token}'}
@@ -196,7 +202,7 @@ async def update_quiz_reccs(courseid, access_token, dbname, collection_name, cur
                     return {'error': f'Failed to fetch data from API: {error_text}'}, response.status
 
                 data = await response.json()
-                question_texts, question_ids, selectors = [], [], [[]]
+                question_texts, question_ids, selectors = [], [], []
                 
                 noanswerset = {"multiple_choice_question", "true_false_question", "short_answer_question"}
                 answerset = {"fill_in_multiple_blanks_question", "multiple_dropdowns_question", "matching_question"}
@@ -218,8 +224,27 @@ async def update_quiz_reccs(courseid, access_token, dbname, collection_name, cur
                                 if not answer["correct"]:
                                     selectors[-1] += answer.get("user_ids", [-1])
 
+
+
+
                 return question_texts, selectors, question_ids
+            
 
     except Exception as e:
+        print("IS IT THIS")
         logger.error("Failed to grab quiz statistics due to: %s", str(e))
         return {'error': f'Failed to grab quiz statistics due to: {str(e)}'}, 500
+
+async def get_questions_by_course(course_id):
+    """Retrieve all questions for a specific course."""
+    results = await quizzes_collection.find({"courseid": course_id}).to_list(length=None)
+    all_questions = []
+
+    for result in results:
+        result["_id"] = str(result["_id"])  # Convert ObjectId to string for JSON serialization
+        all_questions.append(result)
+
+    if not all_questions:
+        return {"error": "No questions found for the given course ID"}
+
+    return {"course_id": course_id, "questions": all_questions}

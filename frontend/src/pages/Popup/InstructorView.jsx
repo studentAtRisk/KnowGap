@@ -280,12 +280,9 @@ const InstructorView = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      sendNotification('Course context updated successfully');
-      console.log('Course context updated successfully', courseContext);
+      console.log('Course context updated successfully');
     } catch (error) {
       console.error('Error updating course context:', error);
-      console.error('Error message:', error.message);
-      sendNotification('Failed to update course context');
     }
   };
 
