@@ -2,6 +2,7 @@
 from youtubesearchpython import VideosSearch
 import re
 from googleapiclient.discovery import build
+from config import Config
 
 import logging
 
