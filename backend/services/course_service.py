@@ -238,7 +238,7 @@ async def update_quiz_reccs(courseid, current_quiz, access_token, link):
 async def get_questions_by_course(course_id):
     print(f"DEBUG: Starting get_questions_by_course with course_id: {course_id}")
     
-    results = quizzes_collection.find({"courseid": course_id})
+    results = await quizzes_collection.find({"courseid": course_id})
     all_questions = []
     
     print("DEBUG: Query executed, processing results...")
