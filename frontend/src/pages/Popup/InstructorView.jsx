@@ -199,7 +199,7 @@ const InstructorView = () => {
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
     try {
       const response = await fetch(
-        `${baseUrl}/get-questions-by-course/${courseId}`,
+        `${baseUrl}/get-course-videos/${courseId}`,
         {
           method: 'POST',
           headers: {
