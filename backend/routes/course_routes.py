@@ -1,5 +1,5 @@
 from quart import request, jsonify
-from services.course_service import update_context, update_student_quiz_data, get_incorrect_question_data, get_questions_by_course
+from services.course_service import update_context, update_student_quiz_data, get_incorrect_question_data, get_questions_by_course, update_quiz_reccs, update_quiz_questions_per_course
 from services.video_service import update_course_videos
 from utils.course_utils import get_quizzes  # Assuming get_quizzes is in course_utils
 from quart_cors import cors
@@ -61,6 +61,13 @@ def init_course_routes(app):
         db_result = await update_student_quiz_data(course_id, access_token, link)
         print(f"Database update result: {db_result}")
 
+        if db_result['status'] != 'Success':
+            return jsonify({'status': 'Error', 'message': db_result['error']}), 500
+
+
+        db_result = await update_quiz_questions_per_course(course_id, access_token, link)
+        print(f"Database update result: {db_result}")
+        
         if db_result['status'] == 'Success':
             return jsonify({'status': 'Success', 'message': db_result['message']}), 200
         else:
