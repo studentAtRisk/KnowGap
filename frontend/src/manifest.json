@@ -2,7 +2,7 @@
     "description": "An intelligent tool to proactively identify students at risk, helping educators support and guide learners more effectively by predicting risk based on performance patterns.",
     "version": "1.3.8",
     "manifest_version": 3,
-    "name": "Student Risk Predictor",
+    "name": "KnowGap for Canvas",
     "action": {
       "default_popup": "popup.html"
     },
