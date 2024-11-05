@@ -124,7 +124,6 @@ const StudentView = () => {
       console.error('Unable to determine Canvas base URL');
       return;
     }
-    
 
     const storedToken = localStorage.getItem('apiToken');
     if (!storedToken) {
@@ -630,6 +629,33 @@ const StudentView = () => {
               </div>
             </div>
           )}
+
+          <div className="support-links-container">
+            <div className="support-links-list">
+              <ul>
+                <li>
+                  <a href="https://caps.sdes.ucf.edu/" target="_blank">
+                    UCF CAPS
+                  </a>
+                </li>
+                <li>
+                  <a href="https://scs.sdes.ucf.edu/" target="_blank">
+                    Student Care Services
+                  </a>
+                </li>
+                <li>
+                  <a href="https://www.sdes.ucf.edu/asc/" target="_blank">
+                    Academic Success Coaching (ASC)
+                  </a>
+                </li>
+                <li>
+                  <a href="https://cares.sdes.ucf.edu/" target="_blank">
+                    UCF Cares
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       )}
     </body>
