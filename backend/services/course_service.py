@@ -236,15 +236,21 @@ async def update_quiz_reccs(courseid, current_quiz, access_token, link):
         return {'error': f'Failed to grab quiz statistics due to: {str(e)}'}, 500
 
 async def get_questions_by_course(course_id):
+    print(f"DEBUG: Starting get_questions_by_course with course_id: {course_id}")
+    
     results = quizzes_collection.find({"courseid": course_id})
-
     all_questions = []
+    
+    print("DEBUG: Query executed, processing results...")
     
     for result in results:
         result["_id"] = str(result["_id"])
         all_questions.append(result)
+        print(f"DEBUG: Appended question with ID {result['_id']} to all_questions")
 
     if not all_questions:
+        print("DEBUG: No questions found for the given course ID")
         return ({"message": "No questions found for the given course ID"}), 404
 
+    print(f"DEBUG: Returning {len(all_questions)} questions for course_id: {course_id}")
     return ({"course_id": course_id, "questions": all_questions}), 200
