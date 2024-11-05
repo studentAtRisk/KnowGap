@@ -5,7 +5,7 @@ from quart import Quart, request
 from quart_cors import cors
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
-from utils.encryption_utils import at_risk_encrypt_token, at_risk_decrypt_token
+from utils.encryption_utils import decrypt_token
 
 from services.course_service import update_student_quiz_data, update_quiz_questions_per_course
 from services.video_service import update_course_videos
@@ -56,7 +56,7 @@ async def scheduled_update():
         async for token in token_collection.find():
             courseids = token.get('courseids')
             authkey = Config.DB_CONNECTION_STRING
-            access_token = at_risk_decrypt_token(encryption_key, token.get('auth'))
+            access_token = decrypt_token(encryption_key, token.get('auth'))
             link = token.get('link').replace("https://", "").replace("http://", "")
             logger.info("Processing token with link: %s", link)
 
