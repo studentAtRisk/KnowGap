@@ -117,7 +117,7 @@ async def update_video_link(quiz_id, question_id, old_link, new_video_url):
     # Create updated video metadata using new link
     new_video_metadata = await get_video_metadata(new_video_url)
     if "error" in new_video_metadata:
-        return {"message": "Failed to fetch metadata for the new video", "success": False}
+        return {"message": "Failed to fetch new metadata for the new video", "success": False}
 
    
     # Update database
@@ -161,7 +161,7 @@ async def add_video(quiz_id, question_id, video_link):
     
     return {"message": "Video added successfully", "success": True}
 
-async def remove_video(quiz_id, question_id, video_to_be_removed):
+async def remove_video(quiz_id, question_id):
     """Removes a specific video by link from a question's video data."""
 
     document = await quizzes_collection.find_one({"quizid": quiz_id, "questionid": question_id})

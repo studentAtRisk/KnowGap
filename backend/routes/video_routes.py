@@ -69,10 +69,10 @@ def init_video_routes(app):
     @app.route('/remove-video', methods=['POST'])
     async def remove_video_route():
         data = await request.get_json()
-        if not all(k in data for k in ("quiz_id", "question_id", "video_link")):
+        if not all(k in data for k in ("quiz_id", "question_id")):
             return jsonify({"error": "Missing required parameters"}), 400
 
-        result = await remove_video(data['quiz_id'], data['question_id'], data['video_link'])
+        result = await remove_video(data['quiz_id'], data['question_id'])
         if result["success"]:
             return jsonify({"message": result["message"]}), 200
         else:
