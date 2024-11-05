@@ -80,8 +80,8 @@ async def get_quizzes(courseid, access_token, link, max_quizzes=10):
                     quiz_names = [quiz["title"] for quiz in sorted_data[:max_quizzes]]
                     
                     # Debug prints to check output
-                    print("this happens twice? what?")
-                    print("Quiz Names:", quiz_names)
+                    #print("this happens twice? what?")
+                    #print("Quiz Names:", quiz_names)
                     return quiz_list, quiz_names
                 
                 else:
