@@ -71,8 +71,8 @@ youtube_queries = {
     'high': [
         "overcoming procrastination",
         "avoiding burnout in college",
-        "finding balance between studies and rest",
-        "managing expectations in college",
+        "How to bounce back after falling behind in classes",
+        "avoiding burnout for students",
         "self-compassion for students"
     ]
 }
