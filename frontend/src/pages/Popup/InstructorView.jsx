@@ -198,29 +198,28 @@ const InstructorView = () => {
     const baseUrl =
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
     try {
-      const response = await fetch(
-        `${baseUrl}/get-questions-by-course/${courseId}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-        }
-      );
-  
+      const response = await fetch(`${baseUrl}/get-course-videos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          course_id: courseId,
+        }),
+      });
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
+
       const data = await response.json();
-      console.log('Response data from quiz questions from course:', data); // Log the response data here
+      console.log('Received data:', data);
       setCourseQuestions(data.questions || []);
     } catch (error) {
       console.error('Error fetching course videos:', error);
     }
   };
-  
 
   const addVideoToQuestion = (questionId, video) => {
     setCourseQuestions((prevQuestions) =>
