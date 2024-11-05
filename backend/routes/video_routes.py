@@ -21,7 +21,8 @@ def init_video_routes(app):
 
     @app.route('/get-course-videos', methods=['POST'])
     async def get_course_videos_route():
-        course_id = request.args.get('course_id')
+        data = await request.get_json()
+        course_id = data.get("course_id")
         if not course_id:
             return jsonify({"error": "Missing course_id"}), 400
         
