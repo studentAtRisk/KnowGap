@@ -5,7 +5,8 @@ import aiohttp
 from config import Config
 from utils.youtube_utils import clean_metadata_text
 
-import asyncio
+# Define blacklisted terms for filtering video titles
+BLACKLISTED_TERMS = ["adhd", "autism", "autistic", "disorder", "depression", "anxiety"]
 
 async def get_youtube_videos(query, channel, max_results=5, retries=3):
     search_query = f"{query} {channel}"
@@ -33,13 +34,14 @@ async def get_youtube_videos(query, channel, max_results=5, retries=3):
                             'url': f"https://www.youtube.com/watch?v={item['id']['videoId']}"
                         }
                         for item in data.get('items', [])
-                        if '#shorts' not in item['snippet']['title'].lower()
+                        if '#shorts' not in item['snippet']['title'].lower()  # Filter out Shorts
+                        and not any(term in item['snippet']['title'].lower() for term in BLACKLISTED_TERMS)  # Filter by blacklist
                     ]
                     
                     if videos:
                         return videos  # Return if we get valid videos
                     else:
-                        print("Filtered out all videos (likely Shorts). Retrying...")
+                        print("Filtered out all videos (likely Shorts or blacklisted terms). Retrying...")
                 else:
                     print(f"Error fetching videos: {response.status}")
                     
@@ -50,8 +52,8 @@ async def get_youtube_videos(query, channel, max_results=5, retries=3):
     print("No suitable videos found after retries.")
     return []
 
-
-youtube_queries =  {
+# Example lists for queries and channels
+youtube_queries = {
     'low': [
         "finding internships and job opportunities",
         "how to stay organized in college",
