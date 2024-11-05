@@ -1,7 +1,7 @@
 import logging
 import asyncio
 import os
-from quart import Quart
+from quart import Quart, request
 from quart_cors import cors
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
@@ -23,6 +23,13 @@ logger = logging.getLogger(__name__)
 # Initialize Quart app
 app = Quart(__name__)
 app = cors(app, allow_origin="https://canvas.instructure.com", allow_headers=["Content-Type", "Authorization"], allow_methods=["GET", "POST", "OPTIONS"])
+
+# Log incoming requests
+@app.before_request
+async def log_request():
+    print(f"Request headers: {dict(request.headers)}")
+    print(f"Request method: {request.method}")
+    print(f"Request path: {request.path}")
 
 # Initialize routes first
 init_base_routes(app)
