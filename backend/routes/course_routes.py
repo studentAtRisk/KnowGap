@@ -68,7 +68,7 @@ def init_course_routes(app):
         db_result = await update_quiz_questions_per_course(course_id, access_token, link)
         print(f"Database update result: {db_result}")
         
-        if db_result['status'] == 1:
+        if db_result == 1:
             return jsonify({'status': 'Success', 'message': db_result['message']}), 200
         else:
             return jsonify({'status': 'Error', 'message': db_result['error']}), 500
