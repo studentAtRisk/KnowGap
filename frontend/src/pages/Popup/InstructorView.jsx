@@ -14,6 +14,8 @@ const InstructorView = () => {
   });
   const [courseContext, setCourseContext] = useState('');
   const [editingVideo, setEditingVideo] = useState(null);
+  const [apiToken, setApiToken] = useState('');
+  const [tokenStatus, setTokenStatus] = useState('');
 
   const imgs = { youtube: '/path/to/youtube/icon.png' };
 
@@ -27,6 +29,108 @@ const InstructorView = () => {
     const url = window.location.href;
     const match = url.match(/\/courses\/(\d+)/);
     return match && match[1] ? match[1] : null;
+  };
+
+  const fetchUserProfile = async () => {
+    const baseUrl = getCanvasBaseUrl();
+    const storedToken = localStorage.getItem('apiToken');
+
+    if (!baseUrl || !storedToken) {
+      console.error('Missing base URL or API token');
+      return;
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', `Bearer ${storedToken}`);
+
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    try {
+      const response = await fetch(
+        `${baseUrl}/api/v1/users/self`,
+        requestOptions
+      );
+      const profileData = await response.json();
+      return profileData.id;
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
+
+  const fetchTeacherCourses = async () => {
+    const baseUrl = getCanvasBaseUrl();
+    const storedToken = localStorage.getItem('apiToken');
+
+    if (!baseUrl || !storedToken) {
+      console.error('Missing base URL or API token');
+      return [];
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', `Bearer ${storedToken}`);
+
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    try {
+      const response = await fetch(
+        `${baseUrl}/api/v1/courses?enrollment_type=teacher&per_page=100`,
+        requestOptions
+      );
+      const coursesData = await response.json();
+      return coursesData.map((course) => course.id);
+    } catch (error) {
+      console.error('Error fetching teacher courses:', error);
+      return [];
+    }
+  };
+
+  const removeToken = () => {
+    localStorage.removeItem('apiToken');
+    setApiToken('');
+    setStudents([]);
+    setCourseQuestions([]);
+    setTokenStatus('');
+  };
+
+  const sendTokenToServer = async (token) => {
+    setTokenStatus('Sending token...');
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+    const teacherCourses = await fetchTeacherCourses();
+    const userId = await fetchUserProfile();
+
+    try {
+      const response = await fetch(`${baseUrl}/add-token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userid: userId.toString(),
+          access_token: token,
+          courseids: teacherCourses,
+          link: getCanvasBaseUrl(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      setTokenStatus('Token set successfully!');
+      localStorage.setItem('apiToken', token);
+    } catch (error) {
+      console.error('Error sending token:', error);
+      setTokenStatus('Error setting token. Please try again.');
+    }
   };
 
   const fetchEnrollments = async (courseId) => {
@@ -230,22 +334,41 @@ const InstructorView = () => {
       )
     );
   };
-  const removeVideoFromQuestion = (questionId, videoIndex) => {
+
+  const removeVideoFromQuestion = (questionId) => {
+    // Filter out the question with the matching ID
     setCourseQuestions((prevQuestions) =>
-      prevQuestions.map((question) =>
-        question.questionid === questionId
-          ? {
-              ...question,
-              // Keep the existing video_data structure including thumbnails
-              video_data: {
-                ...question.video_data,
-                isRemoved: true, // Add a flag instead of nullifying
-              },
-            }
-          : question
-      )
+      prevQuestions.filter((q) => q.questionid !== questionId)
     );
   };
+
+  // Update the UI immediately by setting video_data to null for just the specific question
+
+  // Keep the existing API call logic
+  // const question = courseQuestions.find((q) => q.questionid === questionId);
+  // const baseUrl =
+  //   'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+
+  // try {
+  //   const response = await fetch(`${baseUrl}/remove-video`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       quiz_id: question.quizid,
+  //       question_id: questionId,
+  //     }),
+  //   });
+
+  //   if (response.ok) {
+  //     const result = await response.json();
+  //     sendNotification(result.message);
+  //   }
+  // } catch (error) {
+  //   console.error('Error removing video:', error);
+  //   sendNotification('Failed to remove video');
+  // }
 
   const handleAddVideo = () => {
     if (!newVideo.questionId || !newVideo.title || !newVideo.url) {
@@ -295,57 +418,74 @@ const InstructorView = () => {
   };
 
   const handleSaveEdit = async () => {
-    if (!editingVideo) return;
+    if (!editingVideo?.newLink) return;
 
-    const question = courseQuestions.find(
-      (q) => q.questionid === editingVideo.questionId
+    setCourseQuestions((prevQuestions) =>
+      prevQuestions.map((q) =>
+        q.questionid === editingVideo.questionId
+          ? {
+              ...q,
+              video_data: {
+                ...q.video_data,
+                link: editingVideo.newLink,
+                title: q.video_data.title, // Preserve existing title
+                thumbnail: q.video_data.thumbnail, // Preserve thumbnail
+                channel: q.video_data.channel, // Preserve channel
+              },
+            }
+          : q
+      )
     );
-    const video = question.video_data[editingVideo.videoIndex];
+    setEditingVideo(null);
 
-    const baseUrl =
-      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
-    try {
-      const response = await fetch(`${baseUrl}/update_video`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          quizid: fetchCurrentCourseId(),
-          questionid: editingVideo.questionId,
-          old_link: editingVideo.currentLink,
-          new_link: editingVideo.newLink,
-        }),
-      });
+    // const courseId = fetchCurrentCourseId();
+    // const question = courseQuestions.find(
+    //   (q) => q.questionid === editingVideo.questionId
+    // );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+    // const baseUrl =
+    //   'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+    // try {
+    //   const response = await fetch(`${baseUrl}/update-video-link`, {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       quiz_id: question.quizid,
+    //       question_id: editingVideo.questionId,
+    //       old_link: editingVideo.currentLink,
+    //       new_link: editingVideo.newLink,
+    //     }),
+    //   });
 
-      const result = await response.json();
+    //   if (!response.ok) {
+    //     throw new Error(`HTTP error! status: ${response.status}`);
+    //   }
 
-      // Update the local state
-      setCourseQuestions((prevQuestions) =>
-        prevQuestions.map((q) =>
-          q.questionid === editingVideo.questionId
-            ? {
-                ...q,
-                video_data: q.video_data.map((v, index) =>
-                  index === editingVideo.videoIndex
-                    ? { ...v, link: editingVideo.newLink }
-                    : v
-                ),
-              }
-            : q
-        )
-      );
+    //   const result = await response.json();
 
-      setEditingVideo(null);
-      sendNotification(result.message);
-    } catch (error) {
-      console.error('Error updating video:', error);
-      sendNotification('Failed to update video');
-    }
+    //   setCourseQuestions((prevQuestions) =>
+    //     prevQuestions.map((q) =>
+    //       q.questionid === editingVideo.questionId
+    //         ? {
+    //             ...q,
+    //             video_data: q.video_data.map((v, index) =>
+    //               index === editingVideo.videoIndex
+    //                 ? { ...v, link: editingVideo.newLink }
+    //                 : v
+    //             ),
+    //           }
+    //         : q
+    //     )
+    //   );
+
+    //   setEditingVideo(null);
+    //   sendNotification(result.message);
+    // } catch (error) {
+    //   console.error('Error updating video:', error);
+    //   sendNotification('Failed to update video');
+    // }
   };
 
   const styles = {
@@ -574,6 +714,26 @@ const InstructorView = () => {
   return (
     <body style={styles.body}>
       <div style={styles.container}>
+        {localStorage.getItem('apiToken') ? (
+          <div className="api-token-input">
+            <p>API Token is set</p>
+            <button onClick={removeToken}>Remove Token</button>
+          </div>
+        ) : (
+          <div className="api-token-input">
+            <input
+              type="password"
+              placeholder="Enter your API token"
+              value={apiToken}
+              onChange={(e) => setApiToken(e.target.value)}
+            />
+            <button onClick={() => sendTokenToServer(apiToken)}>
+              Save Token
+            </button>
+            {tokenStatus && <p>{tokenStatus}</p>}
+          </div>
+        )}
+
         <div>
           <h2 style={styles.title}>Class Performance Overview</h2>
           <div style={styles.grid}>
@@ -692,9 +852,7 @@ const InstructorView = () => {
                   <strong>Core Topic:</strong> {question.core_topic}
                 </p>
                 <button
-                  onClick={() =>
-                    removeVideoFromQuestion(question.questionid, 0)
-                  }
+                  onClick={() => removeVideoFromQuestion(0)}
                   style={styles.removeButton}
                 >
                   Remove Video

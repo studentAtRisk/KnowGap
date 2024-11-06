@@ -4,6 +4,7 @@ from quart import request, jsonify
 from services.user_service import add_user, get_user
 
 def init_user_routes(app):
+    
     @app.route('/add-token', methods=['POST'])
     async def add_user_token():
         data = await request.get_json()

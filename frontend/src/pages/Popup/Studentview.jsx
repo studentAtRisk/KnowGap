@@ -418,9 +418,9 @@ const StudentView = () => {
     const teacherCourses = await fetchTeacherCourses();
 
     const data = {
-      userid: userId.toString(),
+      user_id: userId.toString(),
       access_token: token.toString(),
-      courseids: teacherCourses.length > 0 ? teacherCourses : [],
+      course_ids: teacherCourses.length > 0 ? teacherCourses : [],
       link: getCanvasBaseUrl(),
     };
 
