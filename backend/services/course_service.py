@@ -39,10 +39,8 @@ async def update_context(course_id, course_context):
 
 async def get_incorrect_question_data(courseid, currentquiz, access_token, link):
     """Fetches incorrect answer data for a specific quiz."""
-    api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{currentquiz}/statistics'
+    api_url = f'https://{link}/api/v1/courses/{courseid}/quizzes/{currentquiz}/questions'
     headers = {'Authorization': f'Bearer {access_token}'}
-    no_answer_set = {"multiple_choice_question", "true_false_question", "short_answer_question"}
-    answer_set = {"fill_in_multiple_blanks_question", "multiple_dropdowns_question", "matching_question"}
     
     try:
         async with aiohttp.ClientSession() as session:
@@ -59,8 +57,8 @@ async def get_incorrect_question_data(courseid, currentquiz, access_token, link)
                     logger.error("Failed to parse JSON from API response: %s", e)
                     return {'error': f'Failed to parse JSON: {str(e)}'}, 500
                 
-                question_data = data.get("quiz_statistics", [{}])[0].get("question_statistics", [])
-                question_texts, question_ids, selectors = [], [], []
+                question_data = data
+                question_texts, question_ids = [], []
                 
                 # Process each question in the statistics
                 for question in question_data:
@@ -68,7 +66,6 @@ async def get_incorrect_question_data(courseid, currentquiz, access_token, link)
                         cleaned_text = BeautifulSoup(question["question_text"], "html.parser").get_text()
                         question_texts.append(clean_text(cleaned_text))
                         question_ids.append(question["id"])
-                        selectors.append(get_incorrect_user_ids(question, no_answer_set, answer_set))
                     else:
                         logger.warning("Question data missing required fields: %s", question)
                 
