@@ -86,14 +86,17 @@ mental_health_channels = {
         "Amy Landino",
         "WellCast",
         "Lavendaire",
-        "Dr. K"
+        "Dr. K",
+        "Psychology with Dr. Ana"
+        
     ],
     'medium': [
         "The School of Life",
         "TED-Ed",
         "Yale Well",
         "BrainCraft",
-        "Dr. K"
+        "Dr. K",
+        "Psychology with Dr. Ana"
     ],
     'high': [
         "It's Okay to be Smart",
@@ -103,7 +106,8 @@ mental_health_channels = {
         "Evan Carmichael",
         "Better Ideas",
         "UnJaded Jade",
-        "Mike and Matty"
+        "Mike and Matty",
+        "Psychology with Dr. Ana"
     ]
 }
 

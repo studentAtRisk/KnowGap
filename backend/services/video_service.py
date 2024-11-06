@@ -61,9 +61,13 @@ async def get_course_videos(course_id):
         video_data = quiz.get('video_data')
         core_topic = quiz.get('core_topic')
         question_text = quiz.get('question_text')
+        quiz_id = quiz.get('quizid')
+        question_id = quiz.get('questionid')
         
         if video_data:
             course_videos.append({
+                'quiz_id' : quiz_id,
+                "question_id": question_id,
                 'core_topic': core_topic,
                 'question_text': question_text,
                 'video_data': video_data
