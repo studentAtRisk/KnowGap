@@ -7,9 +7,9 @@ def init_user_routes(app):
     @app.route('/add-token', methods=['POST'])
     async def add_token_route():
         data = await request.get_json()
-        user_id = data.get('userid')
+        user_id = data.get('user_id')
         access_token = data.get('access_token')
-        course_ids = data.get('courseids')
+        course_ids = data.get('course_ids')
         link = data.get('link')
 
         if not user_id or not access_token or not course_ids or not link:
@@ -25,7 +25,7 @@ def init_user_routes(app):
     @app.route('/get-user', methods=['POST'])
     async def get_user_route():
         data = await request.get_json()
-        user_id = data.get('userid')
+        user_id = data.get('user_id')
 
         if not user_id:
             return jsonify({'error': 'Missing User ID'}), 400
