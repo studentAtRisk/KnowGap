@@ -230,16 +230,17 @@ const InstructorView = () => {
       )
     );
   };
-
   const removeVideoFromQuestion = (questionId, videoIndex) => {
     setCourseQuestions((prevQuestions) =>
       prevQuestions.map((question) =>
         question.questionid === questionId
           ? {
               ...question,
-              video_data: question.video_data.filter(
-                (_, index) => index !== videoIndex
-              ),
+              // Keep the existing video_data structure including thumbnails
+              video_data: {
+                ...question.video_data,
+                isRemoved: true, // Add a flag instead of nullifying
+              },
             }
           : question
       )
@@ -668,7 +669,7 @@ const InstructorView = () => {
             {courseQuestions.map((question, index) => (
               <div key={index} style={styles.videoCard}>
                 <img
-                  src={question.video_data?.thumbnail || youtube}
+                  src={question.video_data?.thumbnail}
                   alt={question.video_data?.title}
                   style={styles.videoThumbnail}
                 />
@@ -719,7 +720,7 @@ const InstructorView = () => {
               <h3>Edit Video Link</h3>
               <input
                 type="text"
-                value={editingVideo.newLink || editingVideo.currentLink}
+                value={editingVideo.newLink}
                 onChange={(e) =>
                   setEditingVideo({ ...editingVideo, newLink: e.target.value })
                 }
@@ -787,35 +788,6 @@ const InstructorView = () => {
           >
             Update Course Context
           </button>
-        </div>
-      </div>
-
-      <div style={styles.container}>
-        <div>
-          <h2 style={styles.title}>Communication Tools</h2>
-          <textarea
-            style={styles.textArea}
-            placeholder="Enter your message..."
-          ></textarea>
-          <button
-            style={{
-              ...styles.messageButton,
-              ':hover': styles.messageButtonHover,
-            }}
-            onClick={() => sendNotification('Message sent to students')}
-          >
-            Send Message
-          </button>
-          <div style={{ marginTop: '1rem' }}>
-            <h3 style={styles.itemTitle}>Notifications</h3>
-            <ul style={styles.notificationList}>
-              {notifications.map((notification, index) => (
-                <li key={index} style={styles.notificationItem}>
-                  <p style={styles.studentDetail}>{notification}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
       </div>
     </body>
