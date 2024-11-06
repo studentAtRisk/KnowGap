@@ -105,7 +105,7 @@ async def update_course_videos(course_id):
     return await update_videos_for_filter(filter_criteria)
 
 
-async def update_video_link(quiz_id, question_id, old_link, new_video_url):
+async def update_video_link(quiz_id, question_id, new_video_url):
     """Updates a specific video link within the video's data for a question."""
 
     # Fetch document

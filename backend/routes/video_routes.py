@@ -46,10 +46,10 @@ def init_video_routes(app):
     @app.route('/update-video-link', methods=['POST'])
     async def update_video_link_route():
         data = await request.get_json()
-        if not all(k in data for k in ("quiz_id", "question_id", "old_link", "new_link")):
+        if not all(k in data for k in ("quiz_id", "question_id", "new_link")):
             return jsonify({"error": "Missing required parameters"}), 400
 
-        result = await update_video_link(data['quiz_id'], data['question_id'], data['old_link'], data['new_link'])
+        result = await update_video_link(data['quiz_id'], data['question_id'], data['new_link'])
         if result["success"]:
             return jsonify({"message": result["message"]}), 200
         else:
