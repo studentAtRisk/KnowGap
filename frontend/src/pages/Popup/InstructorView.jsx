@@ -215,7 +215,7 @@ const InstructorView = () => {
 
       const data = await response.json();
       console.log('Received data:', data);
-      setCourseQuestions(data.questions || []);
+      setCourseQuestions(data.course_videos || []);
     } catch (error) {
       console.error('Error fetching course videos:', error);
     }
@@ -665,56 +665,53 @@ const InstructorView = () => {
               gap: '1rem',
             }}
           >
-            {courseQuestions.flatMap((question, questionIndex) =>
-              question.video_data.map((video, videoIndex) => (
-                <div
-                  key={`${question.questionid}-${videoIndex}`}
-                  style={styles.videoCard}
+            {courseQuestions.map((question, index) => (
+              <div key={index} style={styles.videoCard}>
+                <img
+                  src={question.video_data?.thumbnail || youtube}
+                  alt={question.video_data?.title}
+                  style={styles.videoThumbnail}
+                />
+                <h3 style={styles.videoTitle}>{question.video_data?.title}</h3>
+                <p style={styles.videoChannel}>
+                  {question.video_data?.channel}
+                </p>
+                <a
+                  href={question.video_data?.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: 'block', marginBottom: '0.5rem' }}
                 >
-                  <img
-                    src={video.thumbnail || '/placeholder-image.jpg'}
-                    alt={video.title}
-                    style={styles.videoThumbnail}
-                  />
-                  <h3 style={styles.videoTitle}>{video.title}</h3>
-                  <p style={styles.videoChannel}>{video.channel}</p>
-                  <a
-                    href={video.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Watch
-                  </a>
-                  <p style={styles.questionText}>
-                    <strong>Question:</strong>{' '}
-                    {question.question_text.substring(0, 100)}...
-                  </p>
-                  <p style={styles.questionText}>
-                    <strong>Core Topic:</strong> {question.core_topic}
-                  </p>
-                  <button
-                    onClick={() =>
-                      removeVideoFromQuestion(question.questionid, videoIndex)
-                    }
-                    style={styles.removeButton}
-                  >
-                    Remove Video
-                  </button>
-                  <button
-                    onClick={() =>
-                      handleEditVideo(
-                        question.questionid,
-                        videoIndex,
-                        video.link
-                      )
-                    }
-                    style={styles.editButton}
-                  >
-                    Edit Video
-                  </button>
-                </div>
-              ))
-            )}
+                  Watch Video
+                </a>
+                <p style={styles.questionText}>
+                  <strong>Question:</strong> {question.question_text}
+                </p>
+                <p style={styles.questionText}>
+                  <strong>Core Topic:</strong> {question.core_topic}
+                </p>
+                <button
+                  onClick={() =>
+                    removeVideoFromQuestion(question.questionid, 0)
+                  }
+                  style={styles.removeButton}
+                >
+                  Remove Video
+                </button>
+                <button
+                  onClick={() =>
+                    handleEditVideo(
+                      question.questionid,
+                      0,
+                      question.video_data?.link
+                    )
+                  }
+                  style={styles.editButton}
+                >
+                  Edit Video
+                </button>
+              </div>
+            ))}
           </div>
 
           {editingVideo && (
