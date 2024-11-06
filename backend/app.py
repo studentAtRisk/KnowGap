@@ -85,4 +85,4 @@ async def startup():
     asyncio.create_task(schedule_updates())  # Start the update loop in the background
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
