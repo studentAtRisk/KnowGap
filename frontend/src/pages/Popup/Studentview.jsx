@@ -456,6 +456,14 @@ const StudentView = () => {
     }
   };
 
+  const refreshSupportVideo = async () => {
+    const { riskLevel } = calculateRisk();
+    const supportVideoData = await fetchSupportVideos(
+      normalizeRiskLevel(riskLevel)
+    );
+    setSupportVideo(supportVideoData);
+  };
+
   const { riskLevel } = calculateRisk();
 
   return (
@@ -610,7 +618,18 @@ const StudentView = () => {
             <div className="support-video-container">
               <div className="support-video-card">
                 <div className="support-video-info">
-                  <h3 className="support-video-title">{supportVideo.title}</h3>
+                  <div className="video-title-row">
+                    <h3 className="support-video-title">
+                      {supportVideo.title}
+                    </h3>
+                    <button
+                      className="refresh-icon-button"
+                      onClick={refreshSupportVideo}
+                      title="Get another video"
+                    >
+                      ↻
+                    </button>
+                  </div>
                   <p className="support-video-channel">
                     {supportVideo.channelTitle}
                   </p>
@@ -634,26 +653,35 @@ const StudentView = () => {
           <div className="support-links-container">
             <div className="support-links-list">
               <ul>
-                <li>
-                  <a href="https://caps.sdes.ucf.edu/" target="_blank">
-                    UCF CAPS
-                  </a>
-                </li>
-                <li>
-                  <a href="https://scs.sdes.ucf.edu/" target="_blank">
-                    Student Care Services
-                  </a>
-                </li>
-                <li>
-                  <a href="https://www.sdes.ucf.edu/asc/" target="_blank">
-                    Academic Success Coaching (ASC)
-                  </a>
-                </li>
-                <li>
-                  <a href="https://cares.sdes.ucf.edu/" target="_blank">
-                    UCF Cares
-                  </a>
-                </li>
+                {[
+                  {
+                    href: 'https://caps.sdes.ucf.edu/',
+                    text: 'UCF CAPS - Counseling Services',
+                  },
+                  {
+                    href: 'https://scs.sdes.ucf.edu/',
+                    text: 'Student Care Services',
+                  },
+                  {
+                    href: 'https://www.sdes.ucf.edu/asc/',
+                    text: 'Academic Success Coaching (ASC)',
+                  },
+                  {
+                    href: 'https://cares.sdes.ucf.edu/',
+                    text: 'UCF Cares - Student Support',
+                  },
+                ].map((link, index) => (
+                  <li key={index} className="support-link-item">
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="support-link"
+                    >
+                      {link.text}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
