@@ -335,56 +335,72 @@ const InstructorView = () => {
     );
   };
 
-  const removeVideoFromQuestion = (questionId) => {
-    // Filter out the question with the matching ID
-    setCourseQuestions((prevQuestions) =>
-      prevQuestions.filter((q) => q.questionid !== questionId)
-    );
+  const removeVideoFromQuestion = async (questionId, quizId) => {
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+    try {
+      const response = await fetch(`${baseUrl}/remove-video`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quiz_id: quizId,
+          question_id: questionId,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setCourseQuestions((prevQuestions) =>
+          prevQuestions.filter((q) => q.question_id !== questionId)
+        );
+        console.log('Video removed successfully');
+        setNotifications([...notifications, 'Video removed successfully']);
+      }
+    } catch (error) {
+      console.error('Error removing video:', error);
+      setNotifications([...notifications, 'Failed to remove video']);
+    }
   };
 
-  // Update the UI immediately by setting video_data to null for just the specific question
-
-  // Keep the existing API call logic
-  // const question = courseQuestions.find((q) => q.questionid === questionId);
-  // const baseUrl =
-  //   'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
-
-  // try {
-  //   const response = await fetch(`${baseUrl}/remove-video`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       quiz_id: question.quizid,
-  //       question_id: questionId,
-  //     }),
-  //   });
-
-  //   if (response.ok) {
-  //     const result = await response.json();
-  //     sendNotification(result.message);
-  //   }
-  // } catch (error) {
-  //   console.error('Error removing video:', error);
-  //   sendNotification('Failed to remove video');
-  // }
-
-  const handleAddVideo = () => {
-    if (!newVideo.questionId || !newVideo.title || !newVideo.url) {
-      alert('Please fill in all fields');
+  const handleAddVideo = async () => {
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+    if (!newVideo.questionId || !newVideo.url) {
+      setNotifications([
+        ...notifications,
+        'Please fill in all required fields',
+      ]);
       return;
     }
 
-    const videoToAdd = {
-      title: newVideo.title,
-      link: newVideo.url,
-      thumbnail: '',
-      channel: 'Custom Added',
-    };
+    const selectedQuestion = courseQuestions.find(
+      (q) => q.question_id === newVideo.questionId
+    );
 
-    addVideoToQuestion(newVideo.questionId, videoToAdd);
-    setNewVideo({ title: '', url: '', questionId: '' });
+    try {
+      const response = await fetch(`${baseUrl}/add-video`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quiz_id: selectedQuestion.quiz_id,
+          question_id: newVideo.questionId,
+          video_link: newVideo.url,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setNewVideo({ title: '', url: '', questionId: '' });
+        fetchCourseVideos(fetchCurrentCourseId());
+        setNotifications([...notifications, 'Video added successfully']);
+      }
+    } catch (error) {
+      setNotifications([...notifications, 'Failed to add video']);
+    }
   };
 
   const updateCourseContext = async () => {
@@ -418,74 +434,36 @@ const InstructorView = () => {
   };
 
   const handleSaveEdit = async () => {
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
     if (!editingVideo?.newLink) return;
 
-    setCourseQuestions((prevQuestions) =>
-      prevQuestions.map((q) =>
-        q.questionid === editingVideo.questionId
-          ? {
-              ...q,
-              video_data: {
-                ...q.video_data,
-                link: editingVideo.newLink,
-                title: q.video_data.title, // Preserve existing title
-                thumbnail: q.video_data.thumbnail, // Preserve thumbnail
-                channel: q.video_data.channel, // Preserve channel
-              },
-            }
-          : q
-      )
+    const question = courseQuestions.find(
+      (q) => q.question_id === editingVideo.questionId
     );
-    setEditingVideo(null);
 
-    // const courseId = fetchCurrentCourseId();
-    // const question = courseQuestions.find(
-    //   (q) => q.questionid === editingVideo.questionId
-    // );
+    try {
+      const response = await fetch(`${baseUrl}/update-video-link`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quiz_id: question.quiz_id,
+          question_id: editingVideo.questionId,
+          new_link: editingVideo.newLink,
+        }),
+      });
 
-    // const baseUrl =
-    //   'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
-    // try {
-    //   const response = await fetch(`${baseUrl}/update-video-link`, {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       quiz_id: question.quizid,
-    //       question_id: editingVideo.questionId,
-    //       old_link: editingVideo.currentLink,
-    //       new_link: editingVideo.newLink,
-    //     }),
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! status: ${response.status}`);
-    //   }
-
-    //   const result = await response.json();
-
-    //   setCourseQuestions((prevQuestions) =>
-    //     prevQuestions.map((q) =>
-    //       q.questionid === editingVideo.questionId
-    //         ? {
-    //             ...q,
-    //             video_data: q.video_data.map((v, index) =>
-    //               index === editingVideo.videoIndex
-    //                 ? { ...v, link: editingVideo.newLink }
-    //                 : v
-    //             ),
-    //           }
-    //         : q
-    //     )
-    //   );
-
-    //   setEditingVideo(null);
-    //   sendNotification(result.message);
-    // } catch (error) {
-    //   console.error('Error updating video:', error);
-    //   sendNotification('Failed to update video');
-    // }
+      if (response.ok) {
+        const result = await response.json();
+        setEditingVideo(null);
+        fetchCourseVideos(fetchCurrentCourseId());
+        setNotifications([...notifications, 'Video link updated successfully']);
+      }
+    } catch (error) {
+      setNotifications([...notifications, 'Failed to update video link']);
+    }
   };
 
   const styles = {
@@ -852,7 +830,12 @@ const InstructorView = () => {
                   <strong>Core Topic:</strong> {question.core_topic}
                 </p>
                 <button
-                  onClick={() => removeVideoFromQuestion(0)}
+                  onClick={() =>
+                    removeVideoFromQuestion(
+                      question.question_id,
+                      question.quiz_id
+                    )
+                  }
                   style={styles.removeButton}
                 >
                   Remove Video
@@ -860,7 +843,7 @@ const InstructorView = () => {
                 <button
                   onClick={() =>
                     handleEditVideo(
-                      question.questionid,
+                      question.question_id,
                       0,
                       question.video_data?.link
                     )
