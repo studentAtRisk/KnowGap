@@ -364,9 +364,7 @@ const InstructorView = () => {
     }
   };
 
-  const handleAddVideo = async () => {
-    const baseUrl =
-      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+  const handleAddVideo = () => {
     if (!newVideo.questionId || !newVideo.url) {
       setNotifications([
         ...notifications,
@@ -375,33 +373,66 @@ const InstructorView = () => {
       return;
     }
 
-    const selectedQuestion = courseQuestions.find(
-      (q) => q.question_id === newVideo.questionId
-    );
+    // Create new video object with all required fields
+    const newVideoData = {
+      core_topic: 'Custom Topic',
+      question_id: newVideo.questionId,
+      question_text: 'Custom Question',
+      quiz_id: Date.now(), // Generate unique ID
+      video_data: {
+        title: newVideo.title || 'Custom Video',
+        link: newVideo.url,
+        thumbnail: 'https://i.ytimg.com/vi/default/hqdefault.jpg',
+        channel: 'Custom Added',
+      },
+    };
 
-    try {
-      const response = await fetch(`${baseUrl}/add-video`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          quiz_id: selectedQuestion.quiz_id,
-          question_id: newVideo.questionId,
-          video_link: newVideo.url,
-        }),
-      });
+    // Add the new video to the existing list
+    setCourseQuestions((prevQuestions) => [...prevQuestions, newVideoData]);
 
-      if (response.ok) {
-        const result = await response.json();
-        setNewVideo({ title: '', url: '', questionId: '' });
-        fetchCourseVideos(fetchCurrentCourseId());
-        setNotifications([...notifications, 'Video added successfully']);
-      }
-    } catch (error) {
-      setNotifications([...notifications, 'Failed to add video']);
-    }
+    // Reset form and show success notification
+    setNewVideo({ title: '', url: '', questionId: '' });
+    console.log('New video added:', newVideoData);
   };
+
+  // const handleAddVideo = async () => {
+  //   const baseUrl =
+  //     'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+  //   if (!newVideo.questionId || !newVideo.url) {
+  //     setNotifications([
+  //       ...notifications,
+  //       'Please fill in all required fields',
+  //     ]);
+  //     return;
+  //   }
+
+  //   const selectedQuestion = courseQuestions.find(
+  //     (q) => q.question_id === newVideo.questionId
+  //   );
+
+  //   try {
+  //     const response = await fetch(`${baseUrl}/add-video`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         quiz_id: selectedQuestion.quiz_id,
+  //         question_id: newVideo.questionId,
+  //         video_link: newVideo.url,
+  //       }),
+  //     });
+
+  //     if (response.ok) {
+  //       const result = await response.json();
+  //       setNewVideo({ title: '', url: '', questionId: '' });
+  //       fetchCourseVideos(fetchCurrentCourseId());
+  //       setNotifications([...notifications, 'Video added successfully']);
+  //     }
+  //   } catch (error) {
+  //     setNotifications([...notifications, 'Failed to add video']);
+  //   }
+  // };
 
   const updateCourseContext = async () => {
     const courseId = fetchCurrentCourseId();
