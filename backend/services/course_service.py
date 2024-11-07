@@ -176,7 +176,7 @@ async def update_quiz_questions_per_course(courseid, access_token, link):
                             try:
                                 #print(quizlist[x])
                                 #print(questionid[y])
-                                quizzes_collection.update_one({'quizid': quizlist[x],  'courseid': str(courseid), "course_name": course_name, "questionid": str(questionid[y])}, {"$set": {"question_text": questiontext[y]}},upsert=True)
+                                quizzes_collection.update_one({'quizid': quizlist[x],  'courseid': str(courseid), "course_name": course_name, "questionid": str(questionid[y])}, {"$set": {"quiz_name": quizname[x], "question_text": questiontext[y]}},upsert=True)
                             except Exception as e:
                                 print("Error:", e)
     except Exception as e:
