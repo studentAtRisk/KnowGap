@@ -423,6 +423,7 @@ const StudentView = () => {
       course_ids: teacherCourses.length > 0 ? teacherCourses : [],
       link: getCanvasBaseUrl(),
     };
+    console.log('Sending token:', data);
 
     try {
       const response = await fetch(`${baseUrl}/add-token`, {
