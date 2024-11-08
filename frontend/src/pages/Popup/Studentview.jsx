@@ -469,51 +469,62 @@ const StudentView = () => {
   return (
     <body className="student-view">
       <div className="container">
-        {localStorage.getItem('apiToken') ? (
+        {!localStorage.getItem('apiToken') ? (
           <div className="api-token-input">
-            <p>API Token is set</p>
-            <button onClick={removeToken}>Remove Token</button>
-            <button onClick={testSendToken}>Refresh Status</button>
-          </div>
-        ) : (
-          <div className="api-token-input">
+            <h3>Enter Your Canvas API Token</h3>
+            <p className="token-instructions">
+              To access your course data, please enter your Canvas API token.
+              <a
+                href="https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Get your token here
+              </a>
+            </p>
             <input
               type="password"
-              placeholder="Enter your API token"
+              placeholder="Paste your API token here"
               value={apiToken}
               onChange={(e) => setApiToken(e.target.value)}
             />
             <button onClick={() => sendTokenToServer(apiToken)}>
               Save Token
             </button>
-            <button onClick={testSendToken}>Test Send Token</button>
             {tokenStatus && <p>{tokenStatus}</p>}
           </div>
-        )}
-        <div className="performance-overview fade-in">
-          <h2 className="overview-title">Your Performance Overview</h2>
-          <h3>{studentName}</h3>
-          <div className="overview-grid">
-            <div>
-              <h3 className="risk-level">Risk Level</h3>
-              <p className={`risk-value ${getRiskLevelClass(riskLevel)}`}>
-                {riskLevel}
-              </p>
+        ) : (
+          <div>
+            <div className="api-token-input">
+              <p>API Token is set</p>
+              <button onClick={testSendToken}>Refresh Status</button>
             </div>
-            <div>
-              <h3 className="risk-level">Class Grade</h3>
-              <p className="risk-value average-score">
-                {classGrade === null ? 'N/A' : `${classGrade}%`}
-              </p>
-            </div>
-            <div>
-              <h3 className="risk-level">Recommended Videos</h3>
-              <p className="risk-value recommended-videos">
-                {recommendedVideos.length}
-              </p>
+            <div className="performance-overview fade-in">
+              <h2 className="overview-title">Your Performance Overview</h2>
+              <h3>{studentName}</h3>
+              <div className="overview-grid">
+                <div>
+                  <h3 className="risk-level">Risk Level</h3>
+                  <p className={`risk-value ${getRiskLevelClass(riskLevel)}`}>
+                    {riskLevel}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="risk-level">Class Grade</h3>
+                  <p className="risk-value average-score">
+                    {classGrade === null ? 'N/A' : `${classGrade}%`}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="risk-level">Recommended Videos</h3>
+                  <p className="risk-value recommended-videos">
+                    {recommendedVideos.length}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="tab-container">
