@@ -253,21 +253,24 @@ const StudentView = () => {
       'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
 
     try {
-      const response = await fetch(`${baseUrl}/get-video-rec`, {
+      const response = await fetch(`${baseUrl}/get-assessment-videos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          userid: userId.toString(),
-          courseid: courseId.toString(),
+          student_id: userId.toString(),
+          course_id: courseId.toString(),
         }),
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+      console.log('Fetched video recommendations:', data);
+      console.log('fetching user id', userId);
+
       return data;
     } catch (error) {
       console.error('Error fetching video recommendations:', error);
@@ -277,24 +280,26 @@ const StudentView = () => {
 
   const formatVideoRecommendations = (data) => {
     const formattedVideos = [];
-    if (data && typeof data === 'object') {
-      for (const quizName in data) {
-        const quizData = data[quizName] || {};
-        Object.values(quizData).forEach((topicData) => {
-          if (topicData && Array.isArray(topicData.videos)) {
-            formattedVideos.push(
-              ...topicData.videos.map((video) => ({
-                ...video,
-                reason: `Learn about ${topicData.topic || 'this topic'}`,
-                id: video?.link?.split('v=')[1] || '',
-                url: video?.link || '',
-                viewCount: 'N/A',
-                duration: 'N/A',
-              }))
-            );
-          }
-        });
-      }
+    if (
+      data &&
+      data.assessment_videos &&
+      Array.isArray(data.assessment_videos)
+    ) {
+      data.assessment_videos.forEach((item) => {
+        if (item.video) {
+          formattedVideos.push({
+            title: item.video.title,
+            channel: item.video.channel,
+            reason: `Learn about ${item.topic}`,
+            id: item.video.link?.split('v=')[1] || '',
+            url: item.video.link,
+            thumbnail: item.video.thumbnail,
+            viewCount: 'N/A',
+            duration: 'N/A',
+            quizName: item.quiz_name,
+          });
+        }
+      });
     }
     return formattedVideos;
   };
@@ -319,6 +324,7 @@ const StudentView = () => {
         if (videoRecommendations) {
           const formattedVideos =
             formatVideoRecommendations(videoRecommendations);
+          console.log('Formatted Videos:', formattedVideos);
           setRecommendedVideos(formattedVideos);
         }
 
@@ -412,11 +418,12 @@ const StudentView = () => {
     const teacherCourses = await fetchTeacherCourses();
 
     const data = {
-      userid: userId.toString(),
+      user_id: userId.toString(),
       access_token: token.toString(),
-      courseids: teacherCourses.length > 0 ? teacherCourses : [],
+      course_ids: teacherCourses.length > 0 ? teacherCourses : [],
       link: getCanvasBaseUrl(),
     };
+    console.log('Sending token:', data);
 
     try {
       const response = await fetch(`${baseUrl}/add-token`, {
@@ -449,56 +456,75 @@ const StudentView = () => {
     }
   };
 
+  const refreshSupportVideo = async () => {
+    const { riskLevel } = calculateRisk();
+    const supportVideoData = await fetchSupportVideos(
+      normalizeRiskLevel(riskLevel)
+    );
+    setSupportVideo(supportVideoData);
+  };
+
   const { riskLevel } = calculateRisk();
 
   return (
     <body className="student-view">
       <div className="container">
-        {localStorage.getItem('apiToken') ? (
+        {!localStorage.getItem('apiToken') ? (
           <div className="api-token-input">
-            <p>API Token is set</p>
-            <button onClick={removeToken}>Remove Token</button>
-            <button onClick={testSendToken}>Refresh Status</button>
-          </div>
-        ) : (
-          <div className="api-token-input">
+            <h3>Enter Your Canvas API Token</h3>
+            <p className="token-instructions">
+              To access your course data, please enter your Canvas API token.
+              <a
+                href="https://community.canvaslms.com/t5/Student-Guide/How-do-I-manage-API-access-tokens-as-a-student/ta-p/273"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Get your token here
+              </a>
+            </p>
             <input
               type="password"
-              placeholder="Enter your API token"
+              placeholder="Paste your API token here"
               value={apiToken}
               onChange={(e) => setApiToken(e.target.value)}
             />
             <button onClick={() => sendTokenToServer(apiToken)}>
               Save Token
             </button>
-            <button onClick={testSendToken}>Test Send Token</button>
             {tokenStatus && <p>{tokenStatus}</p>}
           </div>
-        )}
-        <div className="performance-overview fade-in">
-          <h2 className="overview-title">Your Performance Overview</h2>
-          <h3>{studentName}</h3>
-          <div className="overview-grid">
-            <div>
-              <h3 className="risk-level">Risk Level</h3>
-              <p className={`risk-value ${getRiskLevelClass(riskLevel)}`}>
-                {riskLevel}
-              </p>
+        ) : (
+          <div>
+            <div className="api-token-input">
+              <p>API Token is set</p>
+              <button onClick={testSendToken}>Refresh Status</button>
             </div>
-            <div>
-              <h3 className="risk-level">Class Grade</h3>
-              <p className="risk-value average-score">
-                {classGrade === null ? 'N/A' : `${classGrade}%`}
-              </p>
-            </div>
-            <div>
-              <h3 className="risk-level">Recommended Videos</h3>
-              <p className="risk-value recommended-videos">
-                {recommendedVideos.length}
-              </p>
+            <div className="performance-overview fade-in">
+              <h2 className="overview-title">Your Performance Overview</h2>
+              <h3>{studentName}</h3>
+              <div className="overview-grid">
+                <div>
+                  <h3 className="risk-level">Risk Level</h3>
+                  <p className={`risk-value ${getRiskLevelClass(riskLevel)}`}>
+                    {riskLevel}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="risk-level">Class Grade</h3>
+                  <p className="risk-value average-score">
+                    {classGrade === null ? 'N/A' : `${classGrade}%`}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="risk-level">Recommended Videos</h3>
+                  <p className="risk-value recommended-videos">
+                    {recommendedVideos.length}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="tab-container">
@@ -598,11 +624,23 @@ const StudentView = () => {
       {activeTab === 'support' && (
         <div className="content-container slide-in">
           <h2 className="content-title">Support Resources</h2>
+
           {supportVideo && (
             <div className="support-video-container">
               <div className="support-video-card">
                 <div className="support-video-info">
-                  <h3 className="support-video-title">{supportVideo.title}</h3>
+                  <div className="video-title-row">
+                    <h3 className="support-video-title">
+                      {supportVideo.title}
+                    </h3>
+                    <button
+                      className="refresh-icon-button"
+                      onClick={refreshSupportVideo}
+                      title="Get another video"
+                    >
+                      ↻
+                    </button>
+                  </div>
                   <p className="support-video-channel">
                     {supportVideo.channelTitle}
                   </p>
@@ -622,6 +660,42 @@ const StudentView = () => {
               </div>
             </div>
           )}
+
+          <div className="support-links-container">
+            <div className="support-links-list">
+              <ul>
+                {[
+                  {
+                    href: 'https://caps.sdes.ucf.edu/',
+                    text: 'UCF CAPS - Counseling Services',
+                  },
+                  {
+                    href: 'https://scs.sdes.ucf.edu/',
+                    text: 'Student Care Services',
+                  },
+                  {
+                    href: 'https://www.sdes.ucf.edu/asc/',
+                    text: 'Academic Success Coaching (ASC)',
+                  },
+                  {
+                    href: 'https://cares.sdes.ucf.edu/',
+                    text: 'UCF Cares - Student Support',
+                  },
+                ].map((link, index) => (
+                  <li key={index} className="support-link-item">
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="support-link"
+                    >
+                      {link.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       )}
     </body>

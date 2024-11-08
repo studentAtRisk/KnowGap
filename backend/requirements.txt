@@ -33,8 +33,8 @@ motor==3.6.0
 jinja2==3.1.2
 
 # Flask and Quart Dependencies
-quart==0.17.0   # Updated for compatibility
-quart-cors==0.3.0
-werkzeug==2.2.2
+quart==0.19.8   # Updated for compatibility
+quart-cors==0.7.0
+werkzeug==3.0.0
 
 hypercorn
