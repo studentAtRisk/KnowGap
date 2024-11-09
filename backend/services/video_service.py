@@ -5,6 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 from utils.youtube_utils import fetch_video_for_topic, extract_video_id, get_video_metadata
 from utils.ai_utils import generate_core_topic
+from utils.db_utils import find_documents_by_field
 from config import Config
 
 # MongoDB async connection
@@ -37,7 +38,15 @@ async def get_assessment_videos(student_id, course_id):
             if question_data:
                 core_topic = question_data.get("core_topic", "No topic found")
                 video_data = question_data.get('video_data')  # Expecting a single video dictionary, not a list
+            
+                matching_core_topic_data = find_documents_by_field("Quiz Questions", "core_topic", core_topic)
+                for doc in matching_core_topic_data:
+                    matching_video_data = doc.get("video_data")
+                    if matching_video_data:
+                        video_data = matching_video_data
+                        break
 
+                
                 if isinstance(video_data, list) and len(video_data) > 0:
                     video_data = video_data[0]  # Extract the first video dictionary from the list
             
