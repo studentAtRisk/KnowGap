@@ -2,6 +2,7 @@ Flask==2.3.3
 gunicorn==21.2.0
 openai==0.28.1
 python-dotenv==1.0.0
-pymongo==2.7.0
 google-api-python-client==2.149.0
 youtube-search-python
+youtube_transcript_api
+pytube

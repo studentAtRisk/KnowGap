@@ -175,7 +175,6 @@ def generate_accuracy_arr(quiz_data, youtube_link):
     ret = []
     for data in quiz_data['questions']:
         ret.append(find_question_in_transcript(data['question'], transcript))
-    print(f"Accuracy array: {ret}")
     return ret
 
 def find_accuracy(arr):
@@ -207,29 +206,51 @@ def search_for_videos(query, num_results=1):
         links.append(video['link'])
     return links
 
+def rank_videos(quiz_data, video_links):
+    ranked_videos = []
+
+    for link in video_links:
+        try:
+            transcript = get_transcript(link)
+            accuracy_arr = generate_accuracy_arr(quiz_data, link)
+            accuracy = find_accuracy(accuracy_arr)
+
+            engagement = get_engagement(link)
+
+            ranking = 0.5 * accuracy + 0.5 * engagement
+
+            print(f"Link: {link}, Accuracy: {accuracy}, Engagement: {engagement}, Total Ranking: {ranking}")
+
+            ranked_videos.append({
+                'link': link,
+                'ranking': ranking
+            })
+        except Exception as e:
+            print(f"Error processing video {link}: {e}")
+
+    ranked_videos.sort(key=lambda x: x['ranking'], reverse=True)
+    return ranked_videos
+
+
 if __name__ == "__main__":
     path = "/home/dsantamaria/ucf/UCF-Student-Risk-Predictor/querygen/data/stats/exams/exam1.json"
     quiz_data = load_quiz_from_file(path)
+
     if quiz_data:
         results = process_quiz(quiz_data)
-        queries = []
-        for result in results:
-            queries.append(result['youtube_query'])
-        print("Suggested queries: ", queries)
+        queries = [result['youtube_query'] for result in results]
 
-        videos = []
+        video_links = []
         for query in queries:
-            videos.append(search_for_videos(query, 1))
+            search_results = search_for_videos(query, 1)
+            if search_results:
+                video_links.extend(search_results)
 
-        print("Videos: ")
-        for video_link in videos:
-            print(video_link)
-            transcript = get_transcript(video_link)
-            accuracy_arr = generate_accuracy_arr(load_quiz_from_file(path), video_link)
-            accuracy = find_accuracy(accuracy_arr)
-            engagement = get_engagement(video_link)
-            print("Link: ", video_link)
-            print("Accuracy: ", accuracy)
-            print("Engagement: ", engagement)
+        print("Videos fetched: ", video_links)
+
+        ranked_videos = rank_videos(quiz_data, video_links)
+
+        for video in ranked_videos:
+            print(f"Link: {video['link']}, Ranking: {video['ranking']}")
     else:
         print("No quiz data found!")
