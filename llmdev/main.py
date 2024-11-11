@@ -206,7 +206,7 @@ def search_for_videos(query, num_results=1):
         links.append(video['link'])
     return links
 
-def rank_videos(quiz_data, video_links):
+def rank_videos(quiz_data, video_links, w1=0.5, w2=0.5):
     ranked_videos = []
 
     for link in video_links:
@@ -217,7 +217,7 @@ def rank_videos(quiz_data, video_links):
 
             engagement = get_engagement(link)
 
-            ranking = 0.5 * accuracy + 0.5 * engagement
+            ranking = w1 * accuracy + w2 * engagement
 
             print(f"Link: {link}, Accuracy: {accuracy}, Engagement: {engagement}, Total Ranking: {ranking}")
 
@@ -231,12 +231,21 @@ def rank_videos(quiz_data, video_links):
     ranked_videos.sort(key=lambda x: x['ranking'], reverse=True)
     return ranked_videos
 
-
 if __name__ == "__main__":
-    path = "/home/dsantamaria/ucf/UCF-Student-Risk-Predictor/querygen/data/stats/exams/exam1.json"
-    quiz_data = load_quiz_from_file(path)
+    paths = [
+        "data/stats/exams/exam1.json",
+        "data/stats/exams/exam2.json",
+        "data/stats/exams/exam3.json"
+    ]
+    for path in paths:
+        print(f"Processing quiz file: {path}")
 
-    if quiz_data:
+        quiz_data = load_quiz_from_file(path)
+
+        if not quiz_data:
+            print(f"Could not load data from {path}. Skipping...")
+            continue
+
         results = process_quiz(quiz_data)
         queries = [result['youtube_query'] for result in results]
 
@@ -246,11 +255,13 @@ if __name__ == "__main__":
             if search_results:
                 video_links.extend(search_results)
 
-        print("Videos fetched: ", video_links)
+        print(f"videos for quiz {path}: {video_links}")
 
         ranked_videos = rank_videos(quiz_data, video_links)
 
+        print("\n" + "="*40 + "\n")
+        print(f"\ranked:")
         for video in ranked_videos:
-            print(f"Link: {video['link']}, Ranking: {video['ranking']}")
-    else:
-        print("No quiz data found!")
+            print(f"link: {video['link']}, ranking: {video['ranking']}")
+
+        print("\n" + "="*40 + "\n")
