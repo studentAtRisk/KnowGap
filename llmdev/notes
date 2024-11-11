@@ -30,3 +30,6 @@ stretch goals:
 - batch processing of questions
 i.e. try to detect if multiple questions are handled by the same topic,
 if we can minimize the number of queries to the youtube api 
+
+looks like youtube removed the ability to retrieve number of dislikes since dember of 2021,
+so we had to remove the inclusion of dislikes from our formula

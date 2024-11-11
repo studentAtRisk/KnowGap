@@ -51,7 +51,7 @@ def process_quiz(quiz_data):
 
     for question in questions:
         question_text = question['question']
-        search_query = generate_query(question_text)
+        search_query = generate_query(question_text)  # Call the generate_query function
         results.append({
             'question': question_text,
             'youtube_query': search_query
@@ -60,6 +60,7 @@ def process_quiz(quiz_data):
     return results
 
 def load_quiz_from_file(file_path):
+    """Loads the quiz data from a given JSON file path."""
     try:
         with open(file_path, 'r') as file:
             quiz_data = json.load(file)
@@ -72,16 +73,10 @@ def load_quiz_from_file(file_path):
         return None
 
 if __name__ == "__main__":
-    exam_paths = ["/home/dsantamaria/ucf/UCF-Student-Risk-Predictor/querygen/data/stats/exams/exam1.json",
-                  "/home/dsantamaria/ucf/UCF-Student-Risk-Predictor/querygen/data/stats/exams/exam2.json",
-                  "/home/dsantamaria/ucf/UCF-Student-Risk-Predictor/querygen/data/stats/exams/exam3.json",
-                  "/home/dsantamaria/ucf/UCF-Student-Risk-Predictor/querygen/data/physics2/exams/exam1.json",
-                  "/home/dsantamaria/ucf/UCF-Student-Risk-Predictor/querygen/data/physics2/exams/exam2.json",
-
-                  ]
-    for path in exam_paths:
-        quiz_data = load_quiz_from_file(path)
-        if quiz_data:
-            results = process_quiz(quiz_data)
-            for result in results:
-                print(f"{result['youtube_query']}\n")
+    path = "/home/dsantamaria/ucf/UCF-Student-Risk-Predictor/querygen/data/stats/exams/exam1.json"
+    quiz_data = load_quiz_from_file(path)
+    if quiz_data:
+        results = process_quiz(quiz_data)
+        for result in results:
+            print(f"Question: {result['question']}")
+            print(f"Suggested YouTube query: {result['youtube_query']}\n")
