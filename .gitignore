@@ -2,3 +2,5 @@ backend/.env
 *.swp
 *.swo
 linear_regression/env/
+venv/
+__pycache__/
