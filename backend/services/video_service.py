@@ -152,17 +152,10 @@ async def add_video(quiz_id, question_id, video_link):
     if not document:
         return {"message": "Document not found", "success": False}
 
-    video_data = document.get('video_data', [])
-
-    # Check for duplicates by video ID
-    video_ids = [extract_video_id(link['link']) for link in video_data if 'link' in link]
-    new_video_id = extract_video_id(video_link)
-
-    if new_video_id in video_ids:
-        return {"message": "Video already present", "success": False}
+    video_data = document.get('video_data', {})
 
     # Add new video metadata
-    new_video_metadata = await get_video_metadata(video_link)
+    new_video_metadata = await get_video_metadata(video_data["link"])
     if "error" in new_video_metadata:
         return {"message": "Failed to fetch metadata for the video", "success": False}
 
