@@ -154,10 +154,15 @@ async def add_video(quiz_id, question_id, video_link):
 
     video_data = document.get('video_data', {})
 
+    if video_data["link"] == video_link:
+         return {"message": "Link already exists for this question.", "success": True}
+    
     # Add new video metadata
-    new_video_metadata = await get_video_metadata(video_data["link"])
+    
+    new_video_metadata = await get_video_metadata(video_link)
     if "error" in new_video_metadata:
         return {"message": "Failed to fetch metadata for the video", "success": False}
+
 
     # Update document
     await quizzes_collection.update_one(
