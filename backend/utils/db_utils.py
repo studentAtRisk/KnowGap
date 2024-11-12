@@ -23,7 +23,7 @@ def remove_field_from_collection(collection_name, field_name):
     print(f"Removed '{field_name}' from {result.modified_count} documents in '{collection_name}' collection.")
     
     # Close the MongoDB connection
-    client.close()
+    #client.close()
 
 def find_documents_by_field(collection_name, field_name, search_value):
     """
@@ -49,7 +49,7 @@ def find_documents_by_field(collection_name, field_name, search_value):
     print(f"Found {len(documents)} document(s) in '{collection_name}' collection where '{field_name}' is '{search_value}'.")
     
     # Close the MongoDB connection
-    client.close()
+    #client.close()
     
     return documents
 
