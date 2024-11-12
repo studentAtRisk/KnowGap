@@ -601,9 +601,6 @@ const StudentView = () => {
                   <div className="video-info">
                     <h3 className="item-title">{video.title}</h3>
                     <p className="video-channel">{video.channel}</p>
-                    <p className="video-stats">
-                      {video.viewCount} • {video.duration}
-                    </p>
                     <p className="video-reason">{video.reason}</p>
                   </div>
                 </div>
