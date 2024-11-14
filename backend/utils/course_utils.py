@@ -62,16 +62,23 @@ async def get_quizzes(courseid, access_token, link, max_quizzes=10):
                     unfiltered_data = await response.json()
                     max_date = datetime.now(timezone.utc)  # Current time in UTC
                     
-                    # Filter quizzes that are published and unlocked
                     filtered_data = [
                         quiz for quiz in unfiltered_data
-                        if quiz["published"] and quiz["all_dates"][0]["unlock_at"] and parse_date(quiz["all_dates"][0]["unlock_at"]) <= max_date
+                        if quiz["published"] and (
+                            # If 'unlock_at' is None or empty, treat it as the Unix epoch (earliest possible date)
+                            (quiz["all_dates"][0]["unlock_at"] and parse_date(quiz["all_dates"][0]["unlock_at"])) or
+                            # If 'unlock_at' is None or empty, use the Unix epoch
+                            datetime(1970, 1, 1, tzinfo=timezone.utc)
+                        ) <= max_date
                     ]
-                    
+
                     # Sort by unlock date in descending order (newest first)
                     sorted_data = sorted(
                         filtered_data,
-                        key=lambda x: parse_date(x["all_dates"][0]["unlock_at"]),
+                        key=lambda x: (
+                            # If 'unlock_at' is None or empty, treat it as the Unix epoch (earliest possible date)
+                            parse_date(x["all_dates"][0]["unlock_at"]) if x["all_dates"][0]["unlock_at"] else datetime(1970, 1, 1, tzinfo=timezone.utc)
+                        ),
                         reverse=True
                     )
                     
