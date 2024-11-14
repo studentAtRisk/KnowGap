@@ -496,8 +496,7 @@ const StudentView = () => {
         ) : (
           <div>
             <div className="api-token-input">
-              <p>API Token is set</p>
-              <button onClick={testSendToken}>Refresh Status</button>
+              <p></p>
             </div>
             <div className="performance-overview fade-in">
               <h2 className="overview-title">Your Performance Overview</h2>
