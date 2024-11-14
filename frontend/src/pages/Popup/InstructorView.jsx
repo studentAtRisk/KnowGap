@@ -766,10 +766,7 @@ const InstructorView = () => {
     <body style={styles.body}>
       <div style={styles.container}>
         {localStorage.getItem('apiToken') ? (
-          <div className="api-token-input">
-            <p>API Token is set</p>
-            <button onClick={removeToken}>Remove Token</button>
-          </div>
+          <div className="api-token-input"></div>
         ) : (
           <div className="api-token-input">
             <input
