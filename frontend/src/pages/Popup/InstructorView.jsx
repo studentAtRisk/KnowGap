@@ -355,44 +355,86 @@ const InstructorView = () => {
         setCourseQuestions((prevQuestions) =>
           prevQuestions.filter((q) => q.question_id !== questionId)
         );
-        console.log('Video removed successfully');
         setNotifications([...notifications, 'Video removed successfully']);
       }
     } catch (error) {
-      console.error('Error removing video:', error);
       setNotifications([...notifications, 'Failed to remove video']);
     }
   };
+  const getYoutubeId = (url) => {
+    const regExp =
+      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
 
-  const handleAddVideo = () => {
+  const handleAddVideo = async () => {
     if (!newVideo.questionId || !newVideo.url) {
-      setNotifications([
-        ...notifications,
-        'Please fill in all required fields',
-      ]);
+      console.log('Missing required fields');
       return;
     }
 
-    // Create new video object with all required fields
-    const newVideoData = {
-      core_topic: 'Custom Topic',
-      question_id: newVideo.questionId,
-      question_text: 'Custom Question',
-      quiz_id: Date.now(), // Generate unique ID
-      video_data: {
-        title: newVideo.title || 'Custom Video',
-        link: newVideo.url,
-        thumbnail: 'https://i.ytimg.com/vi/default/hqdefault.jpg',
-        channel: 'Custom Added',
-      },
-    };
+    console.log('Selected question ID:', newVideo.questionId);
 
-    // Add the new video to the existing list
-    setCourseQuestions((prevQuestions) => [...prevQuestions, newVideoData]);
+    // Get the full question object from courseQuestions
+    const selectedQuestion = courseQuestions.find(
+      (q) => q.question_text === newVideo.questionId
+    );
 
-    // Reset form and show success notification
-    setNewVideo({ title: '', url: '', questionId: '' });
-    console.log('New video added:', newVideoData);
+    if (!selectedQuestion) {
+      console.log('Could not find matching question');
+      return;
+    }
+
+    const quizId = selectedQuestion.quiz_id;
+    const questionId = selectedQuestion.question_id;
+
+    console.log('Quiz ID:', quizId);
+    console.log('Question ID:', questionId);
+    console.log('Video URL:', newVideo.url);
+
+    const baseUrl =
+      'https://slimy-betsy-student-risk-ucf-cdl-test-1cfbb0a5.koyeb.app';
+
+    try {
+      const response = await fetch(`${baseUrl}/add-video`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          quiz_id: quizId,
+          question_id: questionId,
+          video_link: newVideo.url,
+        }),
+      });
+
+      const data = await response.json();
+      console.log('API Response:', data);
+
+      if (response.ok) {
+        const newVideoData = {
+          question_id: questionId,
+          quiz_id: quizId,
+          question_text: selectedQuestion.question_text,
+          core_topic: selectedQuestion.core_topic,
+          video_data: {
+            title: newVideo.title || 'Custom Video',
+            link: newVideo.url,
+            thumbnail: `https://img.youtube.com/vi/${getYoutubeId(
+              newVideo.url
+            )}/hqdefault.jpg`,
+            channel: 'Custom Added',
+          },
+        };
+
+        setCourseQuestions((prevQuestions) => [...prevQuestions, newVideoData]);
+        setNewVideo({ title: '', url: '', questionId: '' });
+        console.log('Video added successfully:', newVideoData);
+      }
+    } catch (error) {
+      console.log('Error adding video:', error);
+    }
   };
 
   // const handleAddVideo = async () => {
@@ -724,10 +766,7 @@ const InstructorView = () => {
     <body style={styles.body}>
       <div style={styles.container}>
         {localStorage.getItem('apiToken') ? (
-          <div className="api-token-input">
-            <p>API Token is set</p>
-            <button onClick={removeToken}>Remove Token</button>
-          </div>
+          <div className="api-token-input"></div>
         ) : (
           <div className="api-token-input">
             <input
@@ -919,11 +958,12 @@ const InstructorView = () => {
           >
             <option value="">Select a question</option>
             {courseQuestions.map((question) => (
-              <option key={question.questionid} value={question.questionid}>
+              <option key={question.question_id} value={question.question_text}>
                 {question.question_text.substring(0, 50)}...
               </option>
             ))}
           </select>
+
           <input
             type="text"
             placeholder="Video Title"
