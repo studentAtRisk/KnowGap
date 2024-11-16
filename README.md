@@ -59,9 +59,8 @@ Current Student View          |  Current Instructor View
 
 - [ ] **Frontend Enhancements**
   - Implement OAuth2 for secure and seamless authentication.
+  - Test on other browsers (currently developed/tested on Chrome)
   - Transition from cookies to a fully fleshed-out token database for better security and scalability. (Endpoint exists, need to test and call in frontend)
-  - Fix CSS scaling for student view
-  - Repurpose the "Notes" section
   - Start using token-based endpoint instead of cookies
   - Add a manual refresh button to the frontend for the database
   - Polish the UI with new elements (including a watchlist feature)
