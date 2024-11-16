@@ -102,10 +102,5 @@ Current Student View          |  Current Instructor View
   - Develop guided tutorials for students to learn how to use the platform effectively.
   - Facilitate anonymous peer mentoring for students at similar risk levels
 
-- [ ] **AI and Automation**
-  - Integrate AI chatbot for 24/7 academic and mental health support
-  - Implement automated intervention suggestions for instructors
-  - Utilize NLP for feedback analysis from students and instructors
-
 ---
 This README reflects the latest achieved milestones and upcoming features, providing a clear roadmap for both completed and planned work. Let me know if you need any further edits or additional features to be added.
