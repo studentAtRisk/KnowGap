@@ -58,6 +58,7 @@ Current Student View          |  Current Instructor View
   - Provide instructors with a detailed dashboard summarizing trends across multiple courses and highlighting areas of concern.
 
 - [ ] **Frontend Enhancements**
+  - Use cookies to store support content for determined period of time (i.e. 48-72 hours)
   - Implement OAuth2 for secure and seamless authentication.
   - Transition from cookies to a fully fleshed-out token database for better security and scalability. (Endpoint exists, need to test and call in frontend)
   - Fix CSS scaling for student view
