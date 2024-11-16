@@ -39,7 +39,7 @@ Current Student View          |  Current Instructor View
 - [x] Endpoint to Store and Retrieve Videos by Course
 - [x] Polished UI for Video Recommendations
 - [x] Core Topic Generation for Recommending Videos
-- [x] Regular sponsor meetings for dual perspective feedback (student and instructor)
+- [x] Third Page: Mental Health Support Videos by Risk Level
 - [x] Implemented unit testing for core features
 - [x] Two-week sprint-based development cycle
 - [x] Automated "Refresh DB" feature for real-time Canvas updates
