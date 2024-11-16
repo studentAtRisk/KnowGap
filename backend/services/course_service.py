@@ -201,8 +201,11 @@ async def update_quiz_reccs(courseid, current_quiz, access_token, link):
                 data = await response.json()
                 question_texts, question_ids, selectors = [], [], []
                 
-                noanswerset = {"multiple_choice_question", "true_false_question", "short_answer_question"}
+                noanswerset = {"multiple_choice_question", "multiple_answers_question", "true_false_question", "short_answer_question", "numerical_question"}
                 answerset = {"fill_in_multiple_blanks_question", "multiple_dropdowns_question", "matching_question"}
+                writtenset = {"calculated_question", "essay_question"}
+
+
 
                 for question_stat in data["quiz_statistics"][0]["question_statistics"]:
                     question_text = BeautifulSoup(question_stat["question_text"], features="html.parser").get_text()
@@ -220,7 +223,10 @@ async def update_quiz_reccs(courseid, current_quiz, access_token, link):
                             for answer in answer_set["answers"]:
                                 if not answer["correct"]:
                                     selectors[-1] += answer.get("user_ids", [-1])
-
+                    if question_type in writtenset:
+                        for answer in question_stat["answers"]:
+                            if answer["id"] != "ungraded" and not answer["full_credit"]:
+                                selectors[-1] += answer.get("user_ids", [-1])
 
 
 
