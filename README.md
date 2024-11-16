@@ -48,25 +48,25 @@ Current Student View          |  Current Instructor View
 
 - [ ] **Enhancing User Experience**
   - Provide detailed breakdowns of how the risk score is calculated.
-  - Clarify what each score means in the context of passing/failing a class.
+  - Clarify what each score means in the context of passing/failing a class (to users, both students and instructors)
   - Allow users to give feedback on academic and mental health videos.
   - Use feedback to improve recommendations and ensure content relevance.
   - Enable students to save academic or mental health videos to a personal watchlist for later viewing, or remove ones they have already watched or no longer need.
   - Allow professors to curate playlists of recommended content for their classes.
-  - Enable students to opt in to test the application further with real-life instructor data.
+  - Enable students to opt in to test the application further with real-life instructor data and grow user base.
   - Collect feedback to refine features and ensure practical utility.
   - Provide instructors with a detailed dashboard summarizing trends across multiple courses and highlighting areas of concern.
 
 - [ ] **Frontend Enhancements**
+  - Use cookies to store support content for determined period of time (i.e. 48-72 hours)
   - Implement OAuth2 for secure and seamless authentication.
   - Transition from cookies to a fully fleshed-out token database for better security and scalability. (Endpoint exists, need to test and call in frontend)
   - Fix CSS scaling for student view
-  - Repurpose the "Notes" section
+  - Instead of having all course questions, have an additional drop down for course quizzes, and pull up questions to add videos based on selected course assessment
   - Start using token-based endpoint instead of cookies
   - Add a manual refresh button to the frontend for the database
   - Polish the UI with new elements (including a watchlist feature)
   - Watchlist frontend and backend development
-  - Transition Flask-based code to Quart
 
 - [ ] **Backend Improvements**
   - Automate deletion of old assessment data to handle larger datasets efficiently.
