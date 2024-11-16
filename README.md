@@ -46,7 +46,20 @@ Current Student View          |  Current Instructor View
 
 ### Pending Items / Future Features
 
+- [ ] **Enhancing User Experience**
+  - Provide detailed breakdowns of how the risk score is calculated.
+  - Clarify what each score means in the context of passing/failing a class.
+  - Allow users to give feedback on academic and mental health videos.
+  - Use feedback to improve recommendations and ensure content relevance.
+  - Enable students to save academic or mental health videos to a personal watchlist for later viewing, or remove ones they have already watched or no longer need.
+  - Allow professors to curate playlists of recommended content for their classes.
+  - Enable students to opt in to test the application further with real-life instructor data.
+  - Collect feedback to refine features and ensure practical utility.
+  - Provide instructors with a detailed dashboard summarizing trends across multiple courses and highlighting areas of concern.
+
 - [ ] **Frontend Enhancements**
+  - Implement OAuth2 for secure and seamless authentication.
+  - Transition from cookies to a fully fleshed-out token database for better security and scalability. (Endpoint exists, need to test and call in frontend)
   - Fix CSS scaling for student view
   - Repurpose the "Notes" section
   - Start using token-based endpoint instead of cookies
@@ -56,37 +69,27 @@ Current Student View          |  Current Instructor View
   - Transition Flask-based code to Quart
 
 - [ ] **Backend Improvements**
-  - Automate deletion of old assessment data to handle larger datasets
+  - Automate deletion of old assessment data to handle larger datasets efficiently.
+  - Ingest and structure data to accommodate GraphQL compatibility.
+  - Explore AWS or other cloud-based deployments to scale the platform for institutional or global use.
+  - Ingest unique question formats and structures rather than processing multiple instances of similar questions with different values.
   - Edit video URLs in UI
   - Runtime optimization on database/endpoints
   - Endpoint debugging
   - Code reformatting and cleanup
   - Optimize the decision to store 1 video per question vs. arrays
-  - Ingest question formats rather than multiple instances of similar questions
-  - Explore AWS/Cloud deployments for scalability
 
 - [ ] **Testing and Deployment**
+  - Implement a robust unit testing framework to ensure reliability and maintainability as the application evolves.
   - Clean up or repopulate the database before handover
   - Host the project on sponsor's server
   - Finalize the documentation for project handover
 
 - [ ] **Integration and Scalability**
-  - Implement OAuth2 for secure authentication
   - Add Single Sign-On (SSO) integration with UCF systems
   - Multi-LMS compatibility for Blackboard, Moodle, etc.
   - Cross-platform data sync with tools like Google Classroom or Khan Academy
   - Open API for third-party tool integration
-
-- [ ] **User Experience and Analytics**
-  - Provide detailed insights on risk level calculations
-  - Allow users to give feedback on academic and mental health videos
-  - Add detailed dashboards summarizing trends across courses
-  - Predictive analytics for course outcomes
-
-- [ ] **AI and Automation**
-  - Integrate AI chatbot for 24/7 academic and mental health support
-  - Implement automated intervention suggestions for instructors
-  - Utilize NLP for feedback analysis from students and instructors
 
 - [ ] **Security and Compliance**
   - Transition to OAuth2 and a fully fleshed-out token database
@@ -95,9 +98,14 @@ Current Student View          |  Current Instructor View
   - End-to-end encryption for data security
 
 - [ ] **Gamification and Engagement**
-  - Gamified feedback mechanisms (badges, leaderboards)
-  - Interactive tutorials for platform usage
-  - Peer support features for students at similar risk levels
+  - Use badges or leaderboards to encourage student engagement with recommended videos or mental health resources.
+  - Develop guided tutorials for students to learn how to use the platform effectively.
+  - Facilitate anonymous peer mentoring for students at similar risk levels
+
+- [ ] **AI and Automation**
+  - Integrate AI chatbot for 24/7 academic and mental health support
+  - Implement automated intervention suggestions for instructors
+  - Utilize NLP for feedback analysis from students and instructors
 
 ---
 This README reflects the latest achieved milestones and upcoming features, providing a clear roadmap for both completed and planned work. Let me know if you need any further edits or additional features to be added.
