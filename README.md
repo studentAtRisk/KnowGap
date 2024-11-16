@@ -4,6 +4,11 @@
 
 **KnowGap** is an intelligent platform designed to enhance student learning and course management. It combines student performance prediction with personalized video recommendations to improve understanding of incorrectly answered quiz questions. The platform integrates with learning management systems like Canvas to monitor student progress and provide instructors with critical insights, while helping students close knowledge gaps through targeted video recommendations.
 
+## Chrome Extension Link
+
+Access the extension [here](https://chromewebstore.google.com/detail/knowgap-for-canvas/lfljecdcenplokfblkhnnkjiigkanipm?hl=en-US&utm_source=ext_sidebar)
+
+
 ## Features
 
 1. **Student Risk Prediction**
