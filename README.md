@@ -31,20 +31,23 @@ Current Student View          |  Current Instructor View
 :-------------------------:|:-------------------------:
 ![](https://i.ibb.co/592pv8d/image-2024-10-26-204812751.png)| ![](https://i.ibb.co/hRjdT0R/demo.png)
 
+# Project Structure
 
-##Project Directory
-├── frontend
-│   ├── src               # Core application components and UI elements
-│   ├── utils             # Shared utility functions for frontend logic
+This repository is organized into the following key directories:
+
+```plaintext
+.
+├── frontend/
+│   ├── src/                # Core application components and UI elements
+│   ├── utils/              # Shared utility functions for frontend logic
 │
-├── backend
-│   ├── routes            # Handles payloads from frontend, sends responses
-│   ├── services          # Business logic, DB operations, and response building
-│   ├── utils             # Auxiliary code unrelated to client-side interactions
+├── backend/
+│   ├── routes/             # Handles incoming payloads from frontend, sends responses via services
+│   ├── services/           # Contains business logic, DB operations, and builds responses
+│   ├── utils/              # Auxiliary backend functions unrelated to client-side interactions
 │
-├── docs                  # Documentation and setup guides
-
-
+├── docs/                   # Documentation, setup guides, and usage instructions
+```
 ## TODOs & Milestones
 
 ### Achieved Milestones
